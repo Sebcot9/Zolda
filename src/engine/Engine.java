@@ -14,13 +14,13 @@ public class Engine implements RequireDataService, EngineService {
 	private Timer timer;
 	private boolean moveLeft, moveRight, moveUp, moveDown;
 	//private User.COMMAND command;
-	
-	
+
+
 	@Override
 	public void bindDataService(DataService service){
 		data = service;
 	}
-	
+
 	@Override
 	public void init(){
 		timer = new Timer();
@@ -29,14 +29,17 @@ public class Engine implements RequireDataService, EngineService {
 		moveUp = false;
 		moveDown = false;
 	}
-	
+
 	@Override
 	public void start(){
 		timer.schedule(new TimerTask(){
 			public void run(){
-		}},0, 100);
+
+				
+			}
+		},0, 100);
 	}
-	
+
 	@Override
 	public void stop()
 	{
