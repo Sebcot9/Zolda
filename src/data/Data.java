@@ -7,8 +7,10 @@ import classes.Enemies;
 import classes.Heroes;
 import classes.Maps;
 import classes.Pets;
+import classes.Position;
+import specifications.DataService;
 
-public class Data {
+public class Data implements DataService {
 
 	Heroes lonk;
 	ArrayList <Enemies> enemies;
@@ -22,34 +24,47 @@ public class Data {
 	public void init(){
 		
 	}*/
-	
+	@Override
+	public void init(){
+		lonk = new Heroes(new Position(0,0), "Lonk", 0);
+	}
+	@Override
 	public Heroes getLonk() {
 		return lonk;
 	}
+	@Override
 	public void setLonk(Heroes lonk) {
 		this.lonk = lonk;
 	}
+	@Override
 	public ArrayList<Enemies> getEnemies() {
 		return enemies;
 	}
+	@Override
 	public void setEnemies(ArrayList<Enemies> enemies) {
 		this.enemies = enemies;
 	}
+	@Override
 	public ArrayList<Allies> getAllies() {
 		return allies;
 	}
+	@Override
 	public void setAllies(ArrayList<Allies> allies) {
 		this.allies = allies;
 	}
+	@Override
 	public ArrayList<Pets> getPets() {
 		return pets;
 	}
+	@Override
 	public void setPets(ArrayList<Pets> pets) {
 		this.pets = pets;
 	}
+	@Override
 	public Maps getMaps() {
 		return maps;
 	}
+	@Override
 	public void setMaps(Maps maps) {
 		this.maps = maps;
 	}
