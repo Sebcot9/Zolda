@@ -5,6 +5,7 @@ import specifications.RequireReadService;
 import specifications.ViewerService;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -35,7 +36,10 @@ public class Viewer implements ViewerService, RequireReadService{
 		double radius=.5*Math.min(shrink*20,shrink*20);
 		Circle heroes = new Circle(radius);
 		heroes.setFill(Color.DARKBLUE);
-		panel.getChildren().add(heroes);
+		heroes.setEffect(new Lighting());
+		heroes.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
+		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
+	    panel.getChildren().add(heroes);
 		return panel;
 
 	}

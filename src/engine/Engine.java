@@ -18,6 +18,7 @@ public class Engine implements RequireDataService, EngineService {
 	//private User.COMMAND command;
 	private int heroesVX;
 	private int heroesVY;
+	private double friction = 0.5;
 
 
 	@Override
@@ -90,7 +91,8 @@ public class Engine implements RequireDataService, EngineService {
 	
 	private void updateSpeedHeroes() {
 				// TODO Auto-generated method stub
-				
+						heroesVX*=friction;
+						heroesVY*=friction;
 			}
 
 

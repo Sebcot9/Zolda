@@ -25,7 +25,8 @@ public class Main extends Application{
 	  private static EngineService engine;
 	  private static ViewerService viewer;
 	  private static AnimationTimer timer;
-	public static void main(String args[]){
+	
+	  public static void main(String args[]){
 		data = new Data();
 		engine = new Engine();
 		viewer = new Viewer();
