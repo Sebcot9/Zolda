@@ -43,7 +43,7 @@ public class Main extends Application{
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		final Scene scene = new Scene(viewer.getPanel());
+		final Scene scene = new Scene(((Viewer)viewer).getPanel());
 		
 		scene.setFill(Color.ANTIQUEWHITE);
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
@@ -53,6 +53,7 @@ public class Main extends Application{
 		          if (event.getCode()==KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
 		          if (event.getCode()==KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
 		          if (event.getCode()==KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
+		          event.consume();
 			}
 		});
 		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
