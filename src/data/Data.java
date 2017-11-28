@@ -26,7 +26,8 @@ public class Data implements DataService {
 	}*/
 	@Override
 	public void init(){
-		lonk = new Heroes(new Position(0,0), "Lonk", 0);
+		lonk = new Heroes(new Position(512,512), "Lonk", 0);
+		maps = new Maps(1024,876);
 	}
 	@Override
 	public Heroes getLonk() {
