@@ -1,0 +1,12 @@
+fairy_purple_01 = 100 0 48 48
+fairy_purple_02 = 0 0 49 48
+fairy_purple_03 = 100 49 48 48
+fairy_purple_04 = 149 49 48 47
+fairy_purple_05 = 0 49 49 47
+fairy_purple_06 = 198 49 48 47
+fairy_purple_07 = 149 0 48 48
+fairy_purple_08 = 50 0 49 48
+fairy_purple_09 = 198 0 48 48
+fairy_purple_10 = 0 97 48 47
+fairy_purple_11 = 50 49 49 47
+fairy_purple_12 = 49 97 48 47
