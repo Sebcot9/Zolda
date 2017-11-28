@@ -3,8 +3,8 @@ package classes;
 import java.util.ArrayList;
 
 public class Maps {
- int width;
- int height;
+ int width = 1024;
+ int height = 876;
  ArrayList <Obstacle> obstacles;
  ArrayList <Holes> holes;
  

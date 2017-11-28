@@ -5,32 +5,48 @@ import specifications.RequireReadService;
 import specifications.ViewerService;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class Viewer implements ViewerService, RequireReadService{
 
 	private ReadService data;
-	private double xShrink, yShrink, xModifier, yModifier;
+	private double xShrink, yShrink,shrink,xModifier, yModifier;
 	@Override
 	public void bindReadService(ReadService service)
 	{
 		data=service;
 	}
-	
+
 	@Override
 	public void init(){
-		
+	    xShrink=1;
+	    yShrink=1;
+	    xModifier=0;
+	    yModifier=0;
 	}
-	
+
 	@Override
 	public Parent getPanel(){
 		Group panel = new Group();
+		shrink = Math.min(xShrink, yShrink);
+		xModifier = .01*shrink*data.getMaps().getHeight();
+		yModifier = .01*shrink*data.getMaps().getWidth();
+		double radius=.5*Math.min(shrink*20,shrink*20);
+		Circle heroes = new Circle(radius);
+		heroes.setFill(Color.DARKBLUE);
+		panel.getChildren().add(heroes);
 		return panel;
-		
+
 	}
-	
+
 	@Override
-	public void setMainWindowWidth(double w){}
-	
+	public void setMainWindowWidth(double w){
+		xShrink = w/data.getMaps().getWidth();
+	}
+
 	@Override
-	public void setMainWindowHeight(double h){}
+	public void setMainWindowHeight(double h){
+		yShrink = h/data.getMaps().getHeight();
+	}
 }

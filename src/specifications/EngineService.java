@@ -1,5 +1,7 @@
 package specifications;
 
+import tools.User;
+
 public interface EngineService {
 
 	void init();
@@ -7,5 +9,6 @@ public interface EngineService {
 	void start();
 
 	void stop();
-
+	  public void setHeroesCommand(User.COMMAND c);
+	  public void releaseHeroesCommand(User.COMMAND c);
 }
