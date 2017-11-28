@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,7 +20,7 @@ public class Engine implements RequireDataService, EngineService {
 	private int heroesVX;
 	private int heroesVY;
 	private double friction = 0.5;
-
+	private Random gen;
 
 	@Override
 	public void bindDataService(DataService service){
@@ -35,6 +36,7 @@ public class Engine implements RequireDataService, EngineService {
 		moveDown = false;
 		heroesVX =0;
 		heroesVY=0;
+		gen = new Random();
 	}
 
 	@Override
@@ -95,5 +97,12 @@ public class Engine implements RequireDataService, EngineService {
 						heroesVY*=friction;
 			}
 
+	private void spawnEnemies(){
+		int x=0;
+		int y=0;
+		x = (int)(gen.nextInt((int)(data.getMap().getWidth()*.6))+data.getMap().getWidth()*.1);
+		y = (int)(gen.nextInt((int)(data.getMap().getHeight()*.6))+data.getMap().getHeight()*.1);
+		
+	}
 
 }

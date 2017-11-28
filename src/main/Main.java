@@ -77,8 +77,8 @@ public class Main extends Application{
 	        }
 	    });
 	    stage.setScene(scene);
-	    stage.setWidth(data.getMaps().getWidth());
-	    stage.setHeight(data.getMaps().getHeight());
+	    stage.setWidth(data.getMap().getWidth());
+	    stage.setHeight(data.getMap().getHeight());
 	    stage.setOnShown(new EventHandler<WindowEvent>() {
 	        @Override public void handle(WindowEvent event) {
 	          engine.start();

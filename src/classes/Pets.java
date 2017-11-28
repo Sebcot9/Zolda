@@ -1,6 +1,6 @@
 package classes;
 
-public class Pets extends Characters{
+public class Pets extends Character{
 
 	public Pets(Position position, String name, int hp) {
 		super(position, name, hp);

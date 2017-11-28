@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import classes.Allies;
 import classes.Enemies;
 import classes.Heroes;
-import classes.Maps;
+import classes.Map;
 import classes.Pets;
 import classes.Position;
 import specifications.DataService;
+//import specifications.Map;
 
 public class Data implements DataService {
 
@@ -16,7 +17,7 @@ public class Data implements DataService {
 	private ArrayList <Enemies> enemies;
 	private ArrayList <Allies> allies;
 	private ArrayList <Pets> pets;
-	private Maps maps;
+	private Map map;
 	
 	public Data(){}
 	
@@ -27,7 +28,7 @@ public class Data implements DataService {
 	@Override
 	public void init(){
 		lonk = new Heroes(new Position(512,512), "Lonk", 0);
-		maps = new Maps(1024,876);
+		map = new Map(1024,876);
 	}
 	@Override
 	public Heroes getLonk() {
@@ -62,13 +63,13 @@ public class Data implements DataService {
 		this.pets = pets;
 	}
 	@Override
-	public Maps getMaps() {
-		return maps;
+	public Map getMap() {
+		return map;
 	}
 	@Override
-	public void setMaps(Maps maps) {
-		this.maps = maps;
+	public void setMap(Map map) {
+		this.map = map;
 	}
-	
+
 	
 }
