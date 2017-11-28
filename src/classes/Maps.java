@@ -3,16 +3,16 @@ package classes;
 import java.util.ArrayList;
 
 public class Maps {
- int width = 1024;
- int height = 876;
- ArrayList <Obstacle> obstacles;
- ArrayList <Holes> holes;
+ private int width = 1024;
+ private int height = 876;
+ private ArrayList <Obstacle> obstacles;
+ private ArrayList <Holes> holes;
  
  public Maps(int width, int height){
 	 this.width = width;
 	 this.height = height;
-	 this.obstacles = new ArrayList<Obstacle>();
-	 this.holes = new ArrayList<Holes>();
+	 this.obstacles = new ArrayList<>();
+	 this.holes = new ArrayList<>();
 	 }
  
  public Maps(int width, int height, ArrayList<Obstacle> os, ArrayList<Holes> hs){
