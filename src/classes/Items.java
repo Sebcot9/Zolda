@@ -1,8 +1,8 @@
 package classes;
 
-public class Items {
+public abstract class Items {
  Position position;
  //Bonus.TYPES types;
- String bonusName;
+ String itemName;
  
 }
