@@ -44,7 +44,7 @@ public class Main extends Application{
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		final Scene scene = new Scene(((Viewer)viewer).getPanel());
+		final Scene scene = new Scene((viewer).getPanel());
 		
 		scene.setFill(Color.ANTIQUEWHITE);
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
@@ -93,7 +93,7 @@ public class Main extends Application{
 	      
 	  	timer = new AnimationTimer() {
 	        @Override public void handle(long l) {
-	          scene.setRoot(((Viewer)viewer).getPanel());
+	          scene.setRoot((viewer).getPanel());
 	        }
 	    };
 	    timer.start();

@@ -9,6 +9,8 @@ public interface EngineService {
 	void start();
 
 	void stop();
-	  public void setHeroesCommand(User.COMMAND c);
-	  public void releaseHeroesCommand(User.COMMAND c);
+
+	void setHeroesCommand(User.COMMAND c);
+
+	void releaseHeroesCommand(User.COMMAND c);
 }
