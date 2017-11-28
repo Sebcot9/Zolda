@@ -12,13 +12,13 @@ import specifications.DataService;
 
 public class Data implements DataService {
 
-	Heroes lonk;
-	ArrayList <Enemies> enemies;
-	ArrayList <Allies> allies;
-	ArrayList <Pets> pets;
-	Maps maps;
+	private Heroes lonk;
+	private ArrayList <Enemies> enemies;
+	private ArrayList <Allies> allies;
+	private ArrayList <Pets> pets;
+	private Maps maps;
 	
-	public Data(){};
+	public Data(){}
 	
 	/*@Override
 	public void init(){
