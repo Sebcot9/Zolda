@@ -77,18 +77,18 @@ public class Viewer implements ViewerService, RequireReadService{
 	public Parent getPanel(){
 		Group panel = new Group();
 		shrink = Math.min(xShrink, yShrink);
-		xModifier = .01*shrink*data.getMap().getHeight();
-		yModifier = .01*shrink*data.getMap().getWidth();
+		xModifier = .01*shrink*data.getMaxY();
+		yModifier = .01*shrink*data.getMaxX();
 		double radius=.5*Math.min(shrink*20,shrink*20);
 
 		//Vue Utilisateur
-		Rectangle userView = new Rectangle(-2*xModifier+shrink*800,
-				-.2*shrink*600+shrink*600);
+		Rectangle userView = new Rectangle(-0.2*xModifier+shrink*data.getMap().getWidth(),
+				-.2*yModifier+shrink*data.getMap().getHeight());
 		userView.setFill(Color.WHITE);
 		userView.setStroke(Color.DIMGRAY);
-		userView.setStrokeWidth(.01*shrink*600);
-		userView.setArcWidth(.04*shrink*600);
-		userView.setArcHeight(.04*shrink*600);
+		userView.setStrokeWidth(.01*shrink*data.getMap().getHeight());
+		userView.setArcWidth(.04*shrink*data.getMap().getHeight());
+		userView.setArcHeight(.04*shrink*data.getMap().getHeight());
 		userView.setTranslateX(xModifier);
 		userView.setTranslateY(yModifier);
 //		panel.getChildren().add(userView);
@@ -131,12 +131,12 @@ public class Viewer implements ViewerService, RequireReadService{
 //			defaultAvatarList.clear();
 //			defaultAvatarList.add(new Rectangle2D(33,0,32,32));
 		}
-		linkAvatarImageView.setFitHeight(5*10);
+		/*linkAvatarImageView.setFitHeight(5*10);
 		linkAvatarImageView.setPreserveRatio(true);
 		linkAvatarImageView.setViewport(defaultAvatarList.get(index));
 		linkAvatarImageView.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		linkAvatarImageView.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-		panel.getChildren().addAll(userView,linkAvatarImageView);
+		panel.getChildren().addAll(userView,linkAvatarImageView);*/
 
 
 //		Rectangle heroes = new Rectangle(500,500);
@@ -159,25 +159,24 @@ public class Viewer implements ViewerService, RequireReadService{
 		//panel.getChildren().add(t);
 
 
-		/*Circle heroes = new Circle(radius);
+		Circle heroes = new Circle(radius);
 		heroes.setFill(Color.DARKBLUE);
 		heroes.setEffect(new Lighting());
 		heroes.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-		panel.getChildren().add(heroes);
-		*/
+		panel.getChildren().addAll(userView, heroes);
 		return panel;
 
 	}
 
 	@Override
 	public void setMainWindowWidth(double w){
-		xShrink = w/data.getMap().getWidth();
+		xShrink = w/data.getMaxX();
 	}
 
 	@Override
 	public void setMainWindowHeight(double h){
-		yShrink = h/data.getMap().getHeight();
+		yShrink = h/data.getMaxY();
 	}
 
 	@Override

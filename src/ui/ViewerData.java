@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import specifications.EngineService;
 import specifications.ReadService;
 import specifications.RequireReadService;
 import specifications.ViewerService;
@@ -12,11 +13,17 @@ import specifications.ViewerService;
 public class ViewerData implements ViewerService, RequireReadService{
 
 	private ReadService data;
+	private EngineService engine;
 	private double xShrink, yShrink,shrink,xModifier, yModifier;
 	@Override
 	public void bindReadService(ReadService service)
 	{
 		data=service;
+	}
+
+	@Override
+	public void bindEngineService(EngineService service) {
+		engine = service;
 	}
 
 	@Override
@@ -57,11 +64,15 @@ public class ViewerData implements ViewerService, RequireReadService{
 	@Override
 	public void setMainWindowWidth(double w){
 		xShrink = w/data.getMap().getWidth();
-		System.out.print(xShrink);
 	}
 
 	@Override
 	public void setMainWindowHeight(double h){
 		yShrink = h/data.getMap().getHeight();
+	}
+
+	@Override
+	public HeroSprites getHeroSprites() {
+		return null;
 	}
 }

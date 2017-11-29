@@ -82,8 +82,11 @@ public class Engine implements RequireDataService, EngineService {
 		data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
 				data.getLonk().getPosition().y+heroesVY));
 
-		if(data.getLonk().getPosition().x > data.getMaxX()){
-			data.getLonk().setPosition(new Position(data.getMaxX(), data.getLonk().getPosition().y));
+		if(data.getLonk().getPosition().x > data.getMap().getWidth()){
+
+			System.out.println(data.getLonk().getPosition().x);
+
+			data.getLonk().setPosition(new Position(data.getMap().getWidth(), data.getLonk().getPosition().y));
 		}
 
 		if(data.getLonk().getPosition().x < data.getMinX()){
@@ -94,8 +97,9 @@ public class Engine implements RequireDataService, EngineService {
 			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMinY()));
 		}
 
-		if(data.getLonk().getPosition().y > data.getMaxY()){
-			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMaxY()));
+		if(data.getLonk().getPosition().y > data.getMap().getHeight()){
+			System.out.println(data.getLonk().getPosition().y);
+			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMap().getHeight()));
 		}
 	}
 

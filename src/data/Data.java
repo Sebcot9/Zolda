@@ -28,8 +28,8 @@ public class Data implements DataService {
 	}*/
 	@Override
 	public void init(){
-		lonk = new Heroes(new Position(512,450), "Lonk", 0);
-		maps = new Map(1024,876);
+		lonk = new Heroes(new Position(512,600), "Lonk", 0);
+		maps = new Map(750,480);
 		minX = HardCodedParameters.minX;
 		maxX = HardCodedParameters.maxX;
 		minY = HardCodedParameters.minY;
