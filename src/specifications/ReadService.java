@@ -18,8 +18,11 @@ public interface ReadService {
 
 	ArrayList<Pets> getPets();
 
-
-
 	Map getMap();
+
+	public int getMinX();
+	public int getMaxX();
+	public int getMinY();
+	public int getMaxY();
 
 }
