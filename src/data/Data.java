@@ -12,14 +12,14 @@ import specifications.DataService;
 
 public class Data implements DataService {
 
-	private Heroes lonk;
-	private ArrayList <Enemies> enemies;
-	private ArrayList <Allies> allies;
-	private ArrayList <Pets> pets;
-	private Maps maps;
-	
-	public Data(){}
-	
+	Heroes lonk;
+	ArrayList <Enemies> enemies;
+	ArrayList <Allies> allies;
+	ArrayList <Pets> pets;
+	Maps maps;
+
+	public Data(){};
+
 	/*@Override
 	public void init(){
 		
@@ -69,6 +69,6 @@ public class Data implements DataService {
 	public void setMaps(Maps maps) {
 		this.maps = maps;
 	}
-	
-	
+
+
 }
