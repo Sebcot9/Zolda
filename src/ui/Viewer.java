@@ -131,13 +131,13 @@ public class Viewer implements ViewerService, RequireReadService{
 //			defaultAvatarList.clear();
 //			defaultAvatarList.add(new Rectangle2D(33,0,32,32));
 		}
-		/*linkAvatarImageView.setFitHeight(5*10);
-		linkAvatarImageView.setPreserveRatio(true);
+		//linkAvatarImageView.setFitHeight(5*10);
+		/*linkAvatarImageView.setPreserveRatio(true);
 		linkAvatarImageView.setViewport(defaultAvatarList.get(index));
 		linkAvatarImageView.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		linkAvatarImageView.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-		panel.getChildren().addAll(userView,linkAvatarImageView);*/
-
+		panel.getChildren().addAll(userView,linkAvatarImageView);
+*/
 
 //		Rectangle heroes = new Rectangle(500,500);
 //		heroes.setFill(new ImagePattern(new Image("File:src/images/red_lonk.png")));
@@ -164,7 +164,8 @@ public class Viewer implements ViewerService, RequireReadService{
 		heroes.setEffect(new Lighting());
 		heroes.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-		panel.getChildren().addAll(userView, heroes);
+		panel.getChildren().add(heroes);
+
 		return panel;
 
 	}
