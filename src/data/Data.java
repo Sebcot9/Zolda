@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import classes.Allies;
 import classes.Enemies;
@@ -17,7 +18,7 @@ public class Data implements DataService {
 	private ArrayList <Allies> allies;
 	private ArrayList <Pets> pets;
 	private Map maps;
-
+	
 	public Data(){}
 
 	/*@Override
@@ -28,6 +29,15 @@ public class Data implements DataService {
 	public void init(){
 		lonk = new Heroes(new Position(512,450), "Lonk", 0);
 		maps = new Map(1024,876);
+		enemies = new ArrayList<Enemies>();
+		Random gen= new Random();
+		int x = (int)(gen.nextInt((int)(getMap().getWidth()*.6))+getMap().getWidth()*.1);
+		int y = (int)(gen.nextInt((int)(getMap().getHeight()*.6))+getMap().getHeight()*.1);
+		Enemies enemy = new Enemies(new Position(x,y),"Bakemono", 2);
+		enemies.add(enemy);
+		
+		allies = new ArrayList<Allies>();
+		pets = new ArrayList<Pets>();
 	}
 	@Override
 	public Heroes getLonk() {

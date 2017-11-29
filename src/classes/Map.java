@@ -11,8 +11,8 @@ public class Map {
  public Map(int width, int height){
 	 this.width = width;
 	 this.height = height;
-	 this.obstacles = new ArrayList<>();
-	 this.holes = new ArrayList<>();
+	 this.obstacles = new ArrayList<Obstacle>();
+	 this.holes = new ArrayList<Holes>();
 	 }
  
  public Map(int width, int height, ArrayList<Obstacle> os, ArrayList<Holes> hs){
@@ -21,6 +21,8 @@ public class Map {
 	 this.obstacles = os;
 	 this.holes = hs;
  }
+ 
+ 
 
 public int getWidth() {
 	return width;
