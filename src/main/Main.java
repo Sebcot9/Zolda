@@ -25,7 +25,8 @@ public class Main extends Application{
 	  private static EngineService engine;
 	  private static ViewerService viewer;
 	  private static AnimationTimer timer;
-	public static void main(String args[]){
+	
+	  public static void main(String args[]){
 		data = new Data();
 		engine = new Engine();
 		viewer = new Viewer();
@@ -76,8 +77,8 @@ public class Main extends Application{
 	        }
 	    });
 	    stage.setScene(scene);
-	    stage.setWidth(data.getMaps().getWidth());
-	    stage.setHeight(data.getMaps().getHeight());
+	    stage.setWidth(data.getMap().getWidth());
+	    stage.setHeight(data.getMap().getHeight());
 	    stage.setOnShown(new EventHandler<WindowEvent>() {
 	        @Override public void handle(WindowEvent event) {
 	          engine.start();

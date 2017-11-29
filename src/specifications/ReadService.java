@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import classes.Allies;
 import classes.Enemies;
 import classes.Heroes;
-import classes.Maps;
+import classes.Map;
 import classes.Pets;
 
 public interface ReadService {
@@ -18,6 +18,8 @@ public interface ReadService {
 
 	ArrayList<Pets> getPets();
 
-	Maps getMaps();
+
+
+	Map getMap();
 
 }
