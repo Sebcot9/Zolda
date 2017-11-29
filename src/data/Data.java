@@ -9,7 +9,6 @@ import classes.Map;
 import classes.Pets;
 import classes.Position;
 import specifications.DataService;
-//import specifications.Map;
 
 public class Data implements DataService {
 
@@ -17,18 +16,18 @@ public class Data implements DataService {
 	private ArrayList <Enemies> enemies;
 	private ArrayList <Allies> allies;
 	private ArrayList <Pets> pets;
-	private Map map;
-	
+	private Map maps;
+
 	public Data(){}
-	
+
 	/*@Override
 	public void init(){
-		
+
 	}*/
 	@Override
 	public void init(){
-		lonk = new Heroes(new Position(512,512), "Lonk", 0);
-		map = new Map(1024,876);
+		lonk = new Heroes(new Position(512,450), "Lonk", 0);
+		maps = new Map(1024,876);
 	}
 	@Override
 	public Heroes getLonk() {
@@ -64,11 +63,11 @@ public class Data implements DataService {
 	}
 	@Override
 	public Map getMap() {
-		return map;
+		return maps;
 	}
 	@Override
-	public void setMap(Map map) {
-		this.map = map;
+	public void setMaps(Map maps) {
+		this.maps = maps;
 	}
 
 	
