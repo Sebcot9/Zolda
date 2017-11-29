@@ -38,7 +38,7 @@ public class Main extends Application{
 
 		((Engine) engine).bindDataService(data);
 		((Viewer) viewer).bindReadService(data);
-		((ViewerData) dataViewer).bindReadService(data);
+		((ViewerData) dataViewer).bindReadService(data);((Viewer) viewer).bindEngineService(engine);
 
 		data.init();
 		engine.init();

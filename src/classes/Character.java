@@ -11,6 +11,7 @@ public abstract class Character {
 		this.position = position;
 		this.name = name;
 		this.hp = hp;
+
 	}
 
 	public Position getPosition() {

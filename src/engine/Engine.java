@@ -50,7 +50,7 @@ public class Engine implements RequireDataService, EngineService {
 			}
 
 			
-		},0, 100);
+		},0, 80);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Engine implements RequireDataService, EngineService {
 		if (c==User.COMMAND.UP) moveUp=false;
 		if (c==User.COMMAND.DOWN) moveDown=false;
 	}
-		
+
 	private void updatePositionHeroes() {
 		// TODO Auto-generated method stub
 		data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
@@ -101,10 +101,10 @@ public class Engine implements RequireDataService, EngineService {
 
 	private void updateCommandHeroes() {
 		// TODO Auto-generated method stub
-		if (moveLeft) heroesVX-=10;
-		if (moveRight) heroesVX+=10;
-		if (moveUp) heroesVY-=10;
-		if (moveDown) heroesVY+=10;
+		if (moveLeft) heroesVX-=5;
+		if (moveRight) heroesVX+=5;
+		if (moveUp) heroesVY-=5;
+		if (moveDown) heroesVY+=5;
 	}
 	
 	private void updateSpeedHeroes() {
@@ -119,6 +119,26 @@ public class Engine implements RequireDataService, EngineService {
 		x = (int)(gen.nextInt((int)(data.getMap().getWidth()*.6))+data.getMap().getWidth()*.1);
 		y = (int)(gen.nextInt((int)(data.getMap().getHeight()*.6))+data.getMap().getHeight()*.1);
 		
+	}
+
+	@Override
+	public boolean getMoveLeft() {
+		return moveLeft;
+	}
+
+	@Override
+	public boolean getmoveRight() {
+		return moveRight;
+	}
+
+	@Override
+	public boolean getmoveUp() {
+		return moveUp;
+	}
+
+	@Override
+	public boolean getmoveDown() {
+		return moveDown;
 	}
 
 }

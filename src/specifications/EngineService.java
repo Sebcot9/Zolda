@@ -13,4 +13,8 @@ public interface EngineService {
 	void setHeroesCommand(User.COMMAND c);
 
 	void releaseHeroesCommand(User.COMMAND c);
+	boolean getMoveLeft();
+	boolean getmoveRight();
+	boolean getmoveUp();
+	boolean getmoveDown();
 }
