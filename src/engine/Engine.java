@@ -49,9 +49,9 @@ public class Engine implements RequireDataService, EngineService {
 		gen = new Random();
 		for(int i=0; i<5;i++)
 			spawnEnemies();
-		for(int i=0; i<200;i++)
+		for(int i=0; i<50;i++)
 			obstacleGeneration();
-		for(int i=0; i<25;i++)
+		for(int i=0; i<15;i++)
 			holesGeneration();
 		allPos = new HashSet<Position>();
 	}
@@ -153,6 +153,22 @@ public class Engine implements RequireDataService, EngineService {
 		// TODO Auto-generated method stub
 		data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
 				data.getLonk().getPosition().y+heroesVY));
+
+		if(data.getLonk().getPosition().x > data.getMaxX()){
+			data.getLonk().setPosition(new Position(data.getMaxX(), data.getLonk().getPosition().y));
+		}
+
+		if(data.getLonk().getPosition().x < data.getMinX()){
+			data.getLonk().setPosition(new Position(data.getMinX(), data.getLonk().getPosition().y));
+		}
+
+		if(data.getLonk().getPosition().y < data.getMinY()){
+			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMinY()));
+		}
+
+		if(data.getLonk().getPosition().y > data.getMaxY()){
+			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMaxY()));
+		}
 	}
 
 	private void updateCommandHeroes() {

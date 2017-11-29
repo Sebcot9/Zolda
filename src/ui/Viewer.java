@@ -16,6 +16,8 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import javafx.scene.text.Text;
+
 public class Viewer implements ViewerService, RequireReadService{
 
 	private ReadService data;
@@ -66,6 +68,7 @@ public class Viewer implements ViewerService, RequireReadService{
 		statView.setTranslateY(yModifier);
 		panel.getChildren().add(statView);
 
+
 		//Vue Console
 		Rectangle consoleView = new Rectangle(-2*xModifier+shrink*1024,
 				-.2*shrink*400+shrink*400);
@@ -84,6 +87,7 @@ public class Viewer implements ViewerService, RequireReadService{
 		heroes.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
 	    panel.getChildren().add(heroes);
+
 	    
 	    /* Création des ennemies*/
 	    ArrayList<Enemies> enemies = data.getEnemies();
@@ -139,6 +143,17 @@ public class Viewer implements ViewerService, RequireReadService{
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
 		    panel.getChildren().add(hol);
 	    }
+
+	  /*  Text t = new Text(-0.1*shrink*600+.5*shrink*800,
+				-0.1*shrink*800+shrink*600,
+				"Po : " + data.getLonk().getPosition().x + " " + data.getLonk().getPosition().y);
+*/
+		Text t2 = new Text(-0.1*shrink*600+.5*shrink*800,
+				-0.1*shrink*800+shrink*600,"shrink : " + shrink);
+
+		panel.getChildren().add(t2);
+
+		//panel.getChildren().add(t);
 
 		return panel;
 
