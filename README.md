@@ -1,2 +1,0 @@
-# Zolda
-Game in Java
