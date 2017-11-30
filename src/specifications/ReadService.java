@@ -1,0 +1,28 @@
+package specifications;
+
+import java.util.ArrayList;
+
+import classes.Allies;
+import classes.Enemies;
+import classes.Heroes;
+import classes.Map;
+import classes.Pets;
+
+public interface ReadService {
+
+	Heroes getLonk();
+
+	ArrayList<Enemies> getEnemies();
+
+	ArrayList<Allies> getAllies();
+
+	ArrayList<Pets> getPets();
+
+	Map getMap();
+
+	public int getMinX();
+	public int getMaxX();
+	public int getMinY();
+	public int getMaxY();
+
+}
