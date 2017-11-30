@@ -1,13 +1,24 @@
 package engine;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 
+import classes.Allies;
+import classes.Enemies;
+import classes.Holes;
+import classes.Obstacle;
+import classes.Pets;
 import classes.Position;
+import java.awt.Rectangle;
 import specifications.DataService;
 import specifications.EngineService;
 import specifications.RequireDataService;
+import tools.HardCodedParameters;
 import tools.User;
 
 public class Engine implements RequireDataService, EngineService {
@@ -25,6 +36,8 @@ public class Engine implements RequireDataService, EngineService {
 	private boolean pushSpace;
 
 
+	private HashSet<Position> allPos = new HashSet<Position>();
+
 	@Override
 	public void bindDataService(DataService service){
 		data = service;
@@ -40,29 +53,129 @@ public class Engine implements RequireDataService, EngineService {
 		heroesVX =0;
 		heroesVY=0;
 		gen = new Random();
+		for(int i=0; i<5;i++)
+		{
+			spawnEnemies();
+			fillSet();
+		}
+		for(int i=0; i<25;i++)
+		{
+			obstacleGeneration();
+			fillSet();
+		}
+		for(int i=0; i<5;i++)
+		{
+			holesGeneration();
+			fillSet();
+		}
+		allPos = new HashSet<Position>();
 	}
 
 	@Override
 	public void start(){
 		timer.schedule(new TimerTask(){
 			public void run(){
+
+				fillSet();
 				updateSpeedHeroes();
 				updateCommandHeroes();
+				for(Obstacle o : data.getMap().getObstacles())
+				{
+					Rectangle r1 = new Rectangle(20,20);
+					r1.translate((int)data.getLonk().getPosition().x, (int)data.getLonk().getPosition().y);
+					//((int)data.getLonk().getPosition().x, (int)data.getLonk().getPosition().x);
+
+					Rectangle r2 = new Rectangle(20,20);
+					r2.translate((int)o.getPosition().x, (int)o.getPosition().y);
+					if(r1.intersects(r2))
+					{
+						data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
+				    			data.getLonk().getPosition().y-heroesVY));
+
+						heroesVX =0;
+						heroesVY =0;
+						//Rectangle overlap = r1.intersection(r2);
+					    /*if (overlap.getHeight() >= overlap.getWidth())
+					    {
+					    	data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
+					    			data.getLonk().getPosition().y+heroesVY));
+
+					       System.out.println("Collision");
+					    }
+					    if (overlap.getWidth() >= overlap.getHeight())
+					    {
+					    	data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
+					    			data.getLonk().getPosition().y-heroesVY));
+
+					        System.out.println("Collision");
+					    }*/
+
+					}
+				}
 				updatePositionHeroes();
 				data.setStepNumber(data.getStepNumber()+1);
-				
-			}
 
-			
+			}
 		},0, 80);
 	}
 
+	private HashSet<Position> fillSet()
+	{
+		for(Allies a : data.getAllies())
+			allPos.add(a.getPosition());
+		for(Enemies e : data.getEnemies())
+			allPos.add(e.getPosition());
+		for(Obstacle o : data.getMap().getObstacles())
+			allPos.add(o.getPosition());
+		for(Holes h : data.getMap().getHoles())
+			allPos.add(h.getPosition());
+		for(Pets p : data.getPets())
+			allPos.add(p.getPosition());
+		return allPos;
+	}
+
+	private void obstacleGeneration(){
+		int x=0;
+		int y=0;
+		boolean cont = true;
+		while(cont){
+			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX))))+HardCodedParameters.minX);
+			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY))))+HardCodedParameters.minY);
+			cont =false;
+			for(Position p : allPos)
+			{
+				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 0.25*20*100)
+					cont= true;
+			}
+		}
+		data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
+
+	}
+
+	private void holesGeneration(){
+		int x=0;
+		int y=0;
+
+		boolean cont = true;
+		while(cont){
+			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX))))+HardCodedParameters.minX);
+			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY))))+HardCodedParameters.minY);
+			cont =false;
+			for(Position p : allPos)
+			{
+				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 0.25*20*100)
+					cont= true;
+			}
+		}
+		data.getMap().getHoles().add(new Holes(new Position(x,y)));
+
+	}
 	@Override
 	public void stop()
 	{
 		timer.cancel();
 	}
-	
+
 	@Override
 	public void setHeroesCommand(User.COMMAND c)
 	{
@@ -72,7 +185,7 @@ public class Engine implements RequireDataService, EngineService {
 		if (c==User.COMMAND.DOWN) moveDown=true;
 		if (c==User.COMMAND.SPACE) pushSpace= true;
 	}
-	
+
 	@Override
 	public void releaseHeroesCommand(User.COMMAND c)
 	{
@@ -85,9 +198,9 @@ public class Engine implements RequireDataService, EngineService {
 
 	private void updatePositionHeroes() {
 		// TODO Auto-generated method stub
-		data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
-				data.getLonk().getPosition().y+heroesVY));
 
+		data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
+			data.getLonk().getPosition().y+heroesVY));
 		if(data.getLonk().getPosition().x > data.getMaxX()){
 			data.getLonk().setPosition(new Position(data.getMaxX(), data.getLonk().getPosition().y));
 		}
@@ -103,7 +216,9 @@ public class Engine implements RequireDataService, EngineService {
 		if(data.getLonk().getPosition().y > data.getMaxY()){
 			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMaxY()));
 		}
-	}
+
+
+}
 
 	private void updateCommandHeroes() {
 		// TODO Auto-generated method stub
@@ -112,7 +227,7 @@ public class Engine implements RequireDataService, EngineService {
 		if (moveUp) heroesVY-=5;
 		if (moveDown) heroesVY+=5;
 	}
-	
+
 	private void updateSpeedHeroes() {
 		// TODO Auto-generated method stub
 		heroesVX*=friction;
@@ -122,29 +237,51 @@ public class Engine implements RequireDataService, EngineService {
 	private void spawnEnemies(){
 		int x=0;
 		int y=0;
-		x = (int)(gen.nextInt((int)(data.getMap().getWidth()*.6))+data.getMap().getWidth()*.1);
-		y = (int)(gen.nextInt((int)(data.getMap().getHeight()*.6))+data.getMap().getHeight()*.1);
-		
+		boolean cont = true;
+		while(cont){
+			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX))))+HardCodedParameters.minX);
+			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY))))+HardCodedParameters.minY);
+			cont =false;
+			for(Position p : allPos)
+			{
+				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 0.25*20*100)
+					cont= true;
+			}
+		}
+		data.getEnemies().add(new Enemies(new Position(x,y),"Enemy",5));
 	}
 
-	@Override
-	public boolean getMoveLeft() {
-		return moveLeft;
+	private boolean collisionObstacles(Obstacle o){
+		return(
+				(data.getLonk().getPosition().x-o.getPosition().x)*(data.getLonk().getPosition().x-o.getPosition().x)
+				+
+				(data.getLonk().getPosition().y-o.getPosition().y)*(data.getLonk().getPosition().y-o.getPosition().y)
+				<
+				0.25*20*100
+				);
 	}
-
-	@Override
-	public boolean getmoveRight() {
-		return moveRight;
+	private boolean collisionHoles(Holes h){
+		return(
+				(data.getLonk().getPosition().x-h.getPosition().x)*(data.getLonk().getPosition().x-h.getPosition().x)
+				+
+				(data.getLonk().getPosition().y-h.getPosition().y)*(data.getLonk().getPosition().y-h.getPosition().y)
+				<
+				0.25*20*100
+				);
 	}
-
-	@Override
-	public boolean getmoveUp() {
-		return moveUp;
+	private boolean collisionEnemies(Enemies e){
+		return(
+				(data.getLonk().getPosition().x-e.getPosition().x)*(data.getLonk().getPosition().x-e.getPosition().x)
+				+
+				(data.getLonk().getPosition().y-e.getPosition().y)*(data.getLonk().getPosition().y-e.getPosition().y)
+				<
+				0.25*20*100
+				);
 	}
+	private boolean collisionAll(Position p)
+	{
 
-	@Override
-	public boolean getmoveDown() {
-		return moveDown;
+			return ((p.x-data.getLonk().getPosition().x)*(p.x-data.getLonk().getPosition().x)+(p.y-data.getLonk().getPosition().y)*(p.y-data.getLonk().getPosition().y) < 0.25*20*100);
 	}
 
 	@Override

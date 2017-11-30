@@ -19,24 +19,26 @@ import specifications.EngineService;
 import specifications.ViewerService;
 import tools.User;
 import ui.Viewer;
-//import ui.ViewerData;
-//import ui.ViewerEngine;
+import ui.ViewerData;
+import ui.ViewerEngine;
 
 public class Main extends Application{
 
 	  private static DataService data;
 	  private static EngineService engine;
 	  private static ViewerService viewer;
-
+	  private static ViewerService dataViewer;
 	  private static AnimationTimer timer;
-	
+
 	  public static void main(String args[]){
 		data = new Data();
 		engine = new Engine();
 		viewer = new Viewer();
+		//dataViewer = new ViewerData();
 
 		((Engine) engine).bindDataService(data);
 		((Viewer) viewer).bindReadService(data);
+		//((ViewerData) dataViewer).bindReadService(data);
 		((Viewer) viewer).bindEngineService(engine);
 
 //		((ViewerData) dataViewer).bindReadService(data);
@@ -44,6 +46,7 @@ public class Main extends Application{
 		data.init();
 		engine.init();
 		viewer.init();
+		//dataViewer.init();
 //		dataViewer.init();
 
 		launch(args);

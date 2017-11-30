@@ -9,6 +9,12 @@ import specifications.EngineService;
 import specifications.ReadService;
 import specifications.RequireReadService;
 import specifications.ViewerService;
+
+import java.util.ArrayList;
+
+import classes.Enemies;
+import classes.Holes;
+import classes.Obstacle;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.effect.Lighting;
@@ -179,7 +185,80 @@ public class Viewer implements ViewerService, RequireReadService {
 		avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
 		panel.getChildren().addAll(userView,linkAvatarImageView);
 
+	  /*  Text t = new Text(-0.1*shrink*600+.5*shrink*800,
+				-0.1*shrink*800+shrink*600,
+				"Po : " + data.getLonk().getPosition().x + " " + data.getLonk().getPosition().y);
+*/
+		Text t2 = new Text(-0.1*shrink*600+.5*shrink*800,
+				-0.1*shrink*800+shrink*600,"shrink : " + shrink);
 
+		panel.getChildren().add(t2);
+
+		//panel.getChildren().add(t);
+
+
+//		Rectangle heroes = new Rectangle(500,500);
+//		heroes.setFill(new ImagePattern(new Image("File:src/images/red_lonk.png")));
+//		heroes.setEffect(new Lighting());
+//		heroes.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
+//		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
+//	    panel.getChildren().add(heroes);
+
+
+	    /* Cr�ation des ennemies*/
+        ArrayList<Enemies> enemies = data.getEnemies();
+        Enemies e;
+        for(int i=0; i<enemies.size();i++)
+        {
+            e = enemies.get(i);
+            double rad=.5*Math.min(shrink*20,shrink*20);
+            Circle enemy_c = new Circle(rad);
+            enemy_c.setFill(Color.RED);
+            enemy_c.setEffect(new Lighting());
+            enemy_c.setTranslateX(shrink*e.getPosition().x+shrink*xModifier-radius);
+            enemy_c.setTranslateY(shrink*e.getPosition().y+shrink*yModifier-radius);
+            //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
+            panel.getChildren().add(enemy_c);
+        }
+
+	    /* Cr�ation des obstacles */
+        ArrayList<Obstacle> obstacles = data.getMap().getObstacles();
+        Obstacle o;
+        for(int i=0; i<obstacles.size();i++)
+        {
+            o = obstacles.get(i);
+            //double rad=.5*Math.min(shrink*20,shrink*20);
+            Rectangle obs = new Rectangle(shrink*20,shrink*20);
+            obs.setFill(Color.DIMGRAY);
+            obs.setEffect(new Lighting());
+            obs.setStroke(Color.DIMGRAY);
+            obs.setStrokeWidth(.01*shrink*20);
+            obs.setArcWidth(.04*shrink*20);
+            obs.setArcHeight(.04*shrink*20);
+            obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
+            obs.setTranslateY(shrink*o.getPosition().y+shrink*yModifier-radius);
+            //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
+            panel.getChildren().add(obs);
+        }
+	    /* Cr�ation des trous */
+        ArrayList<Holes> holes = data.getMap().getHoles();
+        Holes hole;
+        for(int i=0; i<holes.size();i++)
+        {
+            hole = holes.get(i);
+            //double rad=.5*Math.min(shrink*20,shrink*20);
+            Rectangle hol = new Rectangle(.04*shrink*400,.04*shrink*400);
+            hol.setFill(Color.BLACK);
+            hol.setEffect(new Lighting());
+            hol.setStroke(Color.BLACK);
+            hol.setStrokeWidth(.01*shrink*20);
+            hol.setArcWidth(.04*shrink*20);
+            hol.setArcHeight(.04*shrink*20);
+            hol.setTranslateX(shrink*hole.getPosition().x+shrink*xModifier-radius);
+            hol.setTranslateY(shrink*hole.getPosition().y+shrink*yModifier-radius);
+            //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
+            panel.getChildren().add(hol);
+        }
 
 		return panel;
 
