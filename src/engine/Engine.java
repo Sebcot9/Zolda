@@ -81,6 +81,22 @@ public class Engine implements RequireDataService, EngineService {
 		// TODO Auto-generated method stub
 		data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
 				data.getLonk().getPosition().y+heroesVY));
+
+		if(data.getLonk().getPosition().x > data.getMaxX()){
+			data.getLonk().setPosition(new Position(data.getMaxX(), data.getLonk().getPosition().y));
+		}
+
+		if(data.getLonk().getPosition().x < data.getMinX()){
+			data.getLonk().setPosition(new Position(data.getMinX(), data.getLonk().getPosition().y));
+		}
+
+		if(data.getLonk().getPosition().y < data.getMinY()){
+			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMinY()));
+		}
+
+		if(data.getLonk().getPosition().y > data.getMaxY()){
+			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMaxY()));
+		}
 	}
 
 	private void updateCommandHeroes() {
@@ -92,10 +108,10 @@ public class Engine implements RequireDataService, EngineService {
 	}
 	
 	private void updateSpeedHeroes() {
-				// TODO Auto-generated method stub
-						heroesVX*=friction;
-						heroesVY*=friction;
-			}
+		// TODO Auto-generated method stub
+		heroesVX*=friction;
+		heroesVY*=friction;
+	}
 
 	private void spawnEnemies(){
 		int x=0;

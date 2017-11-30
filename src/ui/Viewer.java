@@ -17,6 +17,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
+
 public class Viewer implements ViewerService, RequireReadService{
 
 	private ReadService data;
@@ -103,6 +104,7 @@ public class Viewer implements ViewerService, RequireReadService{
 		statView.setTranslateY(yModifier);
 		panel.getChildren().add(statView);
 
+
 		//Vue Console
 		Rectangle consoleView = new Rectangle(-2*xModifier+shrink*1024,
 				-.2*shrink*400+shrink*400);
@@ -156,11 +158,4 @@ public class Viewer implements ViewerService, RequireReadService{
 	public void setMainWindowHeight(double h){
 		yShrink = h/data.getMap().getHeight();
 	}
-
-	@Override
-	public HeroSprites getHeroSprites() {
-		return null;
-	}
-
-
 }

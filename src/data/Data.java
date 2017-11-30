@@ -9,6 +9,7 @@ import classes.Map;
 import classes.Pets;
 import classes.Position;
 import specifications.DataService;
+import tools.HardCodedParameters;
 
 public class Data implements DataService {
 
@@ -17,6 +18,7 @@ public class Data implements DataService {
 	private ArrayList <Allies> allies;
 	private ArrayList <Pets> pets;
 	private Map maps;
+	private int minX, maxX, minY, maxY;
 
 	public Data(){}
 
@@ -28,6 +30,10 @@ public class Data implements DataService {
 	public void init(){
 		lonk = new Heroes(new Position(512,450), "Lonk", 0);
 		maps = new Map(1024,876);
+		minX = HardCodedParameters.minX;
+		maxX = HardCodedParameters.maxX;
+		minY = HardCodedParameters.minY;
+		maxY = HardCodedParameters.maxY;
 	}
 	@Override
 	public Heroes getLonk() {
@@ -70,5 +76,23 @@ public class Data implements DataService {
 		this.maps = maps;
 	}
 
-	
+	@Override
+	public int getMinX() {
+		return minX;
+	}
+
+	@Override
+	public int getMaxX() {
+		return maxX;
+	}
+
+	@Override
+	public int getMinY() {
+		return minY;
+	}
+
+	@Override
+	public int getMaxY() {
+		return maxY;
+	}
 }

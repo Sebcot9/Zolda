@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,35 +19,46 @@ import specifications.EngineService;
 import specifications.ViewerService;
 import tools.User;
 import ui.Viewer;
+import ui.ViewerData;
+import ui.ViewerEngine;
 
 public class Main extends Application{
 
 	  private static DataService data;
 	  private static EngineService engine;
 	  private static ViewerService viewer;
+	  private static ViewerService dataViewer;
 	  private static AnimationTimer timer;
 	
 	  public static void main(String args[]){
 		data = new Data();
 		engine = new Engine();
 		viewer = new Viewer();
-		
+		dataViewer = new ViewerData();
+
 		((Engine) engine).bindDataService(data);
 		((Viewer) viewer).bindReadService(data);
 		((Viewer) viewer).bindEngineService(engine);
 
+		((ViewerData) dataViewer).bindReadService(data);
+
 		data.init();
 		engine.init();
 		viewer.init();
-		
+		dataViewer.init();
+
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		final Scene scene = new Scene((viewer).getPanel());
-		
+
+		Group root = new Group();
+		Scene scene = new Scene(root, 500, 500, Color.WHITE);
+
+		root.getChildren().add(viewer.getPanel());
+
 		scene.setFill(Color.ANTIQUEWHITE);
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			@Override
@@ -58,6 +70,7 @@ public class Main extends Application{
 		          event.consume();
 			}
 		});
+
 		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
 			public void handle(KeyEvent event){
 		          if (event.getCode()==KeyCode.LEFT) engine.releaseHeroesCommand(User.COMMAND.LEFT);
@@ -69,14 +82,15 @@ public class Main extends Application{
 		});
 	    scene.widthProperty().addListener(new ChangeListener<Number>() {
 	        @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-	          viewer.setMainWindowWidth(newSceneWidth.doubleValue());
+				viewer.setMainWindowWidth(newSceneWidth.doubleValue());
 	        }
 	    });
 	    scene.heightProperty().addListener(new ChangeListener<Number>() {
 	        @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-	          viewer.setMainWindowHeight(newSceneHeight.doubleValue());
+				viewer.setMainWindowHeight(newSceneHeight.doubleValue());
 	        }
 	    });
+
 	    stage.setScene(scene);
 	    stage.setWidth(data.getMap().getWidth());
 	    stage.setHeight(data.getMap().getHeight());
@@ -91,10 +105,10 @@ public class Main extends Application{
 	        }
 	      });
 	      stage.show();
-	      
+
 	  	timer = new AnimationTimer() {
 	        @Override public void handle(long l) {
-	          scene.setRoot((viewer).getPanel());
+	          scene.setRoot(viewer.getPanel());
 	        }
 	    };
 	    timer.start();
