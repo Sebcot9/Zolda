@@ -4,6 +4,7 @@ import javafx.scene.shape.Rectangle;
 import specifications.ReadService;
 import specifications.RequireReadService;
 import specifications.ViewerService;
+import tools.HardCodedParameters;
 
 import java.util.ArrayList;
 
@@ -42,7 +43,7 @@ public class Viewer implements ViewerService, RequireReadService{
 		shrink = Math.min(xShrink, yShrink);
 		xModifier = .01*shrink*data.getMap().getHeight();
 		yModifier = .01*shrink*data.getMap().getWidth();
-		double radius=.5*Math.min(shrink*20,shrink*20);
+		double radius=Math.min(shrink*20,shrink*20);
 
 		//Vue Utilisateur
 		Rectangle userView = new Rectangle(-2*xModifier+shrink*800,
@@ -81,11 +82,11 @@ public class Viewer implements ViewerService, RequireReadService{
 		consoleView.setTranslateY(yModifier*50);
 		panel.getChildren().add(consoleView);
 
-		Rectangle heroes = new Rectangle(shrink*20,shrink*20);
+		Rectangle heroes = new Rectangle(shrink*HardCodedParameters.charWidth,shrink*HardCodedParameters.charHeight);
 		heroes.setFill(Color.DARKBLUE);
 		heroes.setEffect(new Lighting());
-		heroes.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
-		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
+		heroes.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-Math.min(shrink*HardCodedParameters.charWidth,shrink*HardCodedParameters.charHeight));
+		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-Math.min(shrink*HardCodedParameters.charWidth,shrink*HardCodedParameters.charHeight));
 	    panel.getChildren().add(heroes);
 
 	    
@@ -112,13 +113,9 @@ public class Viewer implements ViewerService, RequireReadService{
 	    {
 	    	o = obstacles.get(i);
 	    	//double rad=.5*Math.min(shrink*20,shrink*20);
-			Rectangle obs = new Rectangle(shrink*20,shrink*20);
-			obs.setFill(Color.DIMGRAY);
+			Rectangle obs = new Rectangle(radius,radius);
+			obs.setFill(Color.LIGHTGREY);
 			obs.setEffect(new Lighting());
-		    obs.setStroke(Color.DIMGRAY);
-		    obs.setStrokeWidth(.01*shrink*20);
-		    obs.setArcWidth(.04*shrink*20);
-		    obs.setArcHeight(.04*shrink*20);
 			obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
 			obs.setTranslateY(shrink*o.getPosition().y+shrink*yModifier-radius);
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
@@ -131,13 +128,9 @@ public class Viewer implements ViewerService, RequireReadService{
 	    {
 	    	hole = holes.get(i);
 	    	//double rad=.5*Math.min(shrink*20,shrink*20);
-			Rectangle hol = new Rectangle(.04*shrink*400,.04*shrink*400);
+			Rectangle hol = new Rectangle(radius,radius);
 			hol.setFill(Color.BLACK);
 			hol.setEffect(new Lighting());
-		    hol.setStroke(Color.BLACK);
-		    hol.setStrokeWidth(.01*shrink*20);
-		    hol.setArcWidth(.04*shrink*20);
-		    hol.setArcHeight(.04*shrink*20);
 			hol.setTranslateX(shrink*hole.getPosition().x+shrink*xModifier-radius);
 			hol.setTranslateY(shrink*hole.getPosition().y+shrink*yModifier-radius);
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);

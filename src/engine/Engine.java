@@ -26,14 +26,14 @@ public class Engine implements RequireDataService, EngineService {
 	public Engine(){}
 	private DataService data;
 	private Timer timer;
-	private boolean moveLeft, moveRight, moveUp, moveDown;
-	//private User.COMMAND command;
+	private boolean moveLeft, moveRight, moveUp, moveDown, collision;
+	//private User.COMMAND command
 	private int heroesVX;
 	private int heroesVY;
 	private double friction = 0.5;
 	private Random gen;
 	private HashSet<Position> allPos = new HashSet<Position>(); 
-	
+
 	@Override
 	public void bindDataService(DataService service){
 		data = service;
@@ -46,6 +46,7 @@ public class Engine implements RequireDataService, EngineService {
 		moveRight = false;
 		moveUp = false;
 		moveDown = false;
+		collision = false;
 		heroesVX =0;
 		heroesVY=0;
 		gen = new Random();
@@ -71,43 +72,41 @@ public class Engine implements RequireDataService, EngineService {
 	public void start(){
 		timer.schedule(new TimerTask(){
 			public void run(){
-				
-				fillSet();
-				updateSpeedHeroes();
-				updateCommandHeroes();				
+
+				fillSet();				
 				for(Obstacle o : data.getMap().getObstacles())
 				{
-					Rectangle r1 = new Rectangle(20,20);
-					r1.translate((int)data.getLonk().getPosition().x, (int)data.getLonk().getPosition().y);
-					//((int)data.getLonk().getPosition().x, (int)data.getLonk().getPosition().x);
-				
-					Rectangle r2 = new Rectangle(20,20);
-					r2.translate((int)o.getPosition().x, (int)o.getPosition().y);
-					if(r1.intersects(r2))
-					{
+					if(collisionObstacles(o))
+					{	
+
 						data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
-				    			data.getLonk().getPosition().y-heroesVY));
-						
-						heroesVX =0;
-						heroesVY =0;
+								data.getLonk().getPosition().y-heroesVY));					
+						//;
+						//;
+						System.out.println("Kek");
+						heroesVX =0;heroesVY =0;
+
+						//collision = false;
 						//Rectangle overlap = r1.intersection(r2);
-					    /*if (overlap.getHeight() >= overlap.getWidth())
+						/*if (overlap.getHeight() >= overlap.getWidth())
 					    {
 					    	data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
 					    			data.getLonk().getPosition().y+heroesVY));
-					    	
+
 					       System.out.println("Collision");
 					    }
 					    if (overlap.getWidth() >= overlap.getHeight())
 					    {
 					    	data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
 					    			data.getLonk().getPosition().y-heroesVY));
-					    	
+
 					        System.out.println("Collision");
 					    }*/
-					
+
 					}
 				}
+				updateSpeedHeroes();
+				updateCommandHeroes();
 				updatePositionHeroes();
 
 
@@ -129,7 +128,7 @@ public class Engine implements RequireDataService, EngineService {
 			allPos.add(p.getPosition());
 		return allPos;
 	}
-	
+
 	private void obstacleGeneration(){
 		int x=0;
 		int y=0;
@@ -140,14 +139,14 @@ public class Engine implements RequireDataService, EngineService {
 			cont =false;
 			for(Position p : allPos)
 			{
-				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 0.25*20*100)
+				if(Math.abs((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)) < 0.25*20*100)
 					cont= true;
 			}
 		}
 		data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
 
 	}
-	
+
 	private void holesGeneration(){
 		int x=0;
 		int y=0;
@@ -159,12 +158,12 @@ public class Engine implements RequireDataService, EngineService {
 			cont =false;
 			for(Position p : allPos)
 			{
-				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 0.25*20*100)
+				if(Math.abs((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)) < 0.25*20*100)
 					cont= true;
 			}
 		}
 		data.getMap().getHoles().add(new Holes(new Position(x,y)));
-	
+
 	}
 	@Override
 	public void stop()
@@ -194,7 +193,7 @@ public class Engine implements RequireDataService, EngineService {
 		// TODO Auto-generated method stub
 
 		data.getLonk().setPosition(new Position(data.getLonk().getPosition().x+heroesVX,
-			data.getLonk().getPosition().y+heroesVY));
+				data.getLonk().getPosition().y+heroesVY));
 		if(data.getLonk().getPosition().x > data.getMaxX()){
 			data.getLonk().setPosition(new Position(data.getMaxX(), data.getLonk().getPosition().y));
 		}
@@ -210,13 +209,13 @@ public class Engine implements RequireDataService, EngineService {
 		if(data.getLonk().getPosition().y > data.getMaxY()){
 			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMaxY()));
 		}
-		
 
-}
+
+	}
 
 	private void updateCommandHeroes() {
 		// TODO Auto-generated method stub
-		
+
 		if (moveLeft)
 			heroesVX-=10;
 		if (moveRight) 
@@ -238,25 +237,32 @@ public class Engine implements RequireDataService, EngineService {
 		int y=0;
 		boolean cont = true;
 		while(cont){
-			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX))))+HardCodedParameters.minX);
-			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY))))+HardCodedParameters.minY);
+			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX)))));
+			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY)))));
 			cont =false;
 			for(Position p : allPos)
 			{
-				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 0.25*20*100)
+				if(Math.abs((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)) < 0.25*20*100)
 					cont= true;
 			}
 		}
 		data.getEnemies().add(new Enemies(new Position(x,y),"Enemy",5));
 	}
 
+	private void updateEnemiesPosition()
+	{
+		for(Enemies e : data.getEnemies())
+		{
+
+		}
+	}
 	private boolean collisionObstacles(Obstacle o){
-		return(
-				(data.getLonk().getPosition().x-o.getPosition().x)*(data.getLonk().getPosition().x-o.getPosition().x)
-				+
-				(data.getLonk().getPosition().y-o.getPosition().y)*(data.getLonk().getPosition().y-o.getPosition().y)
-				<
-				0.25*20*100
+
+		return((data.getLonk().getPosition().x <= o.getPosition().x + 25 &&
+				data.getLonk().getPosition().x + 25 >= o.getPosition().x &&
+				data.getLonk().getPosition().y <= o.getPosition().y + 25 &&
+				25 + data.getLonk().getPosition().y >=  o.getPosition().y)
+
 				);
 	}
 	private boolean collisionHoles(Holes h){
@@ -273,13 +279,13 @@ public class Engine implements RequireDataService, EngineService {
 				(data.getLonk().getPosition().x-e.getPosition().x)*(data.getLonk().getPosition().x-e.getPosition().x)
 				+
 				(data.getLonk().getPosition().y-e.getPosition().y)*(data.getLonk().getPosition().y-e.getPosition().y)
-				<
+				<=
 				0.25*20*100
 				);
 	}
 	private boolean collisionAll(Position p)
 	{
-		
-			return ((p.x-data.getLonk().getPosition().x)*(p.x-data.getLonk().getPosition().x)+(p.y-data.getLonk().getPosition().y)*(p.y-data.getLonk().getPosition().y) < 0.25*20*100);
+
+		return ((p.x-data.getLonk().getPosition().x)*(p.x-data.getLonk().getPosition().x)+(p.y-data.getLonk().getPosition().y)*(p.y-data.getLonk().getPosition().y) < 0.25*20*100);
 	}
 }
