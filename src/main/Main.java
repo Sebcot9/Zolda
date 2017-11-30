@@ -19,33 +19,32 @@ import specifications.EngineService;
 import specifications.ViewerService;
 import tools.User;
 import ui.Viewer;
-import ui.ViewerData;
-import ui.ViewerEngine;
+//import ui.ViewerData;
+//import ui.ViewerEngine;
 
 public class Main extends Application{
 
 	  private static DataService data;
 	  private static EngineService engine;
 	  private static ViewerService viewer;
-	  private static ViewerService dataViewer;
+
 	  private static AnimationTimer timer;
 	
 	  public static void main(String args[]){
 		data = new Data();
 		engine = new Engine();
 		viewer = new Viewer();
-		dataViewer = new ViewerData();
 
 		((Engine) engine).bindDataService(data);
 		((Viewer) viewer).bindReadService(data);
 		((Viewer) viewer).bindEngineService(engine);
 
-		((ViewerData) dataViewer).bindReadService(data);
+//		((ViewerData) dataViewer).bindReadService(data);
 
 		data.init();
 		engine.init();
 		viewer.init();
-		dataViewer.init();
+//		dataViewer.init();
 
 		launch(args);
 	}
@@ -67,6 +66,7 @@ public class Main extends Application{
 		          if (event.getCode()==KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
 		          if (event.getCode()==KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
 		          if (event.getCode()==KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
+		          if (event.getCode()==KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
 		          event.consume();
 			}
 		});
@@ -77,6 +77,7 @@ public class Main extends Application{
 		          if (event.getCode()==KeyCode.RIGHT) engine.releaseHeroesCommand(User.COMMAND.RIGHT);
 		          if (event.getCode()==KeyCode.UP) engine.releaseHeroesCommand(User.COMMAND.UP);
 		          if (event.getCode()==KeyCode.DOWN) engine.releaseHeroesCommand(User.COMMAND.DOWN);
+		          if (event.getCode()==KeyCode.SPACE) engine.releaseHeroesCommand(User.COMMAND.SPACE);
 		          event.consume();
 			}
 		});

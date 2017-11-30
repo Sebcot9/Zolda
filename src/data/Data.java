@@ -20,6 +20,14 @@ public class Data implements DataService {
 	private Map maps;
 	private int minX, maxX, minY, maxY;
 
+
+
+	public void setStepNumber(int stepNumber) {
+		this.stepNumber = stepNumber;
+	}
+
+	private int stepNumber;
+
 	public Data(){}
 
 	/*@Override
@@ -34,6 +42,7 @@ public class Data implements DataService {
 		maxX = HardCodedParameters.maxX;
 		minY = HardCodedParameters.minY;
 		maxY = HardCodedParameters.maxY;
+		stepNumber = 0;
 	}
 	@Override
 	public Heroes getLonk() {
@@ -94,5 +103,20 @@ public class Data implements DataService {
 	@Override
 	public int getMaxY() {
 		return maxY;
+	}
+
+	@Override
+	public int getLinkHeight() {
+		return this.lonk.getHeight();
+	}
+
+	@Override
+	public int getLinkWidth() {
+		return this.lonk.getWidth();
+	}
+
+	@Override
+	public int getStepNumber() {
+		return stepNumber;
 	}
 }

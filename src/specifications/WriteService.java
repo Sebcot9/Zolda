@@ -20,4 +20,6 @@ public interface WriteService {
 
 	void setMaps(Map map);
 
+	void setStepNumber(int stepNumber);
+
 }

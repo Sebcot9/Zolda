@@ -12,6 +12,7 @@ import tools.User;
 
 public class Engine implements RequireDataService, EngineService {
 
+
 	public Engine(){}
 	private DataService data;
 	private Timer timer;
@@ -21,6 +22,8 @@ public class Engine implements RequireDataService, EngineService {
 	private int heroesVY;
 	private double friction = 0.5;
 	private Random gen;
+	private boolean pushSpace;
+
 
 	@Override
 	public void bindDataService(DataService service){
@@ -46,6 +49,7 @@ public class Engine implements RequireDataService, EngineService {
 				updateSpeedHeroes();
 				updateCommandHeroes();
 				updatePositionHeroes();
+				data.setStepNumber(data.getStepNumber()+1);
 				
 			}
 
@@ -66,6 +70,7 @@ public class Engine implements RequireDataService, EngineService {
 		if (c==User.COMMAND.RIGHT) moveRight=true;
 		if (c==User.COMMAND.UP) moveUp=true;
 		if (c==User.COMMAND.DOWN) moveDown=true;
+		if (c==User.COMMAND.SPACE) pushSpace= true;
 	}
 	
 	@Override
@@ -75,6 +80,7 @@ public class Engine implements RequireDataService, EngineService {
 		if (c==User.COMMAND.RIGHT) moveRight=false;
 		if (c==User.COMMAND.UP) moveUp=false;
 		if (c==User.COMMAND.DOWN) moveDown=false;
+		if (c==User.COMMAND.SPACE) pushSpace=false;
 	}
 
 	private void updatePositionHeroes() {
@@ -140,5 +146,16 @@ public class Engine implements RequireDataService, EngineService {
 	public boolean getmoveDown() {
 		return moveDown;
 	}
+
+	@Override
+	public boolean isPushSpace() {
+		return pushSpace;
+	}
+
+	@Override
+	public void setPushSpace(boolean pushSpace) {
+		this.pushSpace = pushSpace;
+	}
+
 
 }

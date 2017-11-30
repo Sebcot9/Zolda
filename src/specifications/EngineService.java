@@ -17,4 +17,7 @@ public interface EngineService {
 	boolean getmoveRight();
 	boolean getmoveUp();
 	boolean getmoveDown();
+
+	boolean isPushSpace();
+	void setPushSpace(boolean bool);
 }

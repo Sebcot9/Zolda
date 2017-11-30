@@ -11,18 +11,19 @@ import classes.Pets;
 public interface ReadService {
 
 	Heroes getLonk();
-
 	ArrayList<Enemies> getEnemies();
-
 	ArrayList<Allies> getAllies();
-
 	ArrayList<Pets> getPets();
-
 	Map getMap();
+	int getMinX();
+	int getMaxX();
+	int getMinY();
+	int getMaxY();
 
-	public int getMinX();
-	public int getMaxX();
-	public int getMinY();
-	public int getMaxY();
+	int getLinkHeight();
+	int getLinkWidth();
+	int getStepNumber();
+
+
 
 }
