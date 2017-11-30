@@ -6,11 +6,11 @@ public class Weapon{
         this.pos = pos;
     }
 
-    Position getPosition(){
+    public Position getPosition(){
         return this.pos;
     }
 
-    void setPosition(Position pos) {
+    public void setPosition(Position pos) {
         this.pos = pos;
     }
 }

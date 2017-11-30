@@ -3,12 +3,7 @@ package data;
 import java.util.ArrayList;
 import java.util.Random;
 
-import classes.Allies;
-import classes.Enemies;
-import classes.Heroes;
-import classes.Map;
-import classes.Pets;
-import classes.Position;
+import classes.*;
 import specifications.DataService;
 import tools.HardCodedParameters;
 
@@ -27,6 +22,8 @@ public class Data implements DataService {
 		this.stepNumber = stepNumber;
 	}
 
+
+
 	private int stepNumber;
 
 	public Data(){}
@@ -38,6 +35,7 @@ public class Data implements DataService {
 	@Override
 	public void init(){
 		lonk = new Heroes(new Position(512,450), "Lonk", 0);
+		lonk.setWeapon(new Weapon(new Position(512,450)));
 		maps = new Map(1024,876);
 		enemies = new ArrayList<Enemies>();
 		Random gen= new Random();
@@ -129,5 +127,15 @@ public class Data implements DataService {
 	@Override
 	public int getStepNumber() {
 		return stepNumber;
+	}
+
+	@Override
+	public Position getWeaponPosition() {
+		return this.lonk.getWeapon().getPosition();
+	}
+
+	@Override
+	public void setWeaponPosition(Position pos) {
+		this.lonk.getWeapon().setPosition(pos);
 	}
 }

@@ -38,6 +38,7 @@ public class Viewer implements ViewerService, RequireReadService {
     private Image linkAvatarSpriteSheet;
     private ImageView linkAvatarImageView;
     private Rectangle2D oldSpriteDirection;
+    private boolean isUp, isDown, isRight, isLeft;
     private int avatarIndex;
 //    private int index;
 
@@ -101,7 +102,7 @@ public class Viewer implements ViewerService, RequireReadService {
         //Vue Utilisateur
         Rectangle userView = new Rectangle(-2 * xModifier + shrink * 800,
                 -.2 * shrink * 600 + shrink * 600);
-        userView.setFill(Color.WHITE);
+        userView.setFill(new ImagePattern(new Image("File:src/images/greenLand.png")));
         userView.setStroke(Color.DIMGRAY);
         userView.setStrokeWidth(.01 * shrink * 600);
         userView.setArcWidth(.04 * shrink * 600);
@@ -139,6 +140,7 @@ public class Viewer implements ViewerService, RequireReadService {
 
         if (engine.getMoveLeft()) {
             defaultAvatarList = left;
+            isLeft = true; isDown = false; isRight = false; isUp = false;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
             else {
@@ -148,6 +150,7 @@ public class Viewer implements ViewerService, RequireReadService {
                 }
             }
         } else if (engine.getmoveRight()) {
+            isLeft = false; isDown = false; isRight = true; isUp = false;
             defaultAvatarList = right;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
@@ -156,6 +159,7 @@ public class Viewer implements ViewerService, RequireReadService {
                 avatarIndex += 1;
             }
         } else if(engine.getmoveUp()){
+            isLeft = false; isDown = false; isRight = false; isUp = true;
             defaultAvatarList =up;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
@@ -164,6 +168,7 @@ public class Viewer implements ViewerService, RequireReadService {
                 avatarIndex += 1;
             }
         }else if(engine.getmoveDown()) {
+            isLeft = false; isDown = true; isRight = false; isUp = false;
              defaultAvatarList =down;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
@@ -175,7 +180,7 @@ public class Viewer implements ViewerService, RequireReadService {
             index = 0;
             avatarIndex = 0;
 		}
-		linkAvatarImageView.setFitHeight(5*10);
+//		linkAvatarImageView.setFitHeight(5*10);
 		linkAvatarImageView.setPreserveRatio(true);
 
 		linkAvatarImageView.setViewport(defaultAvatarList.get(index));
@@ -196,6 +201,12 @@ public class Viewer implements ViewerService, RequireReadService {
 
 		//panel.getChildren().add(t);
 
+        Rectangle sword = new Rectangle(30,30);
+        sword.setFill(new ImagePattern(new Image("File:src/images/sword.png")));
+        sword.setTranslateX(shrink*data.getWeaponPosition().x+shrink);
+        sword.setTranslateY(shrink*data.getWeaponPosition().y+shrink);
+
+        panel.getChildren().add(sword);
 
 //		Rectangle heroes = new Rectangle(500,500);
 //		heroes.setFill(new ImagePattern(new Image("File:src/images/red_lonk.png")));
@@ -274,8 +285,4 @@ public class Viewer implements ViewerService, RequireReadService {
 		yShrink = h/data.getMap().getHeight();
 	}
 
-    @Override
-    public HeroSprites getHeroSprites() {
-        return null;
-    }
 }

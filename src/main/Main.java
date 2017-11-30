@@ -19,8 +19,8 @@ import specifications.EngineService;
 import specifications.ViewerService;
 import tools.User;
 import ui.Viewer;
-import ui.ViewerData;
-import ui.ViewerEngine;
+//import ui.ViewerData;
+//import ui.ViewerEngine;
 
 public class Main extends Application{
 

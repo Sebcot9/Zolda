@@ -1,19 +1,12 @@
 package engine;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.TreeSet;
 
-import classes.Allies;
-import classes.Enemies;
-import classes.Holes;
-import classes.Obstacle;
-import classes.Pets;
-import classes.Position;
+import classes.*;
+
 import java.awt.Rectangle;
 import specifications.DataService;
 import specifications.EngineService;
@@ -28,6 +21,7 @@ public class Engine implements RequireDataService, EngineService {
 	private DataService data;
 	private Timer timer;
 	private boolean moveLeft, moveRight, moveUp, moveDown;
+	private User.COMMAND oldDirection;
 	//private User.COMMAND command;
 	private int heroesVX;
 	private int heroesVY;
@@ -53,6 +47,7 @@ public class Engine implements RequireDataService, EngineService {
 		heroesVX =0;
 		heroesVY=0;
 		gen = new Random();
+
 		for(int i=0; i<5;i++)
 		{
 			spawnEnemies();
@@ -112,6 +107,7 @@ public class Engine implements RequireDataService, EngineService {
 
 					}
 				}
+				updateWeaponPosition();
 				updatePositionHeroes();
 				data.setStepNumber(data.getStepNumber()+1);
 
@@ -179,6 +175,7 @@ public class Engine implements RequireDataService, EngineService {
 	@Override
 	public void setHeroesCommand(User.COMMAND c)
 	{
+		oldDirection = c;
 		if (c==User.COMMAND.LEFT) moveLeft=true;
 		if (c==User.COMMAND.RIGHT) moveRight=true;
 		if (c==User.COMMAND.UP) moveUp=true;
@@ -188,12 +185,34 @@ public class Engine implements RequireDataService, EngineService {
 
 	@Override
 	public void releaseHeroesCommand(User.COMMAND c)
+
 	{
+		oldDirection = c;
 		if (c==User.COMMAND.LEFT) moveLeft=false;
 		if (c==User.COMMAND.RIGHT) moveRight=false;
 		if (c==User.COMMAND.UP) moveUp=false;
 		if (c==User.COMMAND.DOWN) moveDown=false;
 		if (c==User.COMMAND.SPACE) pushSpace=false;
+	}
+
+	@Override
+	public boolean getMoveLeft() {
+		return moveLeft;
+	}
+
+	@Override
+	public boolean getmoveRight() {
+		return moveRight;
+	}
+
+	@Override
+	public boolean getmoveUp() {
+		return moveUp;
+	}
+
+	@Override
+	public boolean getmoveDown() {
+		return moveDown;
 	}
 
 	private void updatePositionHeroes() {
@@ -234,6 +253,22 @@ public class Engine implements RequireDataService, EngineService {
 		heroesVY*=friction;
 	}
 
+	private void updateWeaponPosition(){
+		if (isPushSpace()){
+			Position linkPos = data.getLonk().getPosition();
+			Weapon saber =  data.getLonk().getWeapon();
+			if (oldDirection.equals(User.COMMAND.LEFT))
+				saber.setPosition(new Position(linkPos.x-30,linkPos.y));
+			if (oldDirection.equals(User.COMMAND.RIGHT))
+				saber.setPosition(new Position(linkPos.x+30,linkPos.y));
+			if (oldDirection.equals(User.COMMAND.UP))
+				saber.setPosition(new Position(linkPos.x,linkPos.y-30));
+			if (oldDirection.equals(User.COMMAND.DOWN))
+				saber.setPosition(new Position(linkPos.x,linkPos.y+30));
+		}
+
+	}
+
 	private void spawnEnemies(){
 		int x=0;
 		int y=0;
@@ -253,9 +288,9 @@ public class Engine implements RequireDataService, EngineService {
 
 	private boolean collisionObstacles(Obstacle o){
 		return(
-				(data.getLonk().getPosition().x-o.getPosition().x)*(data.getLonk().getPosition().x-o.getPosition().x)
+				Math.abs((data.getLonk().getPosition().x-o.getPosition().x)*(data.getLonk().getPosition().x-o.getPosition().x))
 				+
-				(data.getLonk().getPosition().y-o.getPosition().y)*(data.getLonk().getPosition().y-o.getPosition().y)
+						Math.abs((data.getLonk().getPosition().y-o.getPosition().y)*(data.getLonk().getPosition().y-o.getPosition().y))
 				<
 				0.25*20*100
 				);

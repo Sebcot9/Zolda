@@ -2,11 +2,7 @@ package specifications;
 
 import java.util.ArrayList;
 
-import classes.Allies;
-import classes.Enemies;
-import classes.Heroes;
-import classes.Map;
-import classes.Pets;
+import classes.*;
 
 public interface ReadService {
 
@@ -23,6 +19,7 @@ public interface ReadService {
 	int getLinkHeight();
 	int getLinkWidth();
 	int getStepNumber();
+	Position getWeaponPosition();
 
 
 
