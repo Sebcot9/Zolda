@@ -105,6 +105,7 @@ public class Engine implements RequireDataService, EngineService {
 
 					}
 				}
+				updateEnemiesPosition();
 				updateSpeedHeroes();
 				updateCommandHeroes();
 				updatePositionHeroes();
@@ -237,8 +238,8 @@ public class Engine implements RequireDataService, EngineService {
 		int y=0;
 		boolean cont = true;
 		while(cont){
-			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX)))));
-			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY)))));
+			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX)))+HardCodedParameters.minX));
+			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY)))+HardCodedParameters.minY));
 			cont =false;
 			for(Position p : allPos)
 			{
@@ -251,17 +252,29 @@ public class Engine implements RequireDataService, EngineService {
 
 	private void updateEnemiesPosition()
 	{
+		int rng = (int)(Math.random()*2);
 		for(Enemies e : data.getEnemies())
 		{
-
+			if(rng==0){
+				if(e.getPosition().x > data.getLonk().getPosition().x)
+					e.getPosition().x =e.getPosition().x -1;
+				else if(e.getPosition().x < data.getLonk().getPosition().x)
+					e.getPosition().x =e.getPosition().x +1;
+			}
+			else{
+				if(e.getPosition().y > data.getLonk().getPosition().y)
+					e.getPosition().y =e.getPosition().y -1;
+				else if(e.getPosition().y < data.getLonk().getPosition().y)
+					e.getPosition().y =e.getPosition().y +1;
+			}
 		}
 	}
 	private boolean collisionObstacles(Obstacle o){
 
-		return((data.getLonk().getPosition().x <= o.getPosition().x + 25 &&
-				data.getLonk().getPosition().x + 25 >= o.getPosition().x &&
-				data.getLonk().getPosition().y <= o.getPosition().y + 25 &&
-				25 + data.getLonk().getPosition().y >=  o.getPosition().y)
+		return((data.getLonk().getPosition().x <= o.getPosition().x + 30 &&
+				data.getLonk().getPosition().x + 30 >= o.getPosition().x &&
+				data.getLonk().getPosition().y <= o.getPosition().y + 30 &&
+				30 + data.getLonk().getPosition().y >=  o.getPosition().y)
 
 				);
 	}
@@ -283,9 +296,9 @@ public class Engine implements RequireDataService, EngineService {
 				0.25*20*100
 				);
 	}
-	private boolean collisionAll(Position p)
+	/*private boolean collisionAll(Position p)
 	{
 
 		return ((p.x-data.getLonk().getPosition().x)*(p.x-data.getLonk().getPosition().x)+(p.y-data.getLonk().getPosition().y)*(p.y-data.getLonk().getPosition().y) < 0.25*20*100);
-	}
+	}*/
 }
