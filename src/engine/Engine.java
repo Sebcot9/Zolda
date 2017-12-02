@@ -285,8 +285,8 @@ public class Engine implements RequireDataService, EngineService {
 		int y=0;
 		boolean cont = true;
 		while(cont){
-			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX)))+HardCodedParameters.minX));
-			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY)))+HardCodedParameters.minY));
+			x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX)))));
+			y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY)))));
 			cont =false;
 			for(Position p : allPos)
 			{

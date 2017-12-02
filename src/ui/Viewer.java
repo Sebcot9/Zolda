@@ -239,8 +239,8 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<obstacles.size();i++)
 	    {
 	    	o = obstacles.get(i);
-	    	//double rad=.5*Math.min(shrink*20,shrink*20);
-			Rectangle obs = new Rectangle(radius,radius);
+	    	double rad=.5*Math.min(shrink*20,shrink*20);
+			Rectangle obs = new Rectangle(rad,rad);
 			obs.setFill(Color.LIGHTGREY);
 			obs.setEffect(new Lighting());
 			obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
@@ -254,8 +254,8 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<holes.size();i++)
 	    {
 	    	hole = holes.get(i);
-	    	//double rad=.5*Math.min(shrink*20,shrink*20);
-			Rectangle hol = new Rectangle(radius,radius);
+	    	double rad=.5*Math.min(shrink*20,shrink*20);
+			Rectangle hol = new Rectangle(rad,rad);
 			hol.setFill(Color.BLACK);
 			hol.setEffect(new Lighting());
 			hol.setTranslateX(shrink*hole.getPosition().x+shrink*xModifier-radius);
