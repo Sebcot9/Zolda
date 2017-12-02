@@ -2,11 +2,7 @@ package specifications;
 
 import java.util.ArrayList;
 
-import classes.Allies;
-import classes.Enemies;
-import classes.Heroes;
-import classes.Map;
-import classes.Pets;
+import classes.*;
 
 public interface WriteService {
 
@@ -19,5 +15,9 @@ public interface WriteService {
 	void setPets(ArrayList<Pets> pets);
 
 	void setMaps(Map map);
+
+	void setStepNumber(int stepNumber);
+
+	void setWeaponPosition(Position pos);
 
 }

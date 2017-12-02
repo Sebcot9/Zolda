@@ -11,5 +11,6 @@ public interface ViewerService {
 	void setMainWindowWidth(double w);
 
 	void setMainWindowHeight(double h);
+	void bindEngineService(EngineService service);
 
 }

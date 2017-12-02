@@ -39,11 +39,15 @@ public class Main extends Application{
 		((Engine) engine).bindDataService(data);
 		((Viewer) viewer).bindReadService(data);
 		//((ViewerData) dataViewer).bindReadService(data);
+		((Viewer) viewer).bindEngineService(engine);
+
+//		((ViewerData) dataViewer).bindReadService(data);
 
 		data.init();
 		engine.init();
 		viewer.init();
 		//dataViewer.init();
+//		dataViewer.init();
 
 		launch(args);
 	}
@@ -65,6 +69,7 @@ public class Main extends Application{
 		          if (event.getCode()==KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
 		          if (event.getCode()==KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
 		          if (event.getCode()==KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
+		          if (event.getCode()==KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
 		          event.consume();
 			}
 		});
@@ -75,6 +80,7 @@ public class Main extends Application{
 		          if (event.getCode()==KeyCode.RIGHT) engine.releaseHeroesCommand(User.COMMAND.RIGHT);
 		          if (event.getCode()==KeyCode.UP) engine.releaseHeroesCommand(User.COMMAND.UP);
 		          if (event.getCode()==KeyCode.DOWN) engine.releaseHeroesCommand(User.COMMAND.DOWN);
+		          if (event.getCode()==KeyCode.SPACE) engine.releaseHeroesCommand(User.COMMAND.SPACE);
 		          event.consume();
 			}
 		});

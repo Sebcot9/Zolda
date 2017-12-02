@@ -3,12 +3,7 @@ package data;
 import java.util.ArrayList;
 import java.util.Random;
 
-import classes.Allies;
-import classes.Enemies;
-import classes.Heroes;
-import classes.Map;
-import classes.Pets;
-import classes.Position;
+import classes.*;
 import specifications.DataService;
 import tools.HardCodedParameters;
 
@@ -20,6 +15,17 @@ public class Data implements DataService {
 	private ArrayList <Pets> pets;
 	private Map maps;
 	private int minX, maxX, minY, maxY;
+
+
+
+	public void setStepNumber(int stepNumber) {
+		this.stepNumber = stepNumber;
+	}
+
+
+
+	private int stepNumber;
+
 	public Data(){}
 
 	/*@Override
@@ -29,6 +35,7 @@ public class Data implements DataService {
 	@Override
 	public void init(){
 		lonk = new Heroes(new Position(512,450), "Lonk", 0);
+		lonk.setWeapon(new Weapon(new Position(512,450)));
 		maps = new Map(1024,876);
 		enemies = new ArrayList<Enemies>();
 		Random gen= new Random();
@@ -36,13 +43,14 @@ public class Data implements DataService {
 		int y = (int)(gen.nextInt((int)(getMap().getHeight()*.6))+getMap().getHeight()*.1);
 		Enemies enemy = new Enemies(new Position(x,y),"Bakemono", 2);
 		enemies.add(enemy);
-		
+
 		allies = new ArrayList<Allies>();
 		pets = new ArrayList<Pets>();
 		minX = HardCodedParameters.minX;
 		maxX = HardCodedParameters.maxX;
 		minY = HardCodedParameters.minY;
 		maxY = HardCodedParameters.maxY;
+		stepNumber = 0;
 
 	}
 	@Override
@@ -104,5 +112,30 @@ public class Data implements DataService {
 	@Override
 	public int getMaxY() {
 		return maxY;
+	}
+
+	@Override
+	public int getLinkHeight() {
+		return this.lonk.getHeight();
+	}
+
+	@Override
+	public int getLinkWidth() {
+		return this.lonk.getWidth();
+	}
+
+	@Override
+	public int getStepNumber() {
+		return stepNumber;
+	}
+
+	@Override
+	public Position getWeaponPosition() {
+		return this.lonk.getWeapon().getPosition();
+	}
+
+	@Override
+	public void setWeaponPosition(Position pos) {
+		this.lonk.getWeapon().setPosition(pos);
 	}
 }

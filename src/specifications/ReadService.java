@@ -2,27 +2,25 @@ package specifications;
 
 import java.util.ArrayList;
 
-import classes.Allies;
-import classes.Enemies;
-import classes.Heroes;
-import classes.Map;
-import classes.Pets;
+import classes.*;
 
 public interface ReadService {
 
 	Heroes getLonk();
-
 	ArrayList<Enemies> getEnemies();
-
 	ArrayList<Allies> getAllies();
-
 	ArrayList<Pets> getPets();
-
 	Map getMap();
+	int getMinX();
+	int getMaxX();
+	int getMinY();
+	int getMaxY();
 
-	public int getMinX();
-	public int getMaxX();
-	public int getMinY();
-	public int getMaxY();
+	int getLinkHeight();
+	int getLinkWidth();
+	int getStepNumber();
+	Position getWeaponPosition();
+
+
 
 }

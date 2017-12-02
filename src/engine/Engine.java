@@ -3,7 +3,6 @@ package engine;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
@@ -14,6 +13,8 @@ import classes.Holes;
 import classes.Obstacle;
 import classes.Pets;
 import classes.Position;
+import classes.Weapon;
+
 import java.awt.Rectangle;
 import specifications.DataService;
 import specifications.EngineService;
@@ -23,16 +24,24 @@ import tools.User;
 
 public class Engine implements RequireDataService, EngineService {
 
+
 	public Engine(){}
 	private DataService data;
 	private Timer timer;
+	//private boolean moveLeft, moveRight, moveUp, moveDown;
+	private User.COMMAND oldDirection;
+	//private User.COMMAND command;
 	private boolean moveLeft, moveRight, moveUp, moveDown, collision;
 	//private User.COMMAND command
 	private int heroesVX;
 	private int heroesVY;
 	private double friction = 0.5;
 	private Random gen;
-	private HashSet<Position> allPos = new HashSet<Position>(); 
+	private boolean pushSpace;
+
+
+	private HashSet<Position> allPos = new HashSet<Position>();
+
 
 	@Override
 	public void bindDataService(DataService service){
@@ -50,6 +59,7 @@ public class Engine implements RequireDataService, EngineService {
 		heroesVX =0;
 		heroesVY=0;
 		gen = new Random();
+
 		for(int i=0; i<5;i++)
 		{
 			spawnEnemies();
@@ -61,7 +71,7 @@ public class Engine implements RequireDataService, EngineService {
 			fillSet();
 		}
 		for(int i=0; i<5;i++)
-		{	
+		{
 			holesGeneration();
 			fillSet();
 		}
@@ -74,6 +84,7 @@ public class Engine implements RequireDataService, EngineService {
 			public void run(){
 
 				fillSet();
+
 				ArrayList<Obstacle> obstacles = data.getMap().getObstacles();
 				Obstacle o;
 				ArrayList <Enemies> enemies = data.getEnemies();
@@ -83,29 +94,36 @@ public class Engine implements RequireDataService, EngineService {
 					o = obstacles.get(i);
 					if(collisionObstacles(o))
 					{	
-						data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
-								data.getLonk().getPosition().y-heroesVY));					
-						System.out.println("Kek");
-						heroesVX =0;heroesVY =0;
-					}
-					for(int j =0;j<enemies.size();j++)
-					{
-						e = enemies.get(j);
-						if((o.getPosition().x-e.getPosition().x)*(o.getPosition().x-e.getPosition().x)+(o.getPosition().y-e.getPosition().y)*(o.getPosition().y-e.getPosition().y) > 500)
+
 						{
-							
-							System.out.println("Collision ennemie avec un obstacle");
+
+
+							data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
+									data.getLonk().getPosition().y-heroesVY));					
+							System.out.println("Kek");
+							heroesVX =0;heroesVY =0;
 						}
+						for(int j =0;j<enemies.size();j++)
+						{
+							e = enemies.get(j);
+							if((o.getPosition().x-e.getPosition().x)*(o.getPosition().x-e.getPosition().x)+(o.getPosition().y-e.getPosition().y)*(o.getPosition().y-e.getPosition().y) > 500)
+							{
+
+								System.out.println("Collision ennemie avec un obstacle");
+							}
+						}
+
+
+						updateEnemiesPosition();
+						updateWeaponPosition();
+						updateSpeedHeroes();
+						updateCommandHeroes();
+						updatePositionHeroes();
+						data.setStepNumber(data.getStepNumber()+1);
 					}
 				}
-				updateEnemiesPosition();
-				updateSpeedHeroes();
-				updateCommandHeroes();
-				updatePositionHeroes();
-
-
 			}
-		},0, 100);
+		},0, 80);
 	}
 
 	private HashSet<Position> fillSet()
@@ -168,19 +186,44 @@ public class Engine implements RequireDataService, EngineService {
 	@Override
 	public void setHeroesCommand(User.COMMAND c)
 	{
+		oldDirection = c;
 		if (c==User.COMMAND.LEFT) moveLeft=true;
 		if (c==User.COMMAND.RIGHT) moveRight=true;
 		if (c==User.COMMAND.UP) moveUp=true;
 		if (c==User.COMMAND.DOWN) moveDown=true;
+		if (c==User.COMMAND.SPACE) pushSpace= true;
 	}
 
 	@Override
 	public void releaseHeroesCommand(User.COMMAND c)
+
 	{
+		oldDirection = c;
 		if (c==User.COMMAND.LEFT) moveLeft=false;
 		if (c==User.COMMAND.RIGHT) moveRight=false;
 		if (c==User.COMMAND.UP) moveUp=false;
 		if (c==User.COMMAND.DOWN) moveDown=false;
+		if (c==User.COMMAND.SPACE) pushSpace=false;
+	}
+
+	@Override
+	public boolean getMoveLeft() {
+		return moveLeft;
+	}
+
+	@Override
+	public boolean getmoveRight() {
+		return moveRight;
+	}
+
+	@Override
+	public boolean getmoveUp() {
+		return moveUp;
+	}
+
+	@Override
+	public boolean getmoveDown() {
+		return moveDown;
 	}
 
 	private void updatePositionHeroes() {
@@ -209,21 +252,32 @@ public class Engine implements RequireDataService, EngineService {
 
 	private void updateCommandHeroes() {
 		// TODO Auto-generated method stub
-
-		if (moveLeft)
-			heroesVX-=10;
-		if (moveRight) 
-			heroesVX+=10;
-		if (moveUp) 
-			heroesVY-=10;
-		if (moveDown) 
-			heroesVY+=10;
+		if (moveLeft) heroesVX-=5;
+		if (moveRight) heroesVX+=5;
+		if (moveUp) heroesVY-=5;
+		if (moveDown) heroesVY+=5;
 	}
 
 	private void updateSpeedHeroes() {
 		// TODO Auto-generated method stub
 		heroesVX*=friction;
 		heroesVY*=friction;
+	}
+
+	private void updateWeaponPosition(){
+		if (isPushSpace()){
+			Position linkPos = data.getLonk().getPosition();
+			Weapon saber =  data.getLonk().getWeapon();
+			if (oldDirection.equals(User.COMMAND.LEFT))
+				saber.setPosition(new Position(linkPos.x-30,linkPos.y));
+			if (oldDirection.equals(User.COMMAND.RIGHT))
+				saber.setPosition(new Position(linkPos.x+30,linkPos.y));
+			if (oldDirection.equals(User.COMMAND.UP))
+				saber.setPosition(new Position(linkPos.x,linkPos.y-30));
+			if (oldDirection.equals(User.COMMAND.DOWN))
+				saber.setPosition(new Position(linkPos.x,linkPos.y+30));
+		}
+
 	}
 
 	private void spawnEnemies(){
@@ -249,27 +303,27 @@ public class Engine implements RequireDataService, EngineService {
 		for(Enemies e : data.getEnemies())
 		{
 
-				if(rng==0)
+			if(rng==0)
+			{
+				if(e.getPosition().x > data.getLonk().getPosition().x)
 				{
-					if(e.getPosition().x > data.getLonk().getPosition().x)
-					{
-						e.getPosition().x =e.getPosition().x -1;
-					}
-					else if(e.getPosition().x < data.getLonk().getPosition().x)
-					{
-						e.getPosition().x =e.getPosition().x +1;
-					}
+					e.getPosition().x =e.getPosition().x -1;
 				}
-				else
+				else if(e.getPosition().x < data.getLonk().getPosition().x)
 				{
-					if(e.getPosition().y > data.getLonk().getPosition().y)
-						e.getPosition().y =e.getPosition().y -1;
-					else if(e.getPosition().y < data.getLonk().getPosition().y)
-						e.getPosition().y =e.getPosition().y +1;
-				}	
+					e.getPosition().x =e.getPosition().x +1;
+				}
 			}
+			else
+			{
+				if(e.getPosition().y > data.getLonk().getPosition().y)
+					e.getPosition().y =e.getPosition().y -1;
+				else if(e.getPosition().y < data.getLonk().getPosition().y)
+					e.getPosition().y =e.getPosition().y +1;
+			}	
 		}
-	
+	}
+
 
 	private boolean collisionObstacles(Obstacle o){
 
@@ -302,5 +356,20 @@ public class Engine implements RequireDataService, EngineService {
 	{
 
 		return ((p.x-data.getLonk().getPosition().x)*(p.x-data.getLonk().getPosition().x)+(p.y-data.getLonk().getPosition().y)*(p.y-data.getLonk().getPosition().y) < 0.25*20*100);
+<<<<<<< HEAD
 	}*/
+
+
+	@Override
+	public boolean isPushSpace() {
+		return pushSpace;
+	}
+
+	@Override
+	public void setPushSpace(boolean pushSpace) {
+		this.pushSpace = pushSpace;
+	}
+
+
+
 }
