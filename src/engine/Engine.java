@@ -149,7 +149,7 @@ public class Engine implements RequireDataService, EngineService {
 			cont =false;
 			for(Position p : allPos)
 			{
-				if(Math.abs((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)) < 0.25*20*100)
+				if((Math.abs((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)) < 0.25*20*100))
 					cont= true;
 			}
 		}

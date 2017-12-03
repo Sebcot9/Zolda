@@ -131,7 +131,7 @@ public class Viewer implements ViewerService, RequireReadService {
         console.setFont(new Font(.05*shrink*600));
         panel.getChildren().add(console);
 
-        //Vue des Statistique
+        //Vue Statistique
 		Rectangle statView = new Rectangle(-2*xModifier+shrink*1024,
 				-.2*shrink*400+shrink*400);
 		statView.setFill(Color.WHITE);
@@ -222,7 +222,7 @@ public class Viewer implements ViewerService, RequireReadService {
 //		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
 //	    panel.getChildren().add(heroes);
 
-	    
+
 	    /* Cr�ation des ennemies*/
 	    ArrayList<Enemies> enemies = data.getEnemies();
 	    Enemies e;
