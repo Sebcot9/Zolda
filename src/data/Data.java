@@ -34,7 +34,7 @@ public class Data implements DataService {
 	}*/
 	@Override
 	public void init(){
-		lonk = new Heroes(new Position(512,450), "Lonk", 0);
+		lonk = new Heroes(new Position(30,30), "Lonk", 5);
 		lonk.setWeapon(new Weapon(new Position(512,450)));
 		maps = new Map(1024,876);
 		enemies = new ArrayList<Enemies>();

@@ -6,12 +6,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
 
-import classes.Allies;
-import classes.Enemies;
-import classes.Holes;
-import classes.Obstacle;
-import classes.Pets;
-import classes.Position;
+import classes.*;
+
 import java.awt.Rectangle;
 import specifications.DataService;
 import specifications.EngineService;
@@ -25,7 +21,6 @@ public class Engine implements RequireDataService, EngineService {
 	public Engine(){}
 	private DataService data;
 	private Timer timer;
-	private boolean moveLeft, moveRight, moveUp, moveDown;
 	private User.COMMAND oldDirection;
 	//private User.COMMAND command;
 	private boolean moveLeft, moveRight, moveUp, moveDown, collision;
@@ -36,8 +31,6 @@ public class Engine implements RequireDataService, EngineService {
 	private Random gen;
 	private boolean pushSpace;
 
-
-	private HashSet<Position> allPos = new HashSet<Position>();
 
 	private HashSet<Position> allPos = new HashSet<Position>();
 
@@ -63,7 +56,7 @@ public class Engine implements RequireDataService, EngineService {
 			spawnEnemies();
 			fillSet();
 		}
-		for(int i=0; i<25;i++)
+		for(int i=0; i<50;i++)
 		{
 			obstacleGeneration();
 			fillSet();
@@ -111,6 +104,14 @@ public class Engine implements RequireDataService, EngineService {
 					        System.out.println("Collision");
 					    }*/
 
+					}
+				}
+
+				for(Holes h : data.getMap().getHoles()){
+					if(collisionHoles(h)){
+						data.getLonk().setHp(data.getLonk().getHp() - 1);
+						data.getLonk().setPosition(new Position(30,
+								30));
 					}
 				}
 				updateWeaponPosition();
@@ -303,10 +304,10 @@ public class Engine implements RequireDataService, EngineService {
 	}
 	private boolean collisionObstacles(Obstacle o){
 
-		return((data.getLonk().getPosition().x <= o.getPosition().x + 25 &&
-				data.getLonk().getPosition().x + 25 >= o.getPosition().x &&
-				data.getLonk().getPosition().y <= o.getPosition().y + 25 &&
-				25 + data.getLonk().getPosition().y >=  o.getPosition().y)
+		return((data.getLonk().getPosition().x <= o.getPosition().x + HardCodedParameters.obsWidth &&
+				data.getLonk().getPosition().x + HardCodedParameters.obsWidth >= o.getPosition().x &&
+				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight &&
+				HardCodedParameters.obsHeight + data.getLonk().getPosition().y >=  o.getPosition().y)
 
 				);
 	}
