@@ -153,7 +153,12 @@ public class Engine implements RequireDataService, EngineService {
 					cont= true;
 			}
 		}
-		data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
+
+		if(x > 40 && y > 40){
+			data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
+			System.out.println("x : " + x + " y : " + y);
+		}
+
 
 	}
 
@@ -172,8 +177,10 @@ public class Engine implements RequireDataService, EngineService {
 					cont= true;
 			}
 		}
-		data.getMap().getHoles().add(new Holes(new Position(x,y)));
 
+		if(x > 40 && y > 40) {
+			data.getMap().getHoles().add(new Holes(new Position(x, y)));
+		}
 	}
 	@Override
 	public void stop()
