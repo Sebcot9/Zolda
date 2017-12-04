@@ -122,6 +122,8 @@ public class Engine implements RequireDataService, EngineService {
 					if(collisionEnemies(e))
 					{
 						
+						data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
+								data.getLonk().getPosition().y-heroesVY));	
 					}
 				}
 				
