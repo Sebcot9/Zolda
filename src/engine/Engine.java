@@ -96,13 +96,13 @@ public class Engine implements RequireDataService, EngineService {
 					{	
 
 						{
-
-
 							data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
 									data.getLonk().getPosition().y-heroesVY));					
 							System.out.println("Kek");
-							heroesVX =0;heroesVY =0;
+							heroesVX =0;
+							heroesVY =0;
 						}
+						
 						for(int j =0;j<enemies.size();j++)
 						{
 							e = enemies.get(j);
@@ -112,16 +112,25 @@ public class Engine implements RequireDataService, EngineService {
 								System.out.println("Collision ennemie avec un obstacle");
 							}
 						}
-
-
-						updateEnemiesPosition();
-						updateWeaponPosition();
-						updateSpeedHeroes();
-						updateCommandHeroes();
-						updatePositionHeroes();
-						data.setStepNumber(data.getStepNumber()+1);
+					}			
+				
+				}
+				
+				for(int j =0;j<enemies.size();j++)
+				{
+					e=enemies.get(j);
+					if(collisionEnemies(e))
+					{
+						
 					}
 				}
+				
+				updateEnemiesPosition();
+				updateWeaponPosition();
+				updateSpeedHeroes();
+				updateCommandHeroes();
+				updatePositionHeroes();
+				data.setStepNumber(data.getStepNumber()+1);
 			}
 		},0, 80);
 	}
@@ -151,7 +160,7 @@ public class Engine implements RequireDataService, EngineService {
 			cont =false;
 			for(Position p : allPos)
 			{
-				if(Math.abs((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)) < 400)
+				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 400)
 					cont= true;
 			}
 		}
@@ -170,7 +179,7 @@ public class Engine implements RequireDataService, EngineService {
 			cont =false;
 			for(Position p : allPos)
 			{
-				if(Math.abs((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y)) < 400)
+				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 400)
 					cont= true;
 			}
 		}
@@ -299,28 +308,18 @@ public class Engine implements RequireDataService, EngineService {
 
 	private void updateEnemiesPosition()
 	{
-		int rng = (int)(Math.random()*2);
+		//int rng = (int)(Math.random()*2);
 		for(Enemies e : data.getEnemies())
 		{
-
-			if(rng==0)
-			{
 				if(e.getPosition().x > data.getLonk().getPosition().x)
-				{
 					e.getPosition().x =e.getPosition().x -1;
-				}
 				else if(e.getPosition().x < data.getLonk().getPosition().x)
-				{
 					e.getPosition().x =e.getPosition().x +1;
-				}
-			}
-			else
-			{
 				if(e.getPosition().y > data.getLonk().getPosition().y)
 					e.getPosition().y =e.getPosition().y -1;
 				else if(e.getPosition().y < data.getLonk().getPosition().y)
 					e.getPosition().y =e.getPosition().y +1;
-			}	
+			
 		}
 	}
 
@@ -339,7 +338,7 @@ public class Engine implements RequireDataService, EngineService {
 				+
 				(data.getLonk().getPosition().y-h.getPosition().y)*(data.getLonk().getPosition().y-h.getPosition().y)
 				<
-				0.25*20*100
+				500
 				);
 	}
 	private boolean collisionEnemies(Enemies e){
@@ -348,17 +347,9 @@ public class Engine implements RequireDataService, EngineService {
 				+
 				(data.getLonk().getPosition().y-e.getPosition().y)*(data.getLonk().getPosition().y-e.getPosition().y)
 				<=
-				0.25*20*100
+				500
 				);
 	}
-
-	/*private boolean collisionAll(Position p)
-	{
-
-		return ((p.x-data.getLonk().getPosition().x)*(p.x-data.getLonk().getPosition().x)+(p.y-data.getLonk().getPosition().y)*(p.y-data.getLonk().getPosition().y) < 0.25*20*100);
-<<<<<<< HEAD
-	}*/
-
 
 	@Override
 	public boolean isPushSpace() {
