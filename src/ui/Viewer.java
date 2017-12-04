@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import specifications.EngineService;
 import specifications.ReadService;
 import specifications.RequireReadService;
@@ -98,12 +99,12 @@ public class Viewer implements ViewerService, RequireReadService {
         shrink = Math.min(xShrink, yShrink);
         xModifier = .01 * shrink * data.getMap().getHeight();
         yModifier = .01 * shrink * data.getMap().getWidth();
-        double radius = .5 * Math.min(shrink * 20, shrink * 20);
+        double radius = Math.min(shrink * 25, shrink * 25);
 
         //Vue Utilisateur
         Rectangle userView = new Rectangle(-2 * xModifier + shrink * 800,
                 -.2 * shrink * 600 + shrink * 600);
-        userView.setFill(new ImagePattern(new Image("File:src/images/greenLand.png")));
+        userView.setFill(new ImagePattern(new Image("File:src/images/terrain1.png")));
         userView.setStroke(Color.DIMGRAY);
         userView.setStrokeWidth(.01 * shrink * 600);
         userView.setArcWidth(.04 * shrink * 600);
@@ -112,30 +113,35 @@ public class Viewer implements ViewerService, RequireReadService {
         userView.setTranslateY(yModifier);
 //		panel.getChildren().add(userView);
 
-		//Vue des Statistiques
-		Rectangle statView = new Rectangle(-2*xModifier+shrink*224,
+		//Vue de la Console
+		Rectangle consoleView = new Rectangle(-2*xModifier+shrink*224,
 				-.2*shrink*600+shrink*600);
-		statView.setFill(Color.WHITE);
-		statView.setStroke(Color.DIMGRAY);
-		statView.setStrokeWidth(.01*shrink*600);
-		statView.setArcWidth(.04*shrink*600);
-		statView.setArcHeight(.04*shrink*600);
-		statView.setTranslateX(xModifier*92);
-		statView.setTranslateY(yModifier);
-		panel.getChildren().add(statView);
-
-
-		//Vue Console
-		Rectangle consoleView = new Rectangle(-2*xModifier+shrink*1024,
-				-.2*shrink*400+shrink*400);
 		consoleView.setFill(Color.WHITE);
 		consoleView.setStroke(Color.DIMGRAY);
 		consoleView.setStrokeWidth(.01*shrink*600);
 		consoleView.setArcWidth(.04*shrink*600);
 		consoleView.setArcHeight(.04*shrink*600);
-		consoleView.setTranslateX(xModifier);
-		consoleView.setTranslateY(yModifier*50);
+		consoleView.setTranslateX(xModifier*92);
+		consoleView.setTranslateY(yModifier);
+
 		panel.getChildren().add(consoleView);
+
+        Text console = new Text(-0.1*shrink*600+.5*shrink*100,
+                -0.1*shrink*800+shrink*700,"Console : ");
+        console.setFont(new Font(.05*shrink*600));
+        panel.getChildren().add(console);
+
+        //Vue Statistique
+		Rectangle statView = new Rectangle(-2*xModifier+shrink*1024,
+				-.2*shrink*400+shrink*400);
+		statView.setFill(Color.WHITE);
+		statView.setStroke(Color.DIMGRAY);
+		statView.setStrokeWidth(.01*shrink*600);
+		statView.setArcWidth(.04*shrink*600);
+		statView.setArcHeight(.04*shrink*600);
+		statView.setTranslateX(xModifier);
+		statView.setTranslateY(yModifier*50);
+		panel.getChildren().add(statView);
 
         int index = avatarIndex/7;
 
@@ -195,15 +201,15 @@ public class Viewer implements ViewerService, RequireReadService {
 				-0.1*shrink*800+shrink*600,
 				"Po : " + data.getLonk().getPosition().x + " " + data.getLonk().getPosition().y);
 */
-		Text t2 = new Text(-0.1*shrink*600+.5*shrink*800,
-				-0.1*shrink*800+shrink*600,"shrink : " + shrink);
-
-		panel.getChildren().add(t2);
+		Text hp = new Text(-0.1*shrink*600+.5*shrink*500,
+				-0.1*shrink*800+shrink*700,"HP : " + data.getLonk().getHp());
+        hp.setFont(new Font(.05*shrink*600));
+		panel.getChildren().add(hp);
 
 		//panel.getChildren().add(t);
 
-        Rectangle sword = new Rectangle(30,30);
-        sword.setFill(new ImagePattern(new Image("File:src/images/sword.png")));
+        Rectangle sword = new Rectangle(radius,radius);
+        sword.setFill(new ImagePattern(new Image("File:src/images/sword1.png")));
         sword.setTranslateX(shrink*data.getWeaponPosition().x+shrink);
         sword.setTranslateY(shrink*data.getWeaponPosition().y+shrink);
 
@@ -216,7 +222,7 @@ public class Viewer implements ViewerService, RequireReadService {
 //		heroes.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
 //	    panel.getChildren().add(heroes);
 
-	    
+
 	    /* Cr�ation des ennemies*/
 	    ArrayList<Enemies> enemies = data.getEnemies();
 	    Enemies e;
@@ -232,16 +238,16 @@ public class Viewer implements ViewerService, RequireReadService {
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
 		    panel.getChildren().add(enemy_c);
 	    }
-	    
+
 	    /* Cr�ation des obstacles */
 	    ArrayList<Obstacle> obstacles = data.getMap().getObstacles();
 	    Obstacle o;
 	    for(int i=0; i<obstacles.size();i++)
 	    {
 	    	o = obstacles.get(i);
-	    	double rad=Math.min(shrink*20,shrink*20);
-			Rectangle obs = new Rectangle(rad,rad);
-			obs.setFill(Color.LIGHTGREY);
+            double rad=Math.min(shrink*20,shrink*20);
+            Rectangle obs = new Rectangle(rad,rad);
+			obs.setFill(new ImagePattern(new Image("File:src/images/arbuste.png")));
 			obs.setEffect(new Lighting());
 			obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
 			obs.setTranslateY(shrink*o.getPosition().y+shrink*yModifier-radius);
@@ -254,9 +260,9 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<holes.size();i++)
 	    {
 	    	hole = holes.get(i);
-	    	double rad=Math.min(shrink*20,shrink*20);
-			Rectangle hol = new Rectangle(rad,rad);
-			hol.setFill(Color.BLACK);
+            double rad=Math.min(shrink*20,shrink*20);
+            Rectangle hol = new Rectangle(rad,rad);
+			hol.setFill(new ImagePattern(new Image("File:src/images/hole.png")));
 			hol.setEffect(new Lighting());
 			hol.setTranslateX(shrink*hole.getPosition().x+shrink*xModifier-radius);
 			hol.setTranslateY(shrink*hole.getPosition().y+shrink*yModifier-radius);

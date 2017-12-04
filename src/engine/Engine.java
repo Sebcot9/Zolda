@@ -93,16 +93,16 @@ public class Engine implements RequireDataService, EngineService {
 				{
 					o = obstacles.get(i);
 					if(collisionObstacles(o))
-					{	
+					{
 
 						{
 							data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
-									data.getLonk().getPosition().y-heroesVY));					
+									data.getLonk().getPosition().y-heroesVY));
 							System.out.println("Kek");
 							heroesVX =0;
 							heroesVY =0;
 						}
-						
+
 						for(int j =0;j<enemies.size();j++)
 						{
 							e = enemies.get(j);
@@ -112,21 +112,28 @@ public class Engine implements RequireDataService, EngineService {
 								System.out.println("Collision ennemie avec un obstacle");
 							}
 						}
-					}			
-				
+					}
+
 				}
-				
+
 				for(int j =0;j<enemies.size();j++)
 				{
 					e=enemies.get(j);
 					if(collisionEnemies(e))
 					{
-						
-						data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
-								data.getLonk().getPosition().y-heroesVY));	
+
 					}
 				}
-				
+
+
+				for(Holes h : data.getMap().getHoles()){
+					if(collisionHoles(h)){
+						data.getLonk().setHp(data.getLonk().getHp() - 1);
+						data.getLonk().setPosition(new Position(30,
+								30));
+					}
+				}
+
 				updateEnemiesPosition();
 				updateWeaponPosition();
 				updateSpeedHeroes();
@@ -166,7 +173,12 @@ public class Engine implements RequireDataService, EngineService {
 					cont= true;
 			}
 		}
-		data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
+
+		if(x > 40 && y > 40){
+			data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
+			System.out.println("x : " + x + " y : " + y);
+		}
+
 
 	}
 
@@ -185,8 +197,10 @@ public class Engine implements RequireDataService, EngineService {
 					cont= true;
 			}
 		}
-		data.getMap().getHoles().add(new Holes(new Position(x,y)));
 
+		if(x > 40 && y > 40) {
+			data.getMap().getHoles().add(new Holes(new Position(x, y)));
+		}
 	}
 	@Override
 	public void stop()
@@ -321,18 +335,25 @@ public class Engine implements RequireDataService, EngineService {
 					e.getPosition().y =e.getPosition().y -1;
 				else if(e.getPosition().y < data.getLonk().getPosition().y)
 					e.getPosition().y =e.getPosition().y +1;
-			
+
 		}
 	}
 
 
 	private boolean collisionObstacles(Obstacle o){
 
-		return((data.getLonk().getPosition().x <= o.getPosition().x + 30 &&
-				data.getLonk().getPosition().x + 30 >= o.getPosition().x &&
-				data.getLonk().getPosition().y <= o.getPosition().y + 30 &&
-				30 + data.getLonk().getPosition().y >=  o.getPosition().y)
+		return((data.getLonk().getPosition().x <= o.getPosition().x + HardCodedParameters.obsWidth &&
+				data.getLonk().getPosition().x + HardCodedParameters.obsWidth >= o.getPosition().x &&
+				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight &&
+				HardCodedParameters.obsHeight + data.getLonk().getPosition().y >=  o.getPosition().y)
+
 				);
+
+        /*return((data.getLonk().getPosition().x <= o.getPosition().x + 30 &&
+                data.getLonk().getPosition().x + 30 >= o.getPosition().x &&
+                data.getLonk().getPosition().y <= o.getPosition().y + 30 &&
+                30 + data.getLonk().getPosition().y >=  o.getPosition().y)
+        );*/
 	}
 	private boolean collisionHoles(Holes h){
 		return(
@@ -366,3 +387,4 @@ public class Engine implements RequireDataService, EngineService {
 
 
 }
+
