@@ -246,7 +246,7 @@ public class Viewer implements ViewerService, RequireReadService {
 	    {
 	    	o = obstacles.get(i);
             double rad=Math.min(shrink*20,shrink*20);
-            Rectangle hol = new Rectangle(rad,rad);
+            Rectangle obs = new Rectangle(rad,rad);
 			obs.setFill(new ImagePattern(new Image("File:src/images/arbuste.png")));
 			obs.setEffect(new Lighting());
 			obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);

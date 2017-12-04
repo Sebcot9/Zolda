@@ -125,6 +125,15 @@ public class Engine implements RequireDataService, EngineService {
 					}
 				}
 
+
+				for(Holes h : data.getMap().getHoles()){
+					if(collisionHoles(h)){
+						data.getLonk().setHp(data.getLonk().getHp() - 1);
+						data.getLonk().setPosition(new Position(30,
+								30));
+					}
+				}
+
 				updateEnemiesPosition();
 				updateWeaponPosition();
 				updateSpeedHeroes();
