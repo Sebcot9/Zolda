@@ -10,6 +10,7 @@ import specifications.EngineService;
 import specifications.ReadService;
 import specifications.RequireReadService;
 import specifications.ViewerService;
+import tools.Direction;
 import tools.HardCodedParameters;
 
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class Viewer implements ViewerService, RequireReadService {
     private Rectangle2D oldSpriteDirection;
     private boolean isUp, isDown, isRight, isLeft;
     private int avatarIndex;
+    private ImageView swordAvatarImageView;
+    private WeaponUI sword;
 //    private int index;
 
     @Override
@@ -65,6 +68,7 @@ public class Viewer implements ViewerService, RequireReadService {
 
         linkAvatarSpriteSheet = new Image("File:src/images/red_lonk.png");
         linkAvatarImageView = new ImageView(linkAvatarSpriteSheet);
+
         oldSpriteDirection = new Rectangle2D(33, 0, 32, 32);
         defaultAvatarList = new ArrayList<>();
         defaultAvatarList.add(new Rectangle2D(33, 0, 32, 32));
@@ -91,6 +95,10 @@ public class Viewer implements ViewerService, RequireReadService {
         down.add(new Rectangle2D(33, 0, 32, 32));
         down.add(new Rectangle2D(0, 0, 32, 32));
         down.add(new Rectangle2D(66, 0, 32, 32));
+        swordAvatarImageView = new ImageView(new Image("File:src/images/sword1SpriteSheet.png"));
+        sword = new WeaponUI();
+
+
     }
 
     @Override
@@ -143,58 +151,57 @@ public class Viewer implements ViewerService, RequireReadService {
 		statView.setTranslateY(yModifier*50);
 		panel.getChildren().add(statView);
 
-        int index = avatarIndex/7;
+//        int index = avatarIndex/7;
 
         if (engine.getMoveLeft()) {
             defaultAvatarList = left;
-            isLeft = true; isDown = false; isRight = false; isUp = false;
-            if (avatarIndex+1 > defaultAvatarList.size()-1)
-                avatarIndex = 0;
-            else {
-                if (data.getStepNumber()%5 == 0) {
-                    index += 1;
-                    avatarIndex = (avatarIndex + 1);
-                }
-            }
+//            isLeft = true; isDown = false; isRight = false; isUp = false;
+//            if (avatarIndex+1 > defaultAvatarList.size()-1)
+//                avatarIndex = 0;
+//            else {
+//                    index += 1;
+                avatarIndex = data.getLonk().getStepDivided()%3;
+//            }
         } else if (engine.getmoveRight()) {
-            isLeft = false; isDown = false; isRight = true; isUp = false;
             defaultAvatarList = right;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
             else {
-                index += 1;
-                avatarIndex += 1;
+//                index += 1;
+
+                avatarIndex = data.getLonk().getStepDivided()%3;
             }
         } else if(engine.getmoveUp()){
-            isLeft = false; isDown = false; isRight = false; isUp = true;
+//            isLeft = false; isDown = false; isRight = false; isUp = true;
             defaultAvatarList =up;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
             else {
-                index += 1;
-                avatarIndex += 1;
+//                index += 1;
+                avatarIndex = data.getLonk().getStepDivided()%3;
             }
         }else if(engine.getmoveDown()) {
-            isLeft = false; isDown = true; isRight = false; isUp = false;
+//            isLeft = false; isDown = true; isRight = false; isUp = false;
              defaultAvatarList =down;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
             else {
-                index += 1;
-                avatarIndex += 1;
+//                index += 1;
+                avatarIndex = data.getLonk().getStepDivided()%3;
             }
         }else {
-            index = 0;
+//            index = 0;
             avatarIndex = 0;
 		}
 //		linkAvatarImageView.setFitHeight(5*10);
 		linkAvatarImageView.setPreserveRatio(true);
 
-		linkAvatarImageView.setViewport(defaultAvatarList.get(index));
         linkAvatarImageView.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		linkAvatarImageView.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-        System.out.print(avatarIndex);
-		avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
+		linkAvatarImageView.setFitWidth(shrink*data.getLonk().getWidth());
+		linkAvatarImageView.setFitHeight(shrink*data.getLonk().getHeight());
+		linkAvatarImageView.setViewport(defaultAvatarList.get(avatarIndex));
+		//avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
 		panel.getChildren().addAll(userView,linkAvatarImageView);
 
 	  /*  Text t = new Text(-0.1*shrink*600+.5*shrink*800,
@@ -206,15 +213,37 @@ public class Viewer implements ViewerService, RequireReadService {
         hp.setFont(new Font(.05*shrink*600));
 		panel.getChildren().add(hp);
 
+
 		//panel.getChildren().add(t);
+        if (engine.isPushSpace()) {
+            Direction linkDirection = data.getLonk().getDirection();
+            if (linkDirection.equals(Direction.LEFT)){
+                swordAvatarImageView.setViewport(sword.getLeft());
+            }
+            if (Direction.RIGHT.equals(linkDirection)) {
+                swordAvatarImageView.setViewport(sword.getRight());
+            }
+            if ( linkDirection.equals(Direction.UP)){
+                swordAvatarImageView.setViewport(sword.getUp());
+            }
+            if (linkDirection.equals(Direction.DOWN)){
+                swordAvatarImageView.setViewport(sword.getDown());
+            }
 
-        Rectangle sword = new Rectangle(radius,radius);
-        sword.setFill(new ImagePattern(new Image("File:src/images/sword1.png")));
-        sword.setTranslateX(shrink*data.getWeaponPosition().x+shrink);
-        sword.setTranslateY(shrink*data.getWeaponPosition().y+shrink);
+            swordAvatarImageView.setTranslateX(shrink* data.getWeaponPosition().x + shrink*xModifier-radius);
+            swordAvatarImageView.setTranslateY(shrink* data.getWeaponPosition().y + shrink*xModifier-radius);
+            swordAvatarImageView.setFitWidth(shrink*data.getLonk().getWeapon().getWidth());
+            swordAvatarImageView.setFitHeight(shrink*data.getLonk().getWeapon().getHeight());
 
-        panel.getChildren().add(sword);
+            panel.getChildren().add(swordAvatarImageView);
 
+//            Rectangle sword = new Rectangle(radius, radius);
+//            sword.setFill(new ImagePattern(new Image("File:src/images/sword1.png")));
+//            sword.setTranslateX(shrink * data.getWeaponPosition().x + shrink);
+//            sword.setTranslateY(shrink * data.getWeaponPosition().y + shrink);
+//
+//            panel.getChildren().add(sword);
+    }
 //		Rectangle heroes = new Rectangle(500,500);
 //		heroes.setFill(new ImagePattern(new Image("File:src/images/red_lonk.png")));
 //		heroes.setEffect(new Lighting());
@@ -230,7 +259,7 @@ public class Viewer implements ViewerService, RequireReadService {
 	    {
 	    	e = enemies.get(i);
 	    	double rad=.5*Math.min(shrink*20,shrink*20);
-			Circle enemy_c = new Circle(rad);
+			Rectangle enemy_c = new Rectangle(rad,rad);
 			enemy_c.setFill(Color.RED);
 			enemy_c.setEffect(new Lighting());
 			enemy_c.setTranslateX(shrink*e.getPosition().x+shrink*xModifier-radius);
@@ -269,9 +298,7 @@ public class Viewer implements ViewerService, RequireReadService {
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
 		    panel.getChildren().add(hol);
 	    }
-
 		return panel;
-
 	}
 
 	@Override
