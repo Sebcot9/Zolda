@@ -70,7 +70,7 @@ public class Engine implements RequireDataService, EngineService {
 			obstacleGeneration();
 			fillSet();
 		}
-		for(int i=0; i<5;i++)
+		for(int i=0; i<25;i++)
 		{
 			holesGeneration();
 			fillSet();
@@ -103,15 +103,56 @@ public class Engine implements RequireDataService, EngineService {
 							heroesVY =0;
 						}
 
-						for(int j =0;j<enemies.size();j++)
-						{
-							e = enemies.get(j);
-							if((o.getPosition().x-e.getPosition().x)*(o.getPosition().x-e.getPosition().x)+(o.getPosition().y-e.getPosition().y)*(o.getPosition().y-e.getPosition().y) > 500)
-							{
 
-								System.out.println("Collision ennemie avec un obstacle");
+					}
+
+					for(int j =0;j<enemies.size();j++)
+					{
+						e = enemies.get(j);
+
+						if(collisionEnemiesObstacles(o, e)){
+
+							if ((Math.abs(o.getPosition().x + 20 - e.getPosition().x)) < 20){
+								e.setPosition(new Position(e.getPosition().x-heroesVX, e.getPosition().y-heroesVY));
+								updateEnemiesPosition();
 							}
+
+							if (((Math.abs(o.getPosition().y  + 20 - e.getPosition().y)) < 20)){
+								e.setPosition(new Position(e.getPosition().x-heroesVX, e.getPosition().y -heroesVY));
+								updateEnemiesPosition();
+							}
+
+
+						/*	if(o.getPosition().x + HardCodedParameters.obsWidth >= e.getPosition().x - 30 ){
+								e.setPosition(new Position(e.getPosition().x-5,
+										e.getPosition().y));
+							}
+
+							if(o.getPosition().x + HardCodedParameters.obsWidth <= e.getPosition().x - 30 ){
+								e.setPosition(new Position(e.getPosition().x-5,
+										e.getPosition().y));
+							}
+
+							if(o.getPosition().y + HardCodedParameters.obsWidth <= e.getPosition().y - 30 ){
+								e.setPosition(new Position(e.getPosition().x,
+										e.getPosition().y-5));
+							}
+
+							if(o.getPosition().y + HardCodedParameters.obsWidth >= e.getPosition().y - 30 ){
+								e.se	tPosition(new Position(e.getPosition().x,
+										e.getPosition().y-5));
+							}
+*/
 						}
+							/*if((o.getPosition().x-e.getPosition().x)*(o.getPosition().x-e.getPosition().x)+(o.getPosition().y-e.getPosition().y)*(o.getPosition().y-e.getPosition().y) < 500)
+						{
+							System.out.println("Collision ennemie avec un obstacle");
+							e.getPosition().x = e.getPosition().x - heroesVX;
+							e.getPosition().y =e.getPosition().y - heroesVY;
+
+							System.out.println(o.getPosition().x);
+							System.out.println(e.getPosition().x);
+						}*/
 					}
 
 				}
@@ -319,7 +360,12 @@ public class Engine implements RequireDataService, EngineService {
 					cont= true;
 			}
 		}
-		data.getEnemies().add(new Enemies(new Position(x,y),"Enemy",5));
+
+		Enemies en = new Enemies(new Position(x,y),"Enemy",5);
+		en.setHeight(20);
+		en.setWidth(20);
+
+		data.getEnemies().add(en);
 	}
 
 	private void updateEnemiesPosition()
@@ -344,8 +390,8 @@ public class Engine implements RequireDataService, EngineService {
 
 		return((data.getLonk().getPosition().x <= o.getPosition().x + HardCodedParameters.obsWidth &&
 				data.getLonk().getPosition().x + HardCodedParameters.obsWidth >= o.getPosition().x &&
-				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight &&
-				HardCodedParameters.obsHeight + data.getLonk().getPosition().y >=  o.getPosition().y)
+				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight + 10 &&
+				 data.getLonk().getPosition().y >=  o.getPosition().y)
 
 				);
 
@@ -364,6 +410,23 @@ public class Engine implements RequireDataService, EngineService {
 				500
 				);
 	}
+
+	private boolean collisionEnemiesObstacles(Obstacle o, Enemies e){
+
+		return((e.getPosition().x  <= o.getPosition().x + 20 &&
+				e.getPosition().x + 20 >= o.getPosition().x &&
+				e.getPosition().y  <= o.getPosition().y + 20&&
+				20 + e.getPosition().y >=  o.getPosition().y)
+
+		);
+
+        /*return((data.getLonk().getPosition().x <= o.getPosition().x + 30 &&
+                data.getLonk().getPosition().x + 30 >= o.getPosition().x &&
+                data.getLonk().getPosition().y <= o.getPosition().y + 30 &&
+                30 + data.getLonk().getPosition().y >=  o.getPosition().y)
+        );*/
+	}
+
 	private boolean collisionEnemies(Enemies e){
 		return(
 				(data.getLonk().getPosition().x-e.getPosition().x)*(data.getLonk().getPosition().x-e.getPosition().x)

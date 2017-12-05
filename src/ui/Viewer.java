@@ -111,7 +111,7 @@ public class Viewer implements ViewerService, RequireReadService {
         userView.setArcHeight(.04 * shrink * 600);
         userView.setTranslateX(xModifier);
         userView.setTranslateY(yModifier);
-//		panel.getChildren().add(userView);
+		//panel.getChildren().add(userView);
 
 		//Vue de la Console
 		Rectangle consoleView = new Rectangle(-2*xModifier+shrink*224,
@@ -126,8 +126,8 @@ public class Viewer implements ViewerService, RequireReadService {
 
 		panel.getChildren().add(consoleView);
 
-        Text console = new Text(-0.1*shrink*600+.5*shrink*100,
-                -0.1*shrink*800+shrink*700,"Console : ");
+        Text console = new Text(0.5*shrink*800+.5*shrink*900,
+                -0.5*shrink*300+shrink*200,"Console : ");
         console.setFont(new Font(.05*shrink*600));
         panel.getChildren().add(console);
 
@@ -193,8 +193,9 @@ public class Viewer implements ViewerService, RequireReadService {
 		linkAvatarImageView.setViewport(defaultAvatarList.get(index));
         linkAvatarImageView.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		linkAvatarImageView.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-        System.out.print(avatarIndex);
+
 		avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
+
 		panel.getChildren().addAll(userView,linkAvatarImageView);
 
 	  /*  Text t = new Text(-0.1*shrink*600+.5*shrink*800,
@@ -229,8 +230,8 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<enemies.size();i++)
 	    {
 	    	e = enemies.get(i);
-	    	double rad=.5*Math.min(shrink*20,shrink*20);
-			Circle enemy_c = new Circle(rad);
+	    	double rad= Math.min(shrink*20,shrink*20);
+            Rectangle enemy_c = new Rectangle(rad,rad);
 			enemy_c.setFill(Color.RED);
 			enemy_c.setEffect(new Lighting());
 			enemy_c.setTranslateX(shrink*e.getPosition().x+shrink*xModifier-radius);
@@ -245,9 +246,9 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<obstacles.size();i++)
 	    {
 	    	o = obstacles.get(i);
-            double rad=Math.min(shrink*20,shrink*20);
+            double rad=Math.min(shrink*40,shrink*40);
             Rectangle obs = new Rectangle(rad,rad);
-			obs.setFill(new ImagePattern(new Image("File:src/images/arbuste.png")));
+			obs.setFill(new ImagePattern(new Image("File:src/images/sapin.png")));
 			obs.setEffect(new Lighting());
 			obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
 			obs.setTranslateY(shrink*o.getPosition().y+shrink*yModifier-radius);
