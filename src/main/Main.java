@@ -29,6 +29,7 @@ public class Main extends Application{
 	  private static ViewerService viewer;
 	  private static ViewerService dataViewer;
 	  private static AnimationTimer timer;
+	  private static boolean onStop;
 
 	  public static void main(String args[]){
 		data = new Data();
@@ -64,12 +65,26 @@ public class Main extends Application{
 		scene.setFill(Color.ANTIQUEWHITE);
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			@Override
-				public void handle(KeyEvent event){
-		          if (event.getCode()==KeyCode.LEFT) engine.setHeroesCommand(User.COMMAND.LEFT);
-		          if (event.getCode()==KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
-		          if (event.getCode()==KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
-		          if (event.getCode()==KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
-		          if (event.getCode()==KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
+				public void handle(KeyEvent event) {
+					if (!onStop){
+						if (event.getCode() == KeyCode.LEFT) engine.setHeroesCommand(User.COMMAND.LEFT);
+						if (event.getCode() == KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
+						if (event.getCode() == KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
+						if (event.getCode() == KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
+						if (event.getCode() == KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
+					}
+		          if (event.getCode()==KeyCode.P) {
+		          	System.out.print(onStop);
+		          	if(!onStop){
+		          		timer.stop();
+		          		engine.stop();
+						onStop = true;
+					}else{
+						timer.start();
+						onStop = false;
+					}
+				  }
+
 		          event.consume();
 			}
 		});
@@ -116,6 +131,7 @@ public class Main extends Application{
 	        }
 	    };
 	    timer.start();
+	    onStop = false;
 
 	}
 }

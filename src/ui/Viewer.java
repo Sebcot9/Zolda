@@ -263,7 +263,7 @@ public class Viewer implements ViewerService, RequireReadService {
 	    	hole = holes.get(i);
             double rad=Math.min(shrink*30,shrink*30);
             Rectangle hol = new Rectangle(rad,rad);
-			hol.setFill(new ImagePattern(new Image("File:src/images/hole.png")));
+			hol.setFill(new ImagePattern(new Image("File:src/images/holeSand.png")));
 			hol.setEffect(new Lighting());
 			hol.setTranslateX(shrink*hole.getPosition().x+shrink*xModifier-radius);
 			hol.setTranslateY(shrink*hole.getPosition().y+shrink*yModifier-radius);
@@ -277,6 +277,8 @@ public class Viewer implements ViewerService, RequireReadService {
             escalier.setFill(new ImagePattern(new Image("File:src/images/escalier1.png")));
             escalier.setTranslateX(shrink*763+shrink);
             escalier.setTranslateY(shrink*400+shrink);
+            
+           //userView.setFill(new ImagePattern(new Image("File:src/images/sand.png")));
 
             panel.getChildren().add(escalier);
         }

@@ -197,6 +197,9 @@ public class Engine implements RequireDataService, EngineService {
 			allPos.add(h.getPosition());
 		for(Pets p : data.getPets())
 			allPos.add(p.getPosition());
+
+		allPos.add(data.getLonk().getPosition());
+
 		return allPos;
 	}
 
@@ -215,10 +218,12 @@ public class Engine implements RequireDataService, EngineService {
 			}
 		}
 
-		if(x > 40 && y > 40){
+
+
+//		if((x > data.getLonk().getPosition().x || x < data.getLonk().getPosition().x) && y > data.getLonk().getPosition().y || (y > data.getLonk().getPosition().y || y < data.getLonk().getPosition().y) && x > data.getLonk().getPosition().x ) {
+			System.out.println("obstacle coordonnées : " + x + " " + y);
 			data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
-			System.out.println("x : " + x + " y : " + y);
-		}
+//		}
 
 
 	}
@@ -239,9 +244,9 @@ public class Engine implements RequireDataService, EngineService {
 			}
 		}
 
-		if(x > 40 && y > 40) {
+		//if(x > 40 && y > 40) {
 			data.getMap().getHoles().add(new Holes(new Position(x, y)));
-		}
+		//}
 	}
 	@Override
 	public void stop()
