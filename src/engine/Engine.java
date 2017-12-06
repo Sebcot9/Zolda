@@ -210,7 +210,7 @@ public class Engine implements RequireDataService, EngineService {
 			cont =false;
 			for(Position p : allPos)
 			{
-				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 400)
+				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 1500)
 					cont= true;
 			}
 		}
@@ -234,7 +234,7 @@ public class Engine implements RequireDataService, EngineService {
 			cont =false;
 			for(Position p : allPos)
 			{
-				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 400)
+				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 900)
 					cont= true;
 			}
 		}

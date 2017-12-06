@@ -104,7 +104,7 @@ public class Viewer implements ViewerService, RequireReadService {
         //Vue Utilisateur
         Rectangle userView = new Rectangle(-2 * xModifier + shrink * 800,
                 -.2 * shrink * 600 + shrink * 600);
-        userView.setFill(new ImagePattern(new Image("File:src/images/terrain1.png")));
+        userView.setFill(new ImagePattern(new Image("File:src/images/forest.png")));
         userView.setStroke(Color.DIMGRAY);
         userView.setStrokeWidth(.01 * shrink * 600);
         userView.setArcWidth(.04 * shrink * 600);
@@ -261,7 +261,7 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<holes.size();i++)
 	    {
 	    	hole = holes.get(i);
-            double rad=Math.min(shrink*20,shrink*20);
+            double rad=Math.min(shrink*30,shrink*30);
             Rectangle hol = new Rectangle(rad,rad);
 			hol.setFill(new ImagePattern(new Image("File:src/images/hole.png")));
 			hol.setEffect(new Lighting());
@@ -270,6 +270,18 @@ public class Viewer implements ViewerService, RequireReadService {
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
 		    panel.getChildren().add(hol);
 	    }
+
+	    //Sortie vers map2
+        if(data.getEnemies().size() == 0){
+            Rectangle escalier = new Rectangle(radius,radius);
+            escalier.setFill(new ImagePattern(new Image("File:src/images/escalier1.png")));
+            escalier.setTranslateX(shrink*763+shrink);
+            escalier.setTranslateY(shrink*400+shrink);
+
+            panel.getChildren().add(escalier);
+        }
+
+
 
 		return panel;
 
