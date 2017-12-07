@@ -1,5 +1,6 @@
 package ui;
 
+import classes.Stairs;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -255,7 +256,7 @@ public class Viewer implements ViewerService, RequireReadService {
 		linkAvatarImageView.setFitHeight(shrink*data.getLonk().getHeight());
 		linkAvatarImageView.setViewport(defaultAvatarList.get(avatarIndex));
 		//avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
-		panel.getChildren().addAll(userView,linkAvatarImageView);
+		panel.getChildren().add(userView);
 
 		Text hp = new Text(-0.1*shrink*600+.5*shrink*500,
 				-0.1*shrink*800+shrink*700,"HP : " + data.getLonk().getHp());
@@ -320,6 +321,36 @@ public class Viewer implements ViewerService, RequireReadService {
 		    panel.getChildren().add(enemy_c);
 	    }
 
+	    /* Cr�ation des trous */
+        ArrayList<Holes> holes = data.getMap().getHoles();
+        Holes hole;
+        for(int i=0; i<holes.size();i++)
+        {
+            hole = holes.get(i);
+            double rad=Math.min(shrink*30,shrink*30);
+            Rectangle hol = new Rectangle(rad,rad);
+            hol.setFill(new ImagePattern(new Image("File:src/images/holeSand.png")));
+
+            hol.setEffect(new Lighting());
+            hol.setTranslateX(shrink*hole.getPosition().x+shrink*xModifier-radius);
+            hol.setTranslateY(shrink*hole.getPosition().y+shrink*yModifier-radius);
+            //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
+            panel.getChildren().add(hol);
+        }
+
+
+        Rectangle escalier = new Rectangle(radius,radius);
+        escalier.setFill(new ImagePattern(new Image("File:src/images/escalier1.png")));
+        escalier.setTranslateX(shrink*763+shrink);
+        escalier.setTranslateY(shrink*400+shrink);
+
+        //userView.setFill(new ImagePattern(new Image("File:src/images/sand.png")));
+
+        escalier.setVisible(false);
+        panel.getChildren().add(escalier);
+
+        panel.getChildren().add(linkAvatarImageView);
+
 	    /* Cr�ation des obstacles */
 	    ArrayList<Obstacle> obstacles = data.getMap().getObstacles();
 	    Obstacle o;
@@ -335,32 +366,32 @@ public class Viewer implements ViewerService, RequireReadService {
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
 		    panel.getChildren().add(obs);
 	    }
-	    /* Cr�ation des trous */
-	    ArrayList<Holes> holes = data.getMap().getHoles();
-	    Holes hole;
-	    for(int i=0; i<holes.size();i++)
-	    {
-	    	hole = holes.get(i);
-            double rad=Math.min(shrink*30,shrink*30);
-            Rectangle hol = new Rectangle(rad,rad);
-			hol.setFill(new ImagePattern(new Image("File:src/images/holeSand.png")));
-			hol.setEffect(new Lighting());
-			hol.setTranslateX(shrink*hole.getPosition().x+shrink*xModifier-radius);
-			hol.setTranslateY(shrink*hole.getPosition().y+shrink*yModifier-radius);
-			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
-		    panel.getChildren().add(hol);
-	    }
+
+
+
 
 	    //Sortie vers map2
         if(data.getEnemies().size() == 0){
-            Rectangle escalier = new Rectangle(radius,radius);
-            escalier.setFill(new ImagePattern(new Image("File:src/images/escalier1.png")));
-            escalier.setTranslateX(shrink*763+shrink);
-            escalier.setTranslateY(shrink*400+shrink);
 
-           //userView.setFill(new ImagePattern(new Image("File:src/images/sand.png")));
+            escalier.setVisible(true);
 
-            panel.getChildren().add(escalier);
+             /* Cr�ation des obstacles */
+            ArrayList<Stairs> stairs = data.getMap().getStairs();
+            Stairs st;
+            System.out.print(stairs.size());
+            for(int i=0; i<3;i++){
+                st = stairs.get(i);
+                double rad=Math.min(shrink*40,shrink*40);
+                Rectangle sts = new Rectangle(rad,rad);
+                sts.setFill(new ImagePattern(new Image("File:src/images/escalier1.png")));
+                sts.setEffect(new Lighting());
+                sts.setTranslateX(shrink*st.getPosition().x+shrink*xModifier-radius);
+                sts.setTranslateY(shrink*st.getPosition().y+shrink*yModifier-radius);
+                //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
+                panel.getChildren().add(sts);
+            }
+
+
         }
 
 		return panel;

@@ -7,19 +7,22 @@ public class Map {
  private int height ;
  private ArrayList <Obstacle> obstacles;
  private ArrayList <Holes> holes;
- 
+ private ArrayList <Stairs> stairs;
+
  public Map(int width, int height){
 	 this.width = width;
 	 this.height = height;
 	 this.obstacles = new ArrayList<>();
 	 this.holes = new ArrayList<>();
+	 this.stairs = new ArrayList<>();
 	 }
  
- public Map(int width, int height, ArrayList<Obstacle> os, ArrayList<Holes> hs){
+ public Map(int width, int height, ArrayList<Obstacle> os, ArrayList<Holes> hs, ArrayList<Stairs> st){
 	 this.width = width;
 	 this.height = height;
 	 this.obstacles = os;
 	 this.holes = hs;
+	 this.stairs = st;
  }
 
 public int getWidth() {
@@ -53,6 +56,13 @@ public ArrayList<Holes> getHoles() {
 public void setHoles(ArrayList<Holes> holes) {
 	this.holes = holes;
 }
- 
+
+public ArrayList<Stairs> getStairs() {
+	return stairs;
+}
+
+public void setStairs(ArrayList<Stairs> stairs) {
+	this.stairs = stairs;
+	}
  
 }

@@ -28,8 +28,8 @@ public class Data implements DataService {
 	public void init(){
 		lonk = new Heroes(new Position(30,30), "Lonk", 5);
 		lonk.setWeapon(new Weapon(new Position(35,30),20,20));
-		lonk.setHeight(30);
-		lonk.setWidth(30);
+		lonk.setHeight(40);
+		lonk.setWidth(40);
 		lonk.setDirection(Direction.RIGHT);
 		lonk.setVelocityX(0);
 		lonk.setVelocityY(0);
@@ -40,9 +40,7 @@ public class Data implements DataService {
 		//Generate a random position for the 1st enemy
 		int x = (int)(gen.nextInt((int)(getMap().getWidth()*.6))+getMap().getWidth()*.1);
 		int y = (int)(gen.nextInt((int)(getMap().getHeight()*.6))+getMap().getHeight()*.1);
-		Enemies enemy = new Enemies(new Position(x,y),"Bakemono", 2);
 
-		enemies.add(enemy);
 		allies = new ArrayList<>();
 		minX = HardCodedParameters.minX;
 		maxX = HardCodedParameters.maxX;

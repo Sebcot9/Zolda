@@ -84,6 +84,8 @@ public class Engine implements RequireDataService, EngineService {
 				Obstacle o;
 				ArrayList <Enemies> enemies = data.getEnemies();
 				Enemies e;
+				ArrayList <Holes> holes = data.getMap().getHoles();
+
 				for(int i =0;i<obstacles.size();i++)
 				{
 					o = obstacles.get(i);
@@ -176,6 +178,27 @@ public class Engine implements RequireDataService, EngineService {
 					updatePositionHeroes();
 					updateWeaponPosition();
 					data.setStepNumber(data.getStepNumber()+1);
+				}
+
+				if(enemies.size() == 0){
+					for(int i = 0; i < data.getMap().getHoles().size(); i++){
+						Holes hl = data.getMap().getHoles().get(i);
+						holes.remove(hl);
+					}
+
+					for(int i = 0; i < data.getMap().getObstacles().size(); i++){
+						Obstacle ob = data.getMap().getObstacles().get(i);
+						obstacles.remove(ob);
+					}
+
+					for(int i=0; i< 3;i++)
+					{
+						int x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX))))+HardCodedParameters.minX);
+						int y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY))))+HardCodedParameters.minY);
+
+						data.getMap().getStairs().add(new Stairs(new Position(x, y)));
+						fillSet();
+					}
 				}
 
 
@@ -454,8 +477,8 @@ public class Engine implements RequireDataService, EngineService {
 
 		return((data.getLonk().getPosition().x <= o.getPosition().x + HardCodedParameters.obsWidth &&
 				data.getLonk().getPosition().x + HardCodedParameters.obsWidth >= o.getPosition().x &&
-				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight + 10 &&
-				 data.getLonk().getPosition().y >=  o.getPosition().y)
+				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight + 7 &&
+				 data.getLonk().getPosition().y >=  o.getPosition().y )
 
 				);
 
@@ -493,7 +516,7 @@ public class Engine implements RequireDataService, EngineService {
 
 	private boolean collisionEnemies(Enemies e){
 		return(
-				(data.getLonk().getPosition().x-e.getPosition().x)*(data.getLonk().getPosition().x-e.getPosition().x)
+			(data.getLonk().getPosition().x-e.getPosition().x)*(data.getLonk().getPosition().x-e.getPosition().x)
 				+
 				(data.getLonk().getPosition().y-e.getPosition().y)*(data.getLonk().getPosition().y-e.getPosition().y)
 				<=
@@ -517,7 +540,6 @@ public class Engine implements RequireDataService, EngineService {
 	public void setPushSpace(boolean pushSpace) {
 		this.pushSpace = pushSpace;
 	}
-
 
 
 }
