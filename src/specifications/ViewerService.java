@@ -7,6 +7,7 @@ public interface ViewerService {
 	void init();
 
 	Parent getPanel();
+	Parent getGameOverPanel();
 
 	void setMainWindowWidth(double w);
 

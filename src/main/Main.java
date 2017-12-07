@@ -29,6 +29,7 @@ public class Main extends Application{
 	  private static ViewerService viewer;
 	  private static ViewerService dataViewer;
 	  private static AnimationTimer timer;
+	  private static boolean onStop;
 
 	  public static void main(String args[]){
 		data = new Data();
@@ -39,7 +40,7 @@ public class Main extends Application{
 		((Engine) engine).bindDataService(data);
 		((Viewer) viewer).bindReadService(data);
 		//((ViewerData) dataViewer).bindReadService(data);
-		((Viewer) viewer).bindEngineService(engine);
+		(viewer).bindEngineService(engine);
 
 //		((ViewerData) dataViewer).bindReadService(data);
 
@@ -50,6 +51,7 @@ public class Main extends Application{
 //		dataViewer.init();
 
 		launch(args);
+
 	}
 
 	@Override
@@ -59,17 +61,38 @@ public class Main extends Application{
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 500, Color.WHITE);
 
+
 		root.getChildren().add(viewer.getPanel());
+
 
 		scene.setFill(Color.ANTIQUEWHITE);
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			@Override
-				public void handle(KeyEvent event){
-		          if (event.getCode()==KeyCode.LEFT) engine.setHeroesCommand(User.COMMAND.LEFT);
-		          if (event.getCode()==KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
-		          if (event.getCode()==KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
-		          if (event.getCode()==KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
-		          if (event.getCode()==KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
+				public void handle(KeyEvent event) {
+					if (!onStop){
+						if (event.getCode() == KeyCode.LEFT) engine.setHeroesCommand(User.COMMAND.LEFT);
+						if (event.getCode() == KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
+						if (event.getCode() == KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
+						if (event.getCode() == KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
+						if (event.getCode() == KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
+					}
+				if (event.getCode()==KeyCode.R) {
+					data.init();
+					engine.init();
+					viewer.init();
+				}
+
+					if (event.getCode()==KeyCode.P) {
+					  engine.setHeroesCommand(User.COMMAND.P);
+		          	if(!onStop){
+		          		timer.stop();
+						onStop = true;
+					}else{
+						timer.start();
+						onStop = false;
+					}
+				  }
+
 		          event.consume();
 			}
 		});
@@ -81,11 +104,12 @@ public class Main extends Application{
 		          if (event.getCode()==KeyCode.UP) engine.releaseHeroesCommand(User.COMMAND.UP);
 		          if (event.getCode()==KeyCode.DOWN) engine.releaseHeroesCommand(User.COMMAND.DOWN);
 		          if (event.getCode()==KeyCode.SPACE) engine.releaseHeroesCommand(User.COMMAND.SPACE);
+		          if (event.getCode()==KeyCode.P) engine.releaseHeroesCommand(User.COMMAND.P);
 		          event.consume();
 			}
 		});
 	    scene.widthProperty().addListener(new ChangeListener<Number>() {
-	        @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+	    	public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
 				viewer.setMainWindowWidth(newSceneWidth.doubleValue());
 	        }
 	    });
@@ -110,12 +134,42 @@ public class Main extends Application{
 	      });
 	      stage.show();
 
-	  	timer = new AnimationTimer() {
+
+			timer = new AnimationTimer() {
+				@Override public void handle(long l) {
+					if(data.getLonk().getHp() > 0)
+				  		scene.setRoot(viewer.getPanel());
+					else
+						scene.setRoot(viewer.getGameOverPanel());
+
+
+				};
+			};
+
+	 /* 	timer = new AnimationTimer() {
 	        @Override public void handle(long l) {
 	          scene.setRoot(viewer.getPanel());
 	        }
-	    };
+	    };*/
 	    timer.start();
-
+	    onStop = false;
 	}
+
+	/*public static void gameOver(boolean isGameOver){
+		System.out.print("GameOver");
+
+		Group root = new Group();
+
+		Scene scene = new Scene(root, 500, 500, Color.WHITE);
+
+		if(isGameOver){
+			System.out.print("Game");
+			timer = new AnimationTimer() {
+				@Override public void handle(long l) {
+					scene.setRoot(viewer.getPanel());
+				}
+			};
+		}
+	}*/
+
 }
