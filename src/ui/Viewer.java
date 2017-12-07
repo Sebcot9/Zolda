@@ -68,7 +68,6 @@ public class Viewer implements ViewerService, RequireReadService {
 
         linkAvatarSpriteSheet = new Image("File:src/images/red_lonk.png");
         linkAvatarImageView = new ImageView(linkAvatarSpriteSheet);
-
         oldSpriteDirection = new Rectangle2D(33, 0, 32, 32);
         defaultAvatarList = new ArrayList<>();
         defaultAvatarList.add(new Rectangle2D(33, 0, 32, 32));
@@ -134,8 +133,8 @@ public class Viewer implements ViewerService, RequireReadService {
 
 		panel.getChildren().add(consoleView);
 
-        Text console = new Text(-0.1*shrink*600+.5*shrink*100,
-                -0.1*shrink*800+shrink*700,"Console : ");
+        Text console = new Text(0.5*shrink*800+.5*shrink*900,
+                -0.5*shrink*300+shrink*200,"Console : ");
         console.setFont(new Font(.05*shrink*600));
         panel.getChildren().add(console);
 
@@ -258,7 +257,7 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<enemies.size();i++)
 	    {
 	    	e = enemies.get(i);
-	    	double rad=.5*Math.min(shrink*20,shrink*20);
+	    	double rad=Math.min(shrink*20,shrink*20);
 			Rectangle enemy_c = new Rectangle(rad,rad);
 			enemy_c.setFill(Color.RED);
 			enemy_c.setEffect(new Lighting());
@@ -274,9 +273,9 @@ public class Viewer implements ViewerService, RequireReadService {
 	    for(int i=0; i<obstacles.size();i++)
 	    {
 	    	o = obstacles.get(i);
-            double rad=Math.min(shrink*20,shrink*20);
+            double rad=Math.min(shrink*40,shrink*40);
             Rectangle obs = new Rectangle(rad,rad);
-			obs.setFill(new ImagePattern(new Image("File:src/images/arbuste.png")));
+			obs.setFill(new ImagePattern(new Image("File:src/images/sapin.png")));
 			obs.setEffect(new Lighting());
 			obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
 			obs.setTranslateY(shrink*o.getPosition().y+shrink*yModifier-radius);
@@ -298,7 +297,9 @@ public class Viewer implements ViewerService, RequireReadService {
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
 		    panel.getChildren().add(hol);
 	    }
+
 		return panel;
+
 	}
 
 	@Override

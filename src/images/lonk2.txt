@@ -1,0 +1,78 @@
+
+//Down Sword
+dsLinkNoCap_0 = 114 0 32 32
+dsLinkNoCap_01 = 0 33 32 48
+dsLinkNoCap_02 = 33 33 32 48
+dsLinkNoCap_03 = 66 33 32 48
+
+//In hole
+hLinkNoCap_0 = 99 33 32 32
+hLinkNoCap_01 = 147 0 32 32
+hLinkNoCap_02 = 99 66 32 32
+hLinkNoCap_03 = 132 33 32 32
+
+//Down
+LinkNoCap0 = 180 0 32 32
+LinkNoCap0100 = 165 33 32 32
+LinkNoCap0101 = 132 66 32 32
+LinkNoCap0102 = 213 0 32 32
+LinkNoCap02 = 165 66 32 32
+LinkNoCap03 = 198 33 32 32
+LinkNoCap04 = 198 66 32 32
+LinkNoCap05 = 0 117 32 32
+LinkNoCap06 = 33 116 32 32
+LinkNoCap07 = 0 150 32 32
+LinkNoCap08 = 33 149 32 32
+LinkNoCap09 = 66 116 32 32
+
+
+//Left
+LinkNoCap1_01_01 = 0 183 32 32
+LinkNoCap1_01_02 = 99 99 32 32
+LinkNoCap1_01_03 = 33 182 32 32
+LinkNoCap2_01 = 66 149 32 32
+LinkNoCap2_02 = 132 99 32 32
+LinkNoCap2_03 = 99 132 32 32
+
+//Left Sword
+
+lsLinkNoCap_0 = 66 182 32 32
+lsLinkNoCap_01 = 165 99 32 32
+lsLinkNoCap_02 = 132 132 32 32
+lsLinkNoCap_03 = 0 0 39 32
+
+//Right
+rightLinkNoCap1_01_01 = 99 165 32 32
+rLinkNoCap1_01_02 = 132 165 32 32
+rLinkNoCap1_01_03 = 165 132 32 32
+rLinkNoCap2_01 = 198 99 32 32
+rLinkNoCap2_02 = 198 132 32 32
+rLinkNoCap2_03 = 165 165 32 32
+
+
+
+//right Sword
+rsLinkNoCap_0 = 198 165 32 32
+rsLinkNoCap_01 = 246 0 32 32
+rsLinkNoCap_02 = 231 33 32 32
+rsLinkNoCap_03 = 40 0 39 32
+
+
+//UP
+upLinkNoCap0 = 279 0 32 32
+upLinkNoCap01 = 312 0 31 32
+upLinkNoCap010 = 231 66 32 32
+upLinkNoCap02 = 264 33 32 32
+upLinkNoCap03 = 264 66 32 32
+upLinkNoCap04 = 231 99 32 32
+upLinkNoCap05 = 297 33 32 32
+upLinkNoCap06 = 264 99 32 32
+upLinkNoCap07 = 231 132 32 32
+upLinkNoCap08 = 297 66 32 32
+upLinkNoCap09 = 80 0 33 32
+
+//Up Sword
+upSLinkNoCap_0 = 297 99 32 32
+upSLinkNoCap_01 = 33 82 32 33
+upSLinkNoCap_02 = 0 82 32 34
+upSLinkNoCap_03 = 66 82 32 33
