@@ -28,8 +28,8 @@ public class Data implements DataService {
 	public void init(){
 		lonk = new Heroes(new Position(30,30), "Lonk", 5);
 		lonk.setWeapon(new Weapon(new Position(35,30),20,20));
-		lonk.setHeight(30);
-		lonk.setWidth(30);
+		lonk.setHeight(50);
+		lonk.setWidth(50);
 		lonk.setDirection(Direction.RIGHT);
 		lonk.setVelocityX(0);
 		lonk.setVelocityY(0);
