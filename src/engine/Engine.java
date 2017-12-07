@@ -57,8 +57,7 @@ public class Engine implements RequireDataService, EngineService {
 		gen = new Random();
 		i = 0;
 
-
-		for(int i=0; i<1;i++)
+		for(int i=0; i<5;i++)
 		{
 			spawnEnemies();
 			fillSet();
@@ -206,8 +205,7 @@ public class Engine implements RequireDataService, EngineService {
 						if (collisionStairs(st)) {
 							data.getLonk().setPosition(new Position(750,
 									350));
-							init();
-							start();
+
 						}
 					}
 					/*for(int i=0; i< 3;i++)

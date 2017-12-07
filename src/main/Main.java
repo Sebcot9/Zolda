@@ -52,7 +52,7 @@ public class Main extends Application{
 	private Text message1 = new Text("TOD");
 	private Text message2 = new Text("The Origin of Destiny");
 	private Button boutonJouer = new Button("Jouer");
-	private static Button retour = new Button("Retour à l'écran titre");
+	private static Button retour = new Button("Retour Ã  l'Ã©cran titre");
 	
 	public static void main(String args[]){
 		data = new Data();
@@ -147,12 +147,24 @@ public class Main extends Application{
 				//viewer.init();
 				timer = new AnimationTimer() {
 					@Override public void handle(long l) {
-						scene.setRoot(root);
-						scene.setRoot(viewer.getPanel());
-						
-					}
+						if(data.getLonk().getHp() > 0)
+							scene.setRoot(viewer.getPanel());
+						else
+							scene.setRoot(viewer.getGameOverPanel());
+
+
+					};
 				};
 				timer.start();
+
+
+
+	 /* 	timer = new AnimationTimer() {
+	        @Override public void handle(long l) {
+	          scene.setRoot(viewer.getPanel());
+	        }
+	    };*/
+				onStop = false;
 			}
 
 		});
@@ -161,24 +173,44 @@ public class Main extends Application{
 
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			@Override
-			public void handle(KeyEvent event){
-				if (event.getCode()==KeyCode.LEFT) engine.setHeroesCommand(User.COMMAND.LEFT);
-				if (event.getCode()==KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
-				if (event.getCode()==KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
-				if (event.getCode()==KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
-				if (event.getCode()==KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
-				event.consume();
+				public void handle(KeyEvent event) {
+					if (!onStop){
+						if (event.getCode() == KeyCode.LEFT) engine.setHeroesCommand(User.COMMAND.LEFT);
+						if (event.getCode() == KeyCode.RIGHT) engine.setHeroesCommand(User.COMMAND.RIGHT);
+						if (event.getCode() == KeyCode.UP) engine.setHeroesCommand(User.COMMAND.UP);
+						if (event.getCode() == KeyCode.DOWN) engine.setHeroesCommand(User.COMMAND.DOWN);
+						if (event.getCode() == KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
+					}
+				if (event.getCode()==KeyCode.R) {
+					data.init();
+					engine.init();
+					viewer.init();
+				}
+
+					if (event.getCode()==KeyCode.P) {
+					  engine.setHeroesCommand(User.COMMAND.P);
+		          	if(!onStop){
+		          		timer.stop();
+						onStop = true;
+					}else{
+						timer.start();
+						onStop = false;
+					}
+				  }
+
+		          event.consume();
 			}
 		});
 
 		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
 			public void handle(KeyEvent event){
-				if (event.getCode()==KeyCode.LEFT) engine.releaseHeroesCommand(User.COMMAND.LEFT);
-				if (event.getCode()==KeyCode.RIGHT) engine.releaseHeroesCommand(User.COMMAND.RIGHT);
-				if (event.getCode()==KeyCode.UP) engine.releaseHeroesCommand(User.COMMAND.UP);
-				if (event.getCode()==KeyCode.DOWN) engine.releaseHeroesCommand(User.COMMAND.DOWN);
-				if (event.getCode()==KeyCode.SPACE) engine.releaseHeroesCommand(User.COMMAND.SPACE);
-				event.consume();
+		          if (event.getCode()==KeyCode.LEFT) engine.releaseHeroesCommand(User.COMMAND.LEFT);
+		          if (event.getCode()==KeyCode.RIGHT) engine.releaseHeroesCommand(User.COMMAND.RIGHT);
+		          if (event.getCode()==KeyCode.UP) engine.releaseHeroesCommand(User.COMMAND.UP);
+		          if (event.getCode()==KeyCode.DOWN) engine.releaseHeroesCommand(User.COMMAND.DOWN);
+		          if (event.getCode()==KeyCode.SPACE) engine.releaseHeroesCommand(User.COMMAND.SPACE);
+		          if (event.getCode()==KeyCode.P) engine.releaseHeroesCommand(User.COMMAND.P);
+		          event.consume();
 			}
 		});
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
