@@ -251,8 +251,8 @@ public class Viewer implements ViewerService, RequireReadService {
 
         linkAvatarImageView.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
 		linkAvatarImageView.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-		linkAvatarImageView.setFitWidth(shrink*data.getLonk().getWidth()*2);
-		linkAvatarImageView.setFitHeight(shrink*data.getLonk().getHeight()*2);
+		linkAvatarImageView.setFitWidth(shrink*data.getLonk().getWidth());
+		linkAvatarImageView.setFitHeight(shrink*data.getLonk().getHeight());
 		linkAvatarImageView.setViewport(defaultAvatarList.get(avatarIndex));
 		//avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
 		panel.getChildren().addAll(userView,linkAvatarImageView);
