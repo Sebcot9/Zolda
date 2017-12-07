@@ -497,7 +497,7 @@ public class Engine implements RequireDataService, EngineService {
 		return((data.getLonk().getPosition().x <= o.getPosition().x + HardCodedParameters.obsWidth &&
 				data.getLonk().getPosition().x + HardCodedParameters.obsWidth >= o.getPosition().x &&
 				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight + 7 &&
-				 data.getLonk().getPosition().y >=  o.getPosition().y )
+				 data.getLonk().getPosition().y >=  o.getPosition().y)
 
 				);
 
