@@ -121,7 +121,8 @@ public class Engine implements RequireDataService, EngineService {
 					e=enemies.get(j);
 					if(collisionEnemies(e))
 					{
-
+						data.getLonk().setPosition(new Position(data.getLonk().getPosition().x - heroesVX, data.getLonk().getPosition().y - heroesVY ));
+						data.getLonk().setHp(data.getLonk().getHp() - 1);
 					}
 				}
 
@@ -205,6 +206,7 @@ public class Engine implements RequireDataService, EngineService {
 	@Override
 	public void stop()
 	{
+		
 		timer.cancel();
 	}
 
@@ -327,6 +329,7 @@ public class Engine implements RequireDataService, EngineService {
 		//int rng = (int)(Math.random()*2);
 		for(Enemies e : data.getEnemies())
 		{
+			
 				if(e.getPosition().x > data.getLonk().getPosition().x)
 					e.getPosition().x =e.getPosition().x -1;
 				else if(e.getPosition().x < data.getLonk().getPosition().x)
@@ -348,12 +351,6 @@ public class Engine implements RequireDataService, EngineService {
 				HardCodedParameters.obsHeight + data.getLonk().getPosition().y >=  o.getPosition().y)
 
 				);
-
-        /*return((data.getLonk().getPosition().x <= o.getPosition().x + 30 &&
-                data.getLonk().getPosition().x + 30 >= o.getPosition().x &&
-                data.getLonk().getPosition().y <= o.getPosition().y + 30 &&
-                30 + data.getLonk().getPosition().y >=  o.getPosition().y)
-        );*/
 	}
 	private boolean collisionHoles(Holes h){
 		return(
@@ -366,12 +363,10 @@ public class Engine implements RequireDataService, EngineService {
 	}
 	private boolean collisionEnemies(Enemies e){
 		return(
-				(data.getLonk().getPosition().x-e.getPosition().x)*(data.getLonk().getPosition().x-e.getPosition().x)
-				+
-				(data.getLonk().getPosition().y-e.getPosition().y)*(data.getLonk().getPosition().y-e.getPosition().y)
-				<=
-				500
-				);
+				data.getLonk().getPosition().x <= e.getPosition().x + HardCodedParameters.charWidth &&
+				data.getLonk().getPosition().x + HardCodedParameters.charWidth >= e.getPosition().x &&
+				data.getLonk().getPosition().y <= e.getPosition().y + HardCodedParameters.charHeight &&
+				HardCodedParameters.charHeight + data.getLonk().getPosition().y >=  e.getPosition().y);
 	}
 
 	@Override

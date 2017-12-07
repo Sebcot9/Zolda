@@ -19,6 +19,7 @@ import classes.Holes;
 import classes.Obstacle;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -43,6 +44,9 @@ public class Viewer implements ViewerService, RequireReadService {
     private boolean isUp, isDown, isRight, isLeft;
     private int avatarIndex;
 //    private int index;
+    
+    //Ajout d'un bouton de retour
+    Button button; 
 
     @Override
     public void bindReadService(ReadService service) {
@@ -62,7 +66,7 @@ public class Viewer implements ViewerService, RequireReadService {
         yModifier = 0;
         avatarIndex = 0;
 //        index = 0;
-
+        //button = new Button();
         linkAvatarSpriteSheet = new Image("File:src/images/red_lonk.png");
         linkAvatarImageView = new ImageView(linkAvatarSpriteSheet);
         oldSpriteDirection = new Rectangle2D(33, 0, 32, 32);
@@ -95,11 +99,12 @@ public class Viewer implements ViewerService, RequireReadService {
 
     @Override
     public Parent getPanel() {
-        Group panel = new Group();
-        shrink = Math.min(xShrink, yShrink);
+    	shrink = Math.min(xShrink, yShrink);
         xModifier = .01 * shrink * data.getMap().getHeight();
         yModifier = .01 * shrink * data.getMap().getWidth();
-        double radius = Math.min(shrink * 25, shrink * 25);
+
+        Group panel = new Group();
+                double radius = Math.min(shrink * 25, shrink * 25);
 
         //Vue Utilisateur
         Rectangle userView = new Rectangle(-2 * xModifier + shrink * 800,
@@ -269,11 +274,30 @@ public class Viewer implements ViewerService, RequireReadService {
 			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
 		    panel.getChildren().add(hol);
 	    }
-
+	   
+	    
+	    button.setTranslateX(shrink*468);
+	    button.setTranslateY(shrink*850);
+	    
+	    panel.getChildren().add(button);
+	    
+	    
+	    
 		return panel;
 
 	}
 
+    @Override
+    public Button getButton()
+    {
+    	return this.button;
+    }
+    
+    @Override
+    public void setButton(Button button)
+    {
+    	this.button = button;
+    }
 	@Override
 	public void setMainWindowWidth(double w){
 		xShrink = w/data.getMap().getWidth();

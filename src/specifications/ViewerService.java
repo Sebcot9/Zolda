@@ -1,6 +1,7 @@
 package specifications;
 
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 
 public interface ViewerService {
 
@@ -12,5 +13,9 @@ public interface ViewerService {
 
 	void setMainWindowHeight(double h);
 	void bindEngineService(EngineService service);
+
+	Button getButton();
+
+	void setButton(Button button);
 
 }
