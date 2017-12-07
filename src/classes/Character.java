@@ -86,6 +86,6 @@ public class Character {
     }
 
     public int getStepDivided(){
-	    return this.step/2;
+	    return this.step;
     }
 }

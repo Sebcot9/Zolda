@@ -18,6 +18,7 @@ public class Data implements DataService {
 	private int minX, maxX, minY, maxY;
 	private int stepNumber;
 	private Random gen;
+	private int stepAttack;
 
 	public Data(){}
 
@@ -32,6 +33,7 @@ public class Data implements DataService {
 		lonk.setDirection(Direction.RIGHT);
 		lonk.setVelocityX(0);
 		lonk.setVelocityY(0);
+		stepAttack = 0;
 		map = new Map(1024,876);
 		enemies = new ArrayList<>();
 		gen= new Random();
@@ -118,10 +120,22 @@ public class Data implements DataService {
 	public Position getWeaponPosition() {
 		return this.lonk.getWeapon().getPosition();
 	}
+
+	@Override
+	public int getStepAttack() {
+		return this.stepAttack;
+	}
+
 	@Override
 	public void setWeaponPosition(Position pos) {
 		this.lonk.getWeapon().setPosition(pos);
 	}
+
+	@Override
+	public void setStepAttack(int step) {
+		stepAttack = step;
+	}
+
 	public void setStepNumber(int stepNumber) {
 		this.stepNumber = stepNumber;
 	}

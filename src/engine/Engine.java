@@ -24,13 +24,14 @@ public class Engine implements RequireDataService, EngineService {
 
 	public Engine(){}
 	private DataService data;
-	private Timer timer;
+	private Timer timer,timerSword;
+	private TimerTask timerTaskSword;
 	private User.COMMAND oldDirection;
 	private boolean moveLeft, moveRight, moveUp, moveDown, collision;
 	private boolean pushSpace;
 	private double friction = 0.2;
 	private Random gen;
-	private HashSet<Position> allPos = new HashSet<Position>();
+	private HashSet<Position> allPos = new HashSet<>();
 
 
 	@Override
@@ -47,7 +48,9 @@ public class Engine implements RequireDataService, EngineService {
 		moveDown = false;
 		collision = false;
 		gen = new Random();
+		timerSword = new Timer();
 		i = 0;
+
 
 		for(int i=0; i<5;i++)
 		{
@@ -102,12 +105,12 @@ public class Engine implements RequireDataService, EngineService {
 						if(collisionEnemiesObstacles(o, e)){
 
 							if ((Math.abs(o.getPosition().x + 20 - e.getPosition().x)) < 20){
-								e.setPosition(new Position(e.getPosition().x-heroesVX, e.getPosition().y-heroesVY));
+								e.setPosition(new Position(e.getPosition().x-data.getLonk().getVelocityX(), e.getPosition().y-data.getLonk().getVelocityY()));
 								updateEnemiesPosition();
 							}
 
 							if (((Math.abs(o.getPosition().y  + 20 - e.getPosition().y)) < 20)){
-								e.setPosition(new Position(e.getPosition().x-heroesVX, e.getPosition().y -heroesVY));
+								e.setPosition(new Position(e.getPosition().x-data.getLonk().getVelocityX(), e.getPosition().y -data.getLonk().getVelocityY()));
 								updateEnemiesPosition();
 							}
 
@@ -222,10 +225,10 @@ public class Engine implements RequireDataService, EngineService {
 			for(Position p : allPos)
 			{
 				if((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y) < 400)
-					cont= true;
-			}
-		}
 
+		cont= true;
+	}
+}
 		if(x > 40 && y > 40) {
 			data.getMap().getHoles().add(new Holes(new Position(x, y)));
 		}
@@ -237,14 +240,16 @@ public class Engine implements RequireDataService, EngineService {
 	}
 
 	@Override
-	public void setHeroesCommand(User.COMMAND c)
-	{
+	public void setHeroesCommand(User.COMMAND c) {
 		oldDirection = c;
-		if (c==User.COMMAND.LEFT) moveLeft=true;
-		if (c==User.COMMAND.RIGHT) moveRight=true;
-		if (c==User.COMMAND.UP) moveUp=true;
-		if (c==User.COMMAND.DOWN) moveDown=true;
-		if (c==User.COMMAND.SPACE) pushSpace= true;
+		if (c == User.COMMAND.LEFT) moveLeft = true;
+		if (c == User.COMMAND.RIGHT) moveRight = true;
+		if (c == User.COMMAND.UP) moveUp = true;
+		if (c == User.COMMAND.DOWN) moveDown = true;
+		if (c == User.COMMAND.SPACE) {
+			if (data.getStepAttack() == 0)
+				pushSpace = true;
+		}
 	}
 
 	@Override
@@ -256,7 +261,11 @@ public class Engine implements RequireDataService, EngineService {
 		if (c==User.COMMAND.RIGHT) moveRight=false;
 		if (c==User.COMMAND.UP) moveUp=false;
 		if (c==User.COMMAND.DOWN) moveDown=false;
-		if (c==User.COMMAND.SPACE) pushSpace=false;
+		if (c==User.COMMAND.SPACE) {
+//			pushSpace=false;
+//			timerTaskSword.cancel();
+//			timerTaskSword = null;
+		}
 	}
 
 	@Override
@@ -304,23 +313,29 @@ public class Engine implements RequireDataService, EngineService {
 			data.getLonk().setPosition(new Position(data.getLonk().getPosition().x, data.getMaxY()));
 
 		}
-
-
 	}
 
 	private void collisionWeaponEnnemies(){
-		if (isPushSpace()) {
-			Weapon weapon = data.getLonk().getWeapon();
+		if (isPushSpace()){
+			int stepAttack = data.getStepAttack();
+			if (stepAttack+1 < 8) {
+				data.setStepAttack(stepAttack+1);
+				if (stepAttack == 1) {
+					Weapon weapon = data.getLonk().getWeapon();
 
-			for (Enemies e : data.getEnemies()) {
-//					100+15 - 100
+					for (Enemies e : data.getEnemies()) {
 
-				if ( Math.abs((weapon.getPosition().x+weapon.getHeight()/2) - (e.getPosition().x+e.getHeight()/2) ) < 25  && Math.abs((weapon.getPosition().y+weapon.getWidth()/2) - (e.getPosition().y+e.getWidth()/2) ) < 25  ){
-					e.setHp(e.getHp()-1);
-								System.out.println("touché "+i);
-					i++;
-
+						if ( Math.abs((weapon.getPosition().x+weapon.getHeight()/2) - (e.getPosition().x+e.getHeight()/2) ) < 35  && Math.abs((weapon.getPosition().y+weapon.getWidth()/2) - (e.getPosition().y+e.getWidth()/2) ) < 35  ){
+							e.setHp(e.getHp()-1);
+							System.out.println("touché "+i);
+							i++;
+						}
+					}
 				}
+			}
+			else {
+				pushSpace = false;
+				data.setStepAttack(0);
 			}
 		}
 	}
@@ -354,18 +369,21 @@ public class Engine implements RequireDataService, EngineService {
 	}
 
 	private void updateWeaponPosition(){
-		    Heroes lonk = data.getLonk();
+//		if (isPushSpace())
+			Heroes lonk = data.getLonk();
+
 			Position linkPos = data.getLonk().getPosition();
-			Weapon saber =  data.getLonk().getWeapon();
+			Weapon saber = data.getLonk().getWeapon();
 			if (lonk.getDirection().equals(Direction.LEFT))
-				saber.setPosition(new Position(linkPos.x+lonk.getWidth(),linkPos.y));
+				saber.setPosition(new Position(linkPos.x - lonk.getWidth()/2, linkPos.y));
 			if (lonk.getDirection().equals(Direction.RIGHT))
-				saber.setPosition(new Position(linkPos.x+25,linkPos.y));
+				saber.setPosition(new Position(linkPos.x + lonk.getWidth()/2, linkPos.y));
 			if (lonk.getDirection().equals(Direction.UP))
-				saber.setPosition(new Position(linkPos.x,linkPos.y-25));
+				saber.setPosition(new Position(linkPos.x, linkPos.y - lonk.getHeight()));
 			if (lonk.getDirection().equals(Direction.DOWN))
-				saber.setPosition(new Position(linkPos.x,linkPos.y+25));
-	}
+				saber.setPosition(new Position(linkPos.x, linkPos.y + lonk.getHeight()));
+		}
+//	}
 
 	private void spawnEnemies(){
 		int x=0;

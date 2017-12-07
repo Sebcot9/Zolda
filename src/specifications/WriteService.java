@@ -20,4 +20,6 @@ public interface WriteService {
 
 	void setWeaponPosition(Position pos);
 
+	void setStepAttack(int step);
+
 }
