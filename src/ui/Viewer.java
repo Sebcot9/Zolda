@@ -136,7 +136,6 @@ public class Viewer implements ViewerService, RequireReadService {
     private Rectangle getUserView(double shrink, double xModifier, double yModifier){
         Rectangle userView = new Rectangle(-2 * xModifier + shrink * 800,
                 -.2 * shrink * 600 + shrink * 600);
-        userView.setFill(new ImagePattern(new Image("File:src/images/forest.png")));
         userView.setStroke(Color.DIMGRAY);
         userView.setStrokeWidth(.01 * shrink * 600);
         userView.setArcWidth(.04 * shrink * 600);
@@ -188,14 +187,35 @@ public class Viewer implements ViewerService, RequireReadService {
         Rectangle userView = getUserView(shrink, xModifier, yModifier);
         Rectangle consoleView = getConsoleView(shrink, xModifier, yModifier);
         Rectangle statView = getStatView(shrink, xModifier, yModifier);
+        ArrayList<Stairs> stairs = data.getMap().getStairs();
 
+        Text test = new Text(-0.1*shrink*600+.5*shrink*800,
+                -0.1*shrink*800+shrink*650,"Forest Adventure");
+        test.setFont(new Font(.05*shrink*700));
+
+        if(stairs.size() > 0){
+            Stairs st = stairs.get(0);
+
+            if(st.isLvl()){
+                userView.setFill(new ImagePattern(new Image("File:src/images/sand.png")));
+
+                test = new Text(-0.1*shrink*600+.5*shrink*800,
+                        -0.1*shrink*800+shrink*650,"Sand Adventure");
+                test.setFont(new Font(.05*shrink*700));
+            }else{
+                userView.setFill(new ImagePattern(new Image("File:src/images/forest.png")));
+            }
+
+        }else{
+            userView.setFill(new ImagePattern(new Image("File:src/images/forest.png")));
+        }
 
         Text console = new Text(0.5*shrink*800+.5*shrink*900,
                 -0.5*shrink*300+shrink*200,"Console : ");
         console.setFont(new Font(.05*shrink*600));
 
 
-		panel.getChildren().addAll(consoleView, statView, console);
+        panel.getChildren().addAll(consoleView, statView, console, test);
 
 //        int index = avatarIndex/7;
 
@@ -206,7 +226,7 @@ public class Viewer implements ViewerService, RequireReadService {
 //                avatarIndex = 0;
 //            else {
 //                    index += 1;
-                avatarIndex = data.getLonk().getStepDivided()%6;
+            avatarIndex = data.getLonk().getStepDivided()%6;
 //            }
         } else if (engine.getmoveRight()) {
             defaultAvatarList = right;
@@ -228,7 +248,7 @@ public class Viewer implements ViewerService, RequireReadService {
             }
         }else if(engine.getmoveDown()) {
 //            isLeft = false; isDown = true; isRight = false; isUp = false;
-             defaultAvatarList =down;
+            defaultAvatarList =down;
             if (avatarIndex+1 > defaultAvatarList.size()-1)
                 avatarIndex = 0;
             else {
@@ -251,24 +271,24 @@ public class Viewer implements ViewerService, RequireReadService {
         else {
 //            index = 0;
             avatarIndex = 0;
-		}
+        }
 //		linkAvatarImageView.setFitHeight(5*10);
 //		linkAvatarImageView.setPreserveRatio(true);
 
         linkAvatarImageView.setTranslateX(shrink*data.getLonk().getPosition().x+shrink*xModifier-radius);
-		linkAvatarImageView.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
-		linkAvatarImageView.setFitWidth(shrink*data.getLonk().getWidth());
-		linkAvatarImageView.setFitHeight(shrink*data.getLonk().getHeight());
-		linkAvatarImageView.setViewport(defaultAvatarList.get(avatarIndex));
-		//avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
-		panel.getChildren().add(userView);
+        linkAvatarImageView.setTranslateY(shrink*data.getLonk().getPosition().y+shrink*yModifier-radius);
+        linkAvatarImageView.setFitWidth(shrink*data.getLonk().getWidth());
+        linkAvatarImageView.setFitHeight(shrink*data.getLonk().getHeight());
+        linkAvatarImageView.setViewport(defaultAvatarList.get(avatarIndex));
+        //avatarIndex = (avatarIndex) % (defaultAvatarList.size() * 7);
+        panel.getChildren().add(userView);
 
-		Text hp = new Text(-0.1*shrink*600+.5*shrink*500,
-				-0.1*shrink*800+shrink*700,"HP : " + data.getLonk().getHp());
+        Text hp = new Text(-0.1*shrink*600+.5*shrink*500,
+                -0.1*shrink*800+shrink*700,"HP : " + data.getLonk().getHp());
         hp.setFont(new Font(.05*shrink*600));
-		panel.getChildren().add(hp);
+        panel.getChildren().add(hp);
 
-		//panel.getChildren().add(t);
+        //panel.getChildren().add(t);
 
         // SWORD AVATAR
 //        if (engine.isPushSpace()) {
@@ -311,20 +331,20 @@ public class Viewer implements ViewerService, RequireReadService {
 
 
 	    /* Cr�ation des ennemies*/
-	    ArrayList<Enemies> enemies = data.getEnemies();
-	    Enemies e;
-	    for(int i=0; i<enemies.size();i++)
-	    {
-	    	e = enemies.get(i);
-	    	double rad=Math.min(shrink*20,shrink*20);
-			Rectangle enemy_c = new Rectangle(rad,rad);
-			enemy_c.setFill(Color.RED);
-			enemy_c.setEffect(new Lighting());
-			enemy_c.setTranslateX(shrink*e.getPosition().x+shrink*xModifier-radius);
-			enemy_c.setTranslateY(shrink*e.getPosition().y+shrink*yModifier-radius);
-			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
-		    panel.getChildren().add(enemy_c);
-	    }
+        ArrayList<Enemies> enemies = data.getEnemies();
+        Enemies e;
+        for(int i=0; i<enemies.size();i++)
+        {
+            e = enemies.get(i);
+            double rad=Math.min(shrink*20,shrink*20);
+            Rectangle enemy_c = new Rectangle(rad,rad);
+            enemy_c.setFill(Color.RED);
+            enemy_c.setEffect(new Lighting());
+            enemy_c.setTranslateX(shrink*e.getPosition().x+shrink*xModifier-radius);
+            enemy_c.setTranslateY(shrink*e.getPosition().y+shrink*yModifier-radius);
+            //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
+            panel.getChildren().add(enemy_c);
+        }
 
 	    /* Cr�ation des trous */
         ArrayList<Holes> holes = data.getMap().getHoles();
@@ -343,10 +363,10 @@ public class Viewer implements ViewerService, RequireReadService {
             panel.getChildren().add(hol);
         }
 
-	    button.setTranslateX(shrink*468);
-	    button.setTranslateY(shrink*850);
+        button.setTranslateX(shrink*468);
+        button.setTranslateY(shrink*850);
 
-	    panel.getChildren().add(button);
+        panel.getChildren().add(button);
 
         Rectangle escalier = new Rectangle(radius,radius);
         escalier.setFill(new ImagePattern(new Image("File:src/images/escalier1.png")));
@@ -361,25 +381,31 @@ public class Viewer implements ViewerService, RequireReadService {
         panel.getChildren().add(linkAvatarImageView);
 
 	    /* Cr�ation des obstacles */
-	    ArrayList<Obstacle> obstacles = data.getMap().getObstacles();
-	    Obstacle o;
-	    for(int i=0; i<obstacles.size();i++)
-	    {
-	    	o = obstacles.get(i);
+        ArrayList<Obstacle> obstacles = data.getMap().getObstacles();
+        Obstacle o;
+        for(int i=0; i<obstacles.size();i++)
+        {
+            o = obstacles.get(i);
             double rad=Math.min(shrink*40,shrink*40);
             Rectangle obs = new Rectangle(rad,rad);
-			obs.setFill(new ImagePattern(new Image("File:src/images/sapin.png")));
-			obs.setEffect(new Lighting());
-			obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
-			obs.setTranslateY(shrink*o.getPosition().y+shrink*yModifier-radius);
-			//System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
-		    panel.getChildren().add(obs);
-	    }
+            if(stairs.size() > 0) {
+                Stairs st = stairs.get(0);
+                if (st.isLvl()) {
+                    obs.setFill(new ImagePattern(new Image("File:src/images/palm.png")));
+                } else {
+                    obs.setFill(new ImagePattern(new Image("File:src/images/sapin.png")));
+                }
+            }else{
+                obs.setFill(new ImagePattern(new Image("File:src/images/sapin.png")));
+            }
+            obs.setEffect(new Lighting());
+            obs.setTranslateX(shrink*o.getPosition().x+shrink*xModifier-radius);
+            obs.setTranslateY(shrink*o.getPosition().y+shrink*yModifier-radius);
+            //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
+            panel.getChildren().add(obs);
+        }
 
-
-
-
-	    //Sortie vers map2
+        //Sortie vers map2
         if(data.getEnemies().size() == 0){
 
             escalier.setVisible(true);
@@ -403,33 +429,33 @@ public class Viewer implements ViewerService, RequireReadService {
 
         }
 
-		return panel;
+        return panel;
 
-	}
+    }
 
     @Override
     public Button getButton()
     {
-    	return this.button;
+        return this.button;
     }
 
     @Override
     public void setButton(Button button)
     {
-    	this.button = button;
+        this.button = button;
     }
-	@Override
-	public void setMainWindowWidth(double w){
-		xShrink = w/data.getMap().getWidth();
-	}
+    @Override
+    public void setMainWindowWidth(double w){
+        xShrink = w/data.getMap().getWidth();
+    }
 
-	@Override
-	public void setMainWindowHeight(double h){
-		yShrink = h/data.getMap().getHeight();
-	}
+    @Override
+    public void setMainWindowHeight(double h){
+        yShrink = h/data.getMap().getHeight();
+    }
 
-	@Override
-	public Parent getGameOverPanel(){
+    @Override
+    public Parent getGameOverPanel(){
         Group panel = new Group();
         shrink = Math.min(xShrink, yShrink);
         xModifier = .01 * shrink * data.getMap().getHeight();

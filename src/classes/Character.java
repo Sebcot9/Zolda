@@ -69,23 +69,23 @@ public class Character {
 		this.velocityY = velocityY;
 	}
 
-    public Direction getDirection() {
-        return direction;
-    }
+	public Direction getDirection() {
+		return direction;
+	}
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
 
-    public int getStep() {
-        return step;
-    }
+	public int getStep() {
+		return step;
+	}
 
-    public void setStep(int step) {
-        this.step = step;
-    }
+	public void setStep(int step) {
+		this.step = step;
+	}
 
-    public int getStepDivided(){
-	    return this.step;
-    }
+	public int getStepDivided(){
+		return this.step;
+	}
 }
