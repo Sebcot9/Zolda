@@ -438,6 +438,7 @@ public class Engine implements RequireDataService, EngineService {
 					e.getPosition().x = e.getPosition().x + 1;
 				if (e.getPosition().y > data.getLonk().getPosition().y)
 					e.getPosition().y = e.getPosition().y - 1;
+
 				else if (e.getPosition().y < data.getLonk().getPosition().y)
 					e.getPosition().y = e.getPosition().y + 1;
 			}
@@ -467,6 +468,7 @@ public class Engine implements RequireDataService, EngineService {
 	}
 	private boolean collisionHoles(Holes h){
 		return(
+
 				(data.getLonk().getPosition().x-h.getPosition().x)*(data.getLonk().getPosition().x-h.getPosition().x)
 				+
 				(data.getLonk().getPosition().y-h.getPosition().y)*(data.getLonk().getPosition().y-h.getPosition().y)
