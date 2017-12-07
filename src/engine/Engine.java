@@ -219,7 +219,6 @@ public class Engine implements RequireDataService, EngineService {
 
 
 //		if((x > data.getLonk().getPosition().x || x < data.getLonk().getPosition().x) && y > data.getLonk().getPosition().y || (y > data.getLonk().getPosition().y || y < data.getLonk().getPosition().y) && x > data.getLonk().getPosition().x ) {
-			System.out.println("obstacle coordonnées : " + x + " " + y);
 			data.getMap().getObstacles().add(new Obstacle(new Position(x,y)));
 //		}
 
