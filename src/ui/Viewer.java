@@ -93,15 +93,7 @@ public class Viewer implements ViewerService, RequireReadService {
         down.add(new Rectangle2D(66, 0, 32, 32));
     }
 
-    @Override
-    public Parent getPanel() {
-        Group panel = new Group();
-        shrink = Math.min(xShrink, yShrink);
-        xModifier = .01 * shrink * data.getMap().getHeight();
-        yModifier = .01 * shrink * data.getMap().getWidth();
-        double radius = Math.min(shrink * 25, shrink * 25);
-
-        //Vue Utilisateur
+    private Rectangle getUserView(double shrink, double xModifier, double yModifier){
         Rectangle userView = new Rectangle(-2 * xModifier + shrink * 800,
                 -.2 * shrink * 600 + shrink * 600);
         userView.setFill(new ImagePattern(new Image("File:src/images/forest.png")));
@@ -111,37 +103,58 @@ public class Viewer implements ViewerService, RequireReadService {
         userView.setArcHeight(.04 * shrink * 600);
         userView.setTranslateX(xModifier);
         userView.setTranslateY(yModifier);
-		//panel.getChildren().add(userView);
 
-		//Vue de la Console
-		Rectangle consoleView = new Rectangle(-2*xModifier+shrink*224,
-				-.2*shrink*600+shrink*600);
-		consoleView.setFill(Color.WHITE);
-		consoleView.setStroke(Color.DIMGRAY);
-		consoleView.setStrokeWidth(.01*shrink*600);
-		consoleView.setArcWidth(.04*shrink*600);
-		consoleView.setArcHeight(.04*shrink*600);
-		consoleView.setTranslateX(xModifier*92);
-		consoleView.setTranslateY(yModifier);
+        return userView;
+    }
 
-		panel.getChildren().add(consoleView);
+    private Rectangle getConsoleView(double shrink, double xModifier, double yModifier){
+        Rectangle consoleView = new Rectangle(-2*xModifier+shrink*224,
+                -.2*shrink*600+shrink*600);
+        consoleView.setFill(Color.WHITE);
+        consoleView.setStroke(Color.DIMGRAY);
+        consoleView.setStrokeWidth(.01*shrink*600);
+        consoleView.setArcWidth(.04*shrink*600);
+        consoleView.setArcHeight(.04*shrink*600);
+        consoleView.setTranslateX(xModifier*92);
+        consoleView.setTranslateY(yModifier);
+
+        return consoleView;
+    }
+
+    private Rectangle getStatView(double shrink, double xModifier, double yModifier){
+        Rectangle statView = new Rectangle(-2*xModifier+shrink*1024,
+                -.2*shrink*400+shrink*400);
+        statView.setFill(Color.WHITE);
+        statView.setStroke(Color.DIMGRAY);
+        statView.setStrokeWidth(.01*shrink*600);
+        statView.setArcWidth(.04*shrink*600);
+        statView.setArcHeight(.04*shrink*600);
+        statView.setTranslateX(xModifier);
+        statView.setTranslateY(yModifier*50);
+
+        return statView;
+    }
+
+    @Override
+    public Parent getPanel() {
+        Group panel = new Group();
+        shrink = Math.min(xShrink, yShrink);
+        xModifier = .01 * shrink * data.getMap().getHeight();
+        yModifier = .01 * shrink * data.getMap().getWidth();
+        double radius = Math.min(shrink * 25, shrink * 25);
+
+        //Vues
+        Rectangle userView = getUserView(shrink, xModifier, yModifier);
+        Rectangle consoleView = getConsoleView(shrink, xModifier, yModifier);
+        Rectangle statView = getStatView(shrink, xModifier, yModifier);
+
 
         Text console = new Text(0.5*shrink*800+.5*shrink*900,
                 -0.5*shrink*300+shrink*200,"Console : ");
         console.setFont(new Font(.05*shrink*600));
-        panel.getChildren().add(console);
 
-        //Vue Statistique
-		Rectangle statView = new Rectangle(-2*xModifier+shrink*1024,
-				-.2*shrink*400+shrink*400);
-		statView.setFill(Color.WHITE);
-		statView.setStroke(Color.DIMGRAY);
-		statView.setStrokeWidth(.01*shrink*600);
-		statView.setArcWidth(.04*shrink*600);
-		statView.setArcHeight(.04*shrink*600);
-		statView.setTranslateX(xModifier);
-		statView.setTranslateY(yModifier*50);
-		panel.getChildren().add(statView);
+
+		panel.getChildren().addAll(consoleView, statView, console);
 
         int index = avatarIndex/7;
 
@@ -283,8 +296,6 @@ public class Viewer implements ViewerService, RequireReadService {
             panel.getChildren().add(escalier);
         }
 
-
-
 		return panel;
 
 	}
@@ -298,4 +309,42 @@ public class Viewer implements ViewerService, RequireReadService {
 	public void setMainWindowHeight(double h){
 		yShrink = h/data.getMap().getHeight();
 	}
+
+	@Override
+	public Parent getGameOverPanel(){
+        Group panel = new Group();
+
+        //Vue Utilisateur
+        Rectangle userView = new Rectangle(-2 * xModifier + shrink * 800,
+                -.2 * shrink * 600 + shrink * 600);
+        userView.setFill(new ImagePattern(new Image("File:src/images/sand.png")));
+        userView.setStroke(Color.DIMGRAY);
+        userView.setStrokeWidth(.01 * shrink * 600);
+        userView.setArcWidth(.04 * shrink * 600);
+        userView.setArcHeight(.04 * shrink * 600);
+        userView.setTranslateX(xModifier);
+        userView.setTranslateY(yModifier);
+
+        Rectangle consoleView = getConsoleView(shrink, xModifier, yModifier);
+        Rectangle statView = getStatView(shrink, xModifier, yModifier);
+        panel.getChildren().addAll(userView, consoleView, statView);
+
+        Text hp = new Text(-0.1*shrink*600+.5*shrink*500,
+                -0.1*shrink*800+shrink*700,"HP : " + data.getLonk().getHp());
+        hp.setFont(new Font(.05*shrink*600));
+
+        Text gameOver = new Text(0.3*shrink*500+.5*shrink*300,
+                -0.1*shrink*300+shrink*300,"Game Over");
+        gameOver.setFont(new Font(.05*shrink*600));
+
+
+        Text console = new Text(0.5*shrink*800+.5*shrink*900,
+                -0.5*shrink*300+shrink*200,"Console : ");
+        console.setFont(new Font(.05*shrink*600));
+
+        panel.getChildren().addAll(hp, gameOver, console);
+
+
+        return panel;
+    }
 }

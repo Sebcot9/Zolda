@@ -15,7 +15,6 @@ import classes.Pets;
 import classes.Position;
 import classes.Weapon;
 
-import java.awt.Rectangle;
 import specifications.DataService;
 import specifications.EngineService;
 import specifications.RequireDataService;
@@ -28,9 +27,7 @@ public class Engine implements RequireDataService, EngineService {
 	public Engine(){}
 	private DataService data;
 	private Timer timer;
-	//private boolean moveLeft, moveRight, moveUp, moveDown;
 	private User.COMMAND oldDirection;
-	//private User.COMMAND command;
 	private boolean moveLeft, moveRight, moveUp, moveDown, collision;
 	//private User.COMMAND command
 	private int heroesVX;
@@ -38,10 +35,11 @@ public class Engine implements RequireDataService, EngineService {
 	private double friction = 0.5;
 	private Random gen;
 	private boolean pushSpace;
+	private boolean gameOver;
 
+	private volatile boolean isPaused = false;
 
 	private HashSet<Position> allPos = new HashSet<Position>();
-
 
 	@Override
 	public void bindDataService(DataService service){
@@ -56,6 +54,7 @@ public class Engine implements RequireDataService, EngineService {
 		moveUp = false;
 		moveDown = false;
 		collision = false;
+		gameOver = false;
 		heroesVX =0;
 		heroesVY=0;
 		gen = new Random();
@@ -81,44 +80,39 @@ public class Engine implements RequireDataService, EngineService {
 	@Override
 	public void start(){
 		timer.schedule(new TimerTask(){
-			public void run(){
-
+			public void run() {
 				fillSet();
 
 				ArrayList<Obstacle> obstacles = data.getMap().getObstacles();
 				Obstacle o;
-				ArrayList <Enemies> enemies = data.getEnemies();
+				ArrayList<Enemies> enemies = data.getEnemies();
 				Enemies e;
-				for(int i =0;i<obstacles.size();i++)
-				{
+				for (int i = 0; i < obstacles.size(); i++) {
 					o = obstacles.get(i);
-					if(collisionObstacles(o))
-					{
-
+					if (collisionObstacles(o)) {
 						{
-							data.getLonk().setPosition(new Position(data.getLonk().getPosition().x-heroesVX,
-									data.getLonk().getPosition().y-heroesVY));
+							data.getLonk().setPosition(new Position(data.getLonk().getPosition().x - heroesVX,
+									data.getLonk().getPosition().y - heroesVY));
 							System.out.println("Kek");
-							heroesVX =0;
-							heroesVY =0;
+							heroesVX = 0;
+							heroesVY = 0;
 						}
 
 
 					}
 
-					for(int j =0;j<enemies.size();j++)
-					{
+					for (int j = 0; j < enemies.size(); j++) {
 						e = enemies.get(j);
 
-						if(collisionEnemiesObstacles(o, e)){
+						if (collisionEnemiesObstacles(o, e)) {
 
-							if ((Math.abs(o.getPosition().x + 20 - e.getPosition().x)) < 20){
-								e.setPosition(new Position(e.getPosition().x-heroesVX, e.getPosition().y-heroesVY));
+							if ((Math.abs(o.getPosition().x + 20 - e.getPosition().x)) < 20) {
+								e.setPosition(new Position(e.getPosition().x - heroesVX, e.getPosition().y - heroesVY));
 								updateEnemiesPosition();
 							}
 
-							if (((Math.abs(o.getPosition().y  + 20 - e.getPosition().y)) < 20)){
-								e.setPosition(new Position(e.getPosition().x-heroesVX, e.getPosition().y -heroesVY));
+							if (((Math.abs(o.getPosition().y + 20 - e.getPosition().y)) < 20)) {
+								e.setPosition(new Position(e.getPosition().x - heroesVX, e.getPosition().y - heroesVY));
 								updateEnemiesPosition();
 							}
 
@@ -142,7 +136,8 @@ public class Engine implements RequireDataService, EngineService {
 								e.se	tPosition(new Position(e.getPosition().x,
 										e.getPosition().y-5));
 							}
-*/
+							*/
+
 						}
 							/*if((o.getPosition().x-e.getPosition().x)*(o.getPosition().x-e.getPosition().x)+(o.getPosition().y-e.getPosition().y)*(o.getPosition().y-e.getPosition().y) < 500)
 						{
@@ -157,32 +152,34 @@ public class Engine implements RequireDataService, EngineService {
 
 				}
 
-				for(int j =0;j<enemies.size();j++)
-				{
-					e=enemies.get(j);
-					if(collisionEnemies(e))
-					{
+				for (int j = 0; j < enemies.size(); j++) {
+					e = enemies.get(j);
+					if (collisionEnemies(e)) {
 
 					}
 				}
 
 
-				for(Holes h : data.getMap().getHoles()){
-					if(collisionHoles(h)){
-						data.getLonk().setHp(data.getLonk().getHp() - 1);
+				for (Holes h : data.getMap().getHoles()) {
+					if (collisionHoles(h)) {
+						data.getLonk().setHp(data.getLonk().getHp() - data.getLonk().getHp());
 						data.getLonk().setPosition(new Position(30,
 								30));
 					}
 				}
 
-				updateEnemiesPosition();
-				updateWeaponPosition();
-				updateSpeedHeroes();
-				updateCommandHeroes();
-				updatePositionHeroes();
-				data.setStepNumber(data.getStepNumber()+1);
+				if (!isPaused) {
+					updateEnemiesPosition();
+					updateWeaponPosition();
+					updateSpeedHeroes();
+					updateCommandHeroes();
+					updatePositionHeroes();
+					data.setStepNumber(data.getStepNumber() + 1);
+				}
+
 			}
 		},0, 80);
+
 	}
 
 	private HashSet<Position> fillSet()
@@ -199,6 +196,7 @@ public class Engine implements RequireDataService, EngineService {
 			allPos.add(p.getPosition());
 
 		allPos.add(data.getLonk().getPosition());
+		allPos.add(data.getWeaponPosition());
 
 		return allPos;
 	}
@@ -254,6 +252,11 @@ public class Engine implements RequireDataService, EngineService {
 		timer.cancel();
 	}
 
+	/*public void resume() {
+		this.timer = new Timer();
+		this.timer.schedule( task, 0, 80 );
+	}*/
+
 	@Override
 	public void setHeroesCommand(User.COMMAND c)
 	{
@@ -263,6 +266,8 @@ public class Engine implements RequireDataService, EngineService {
 		if (c==User.COMMAND.UP) moveUp=true;
 		if (c==User.COMMAND.DOWN) moveDown=true;
 		if (c==User.COMMAND.SPACE) pushSpace= true;
+		if (c==User.COMMAND.P) isPaused=true;
+
 	}
 
 	@Override
@@ -275,6 +280,8 @@ public class Engine implements RequireDataService, EngineService {
 		if (c==User.COMMAND.UP) moveUp=false;
 		if (c==User.COMMAND.DOWN) moveDown=false;
 		if (c==User.COMMAND.SPACE) pushSpace=false;
+		if (c==User.COMMAND.P) isPaused=false;
+
 	}
 
 	@Override
@@ -386,7 +393,6 @@ public class Engine implements RequireDataService, EngineService {
 					e.getPosition().y =e.getPosition().y -1;
 				else if(e.getPosition().y < data.getLonk().getPosition().y)
 					e.getPosition().y =e.getPosition().y +1;
-
 		}
 	}
 
@@ -440,6 +446,13 @@ public class Engine implements RequireDataService, EngineService {
 				<=
 				500
 				);
+	}
+
+	@Override
+	public void isGameOver(){
+		if(data.getLonk().getHp() == 0){
+			gameOver = true;
+		}
 	}
 
 	@Override
