@@ -1,6 +1,7 @@
 package specifications;
 
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 
 public interface ViewerService {
 
@@ -8,10 +9,15 @@ public interface ViewerService {
 
 	Parent getPanel();
 	Parent getGameOverPanel();
-
+	
 	void setMainWindowWidth(double w);
 
 	void setMainWindowHeight(double h);
 	void bindEngineService(EngineService service);
 
+	Button getButton();
+
+	void setButton(Button button);
+
 }
+

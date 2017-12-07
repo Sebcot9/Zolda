@@ -438,10 +438,7 @@ public class Engine implements RequireDataService, EngineService {
 					e.getPosition().x = e.getPosition().x + 1;
 				if (e.getPosition().y > data.getLonk().getPosition().y)
 					e.getPosition().y = e.getPosition().y - 1;
-				else if (e.getPosition().y < data.getLonk().getPosition(
-
-
-				).y)
+				else if (e.getPosition().y < data.getLonk().getPosition().y)
 					e.getPosition().y = e.getPosition().y + 1;
 			}
 			else {
@@ -458,7 +455,15 @@ public class Engine implements RequireDataService, EngineService {
 		return((data.getLonk().getPosition().x <= o.getPosition().x + HardCodedParameters.obsWidth &&
 				data.getLonk().getPosition().x + HardCodedParameters.obsWidth >= o.getPosition().x &&
 				data.getLonk().getPosition().y <= o.getPosition().y + HardCodedParameters.obsHeight + 10 &&
-				 data.getLonk().getPosition().y >=  o.getPosition().y));
+				 data.getLonk().getPosition().y >=  o.getPosition().y)
+
+				);
+
+        /*return((data.getLonk().getPosition().x <= o.getPosition().x + 30 &&
+                data.getLonk().getPosition().x + 30 >= o.getPosition().x &&
+                data.getLonk().getPosition().y <= o.getPosition().y + 30 &&
+                30 + data.getLonk().getPosition().y >=  o.getPosition().y)
+        );*/
 	}
 	private boolean collisionHoles(Holes h){
 		return(
@@ -478,6 +483,12 @@ public class Engine implements RequireDataService, EngineService {
 				20 + e.getPosition().y >=  o.getPosition().y)
 
 		);
+
+        /*return((data.getLonk().getPosition().x <= o.getPosition().x + 30 &&
+                data.getLonk().getPosition().x + 30 >= o.getPosition().x &&
+                data.getLonk().getPosition().y <= o.getPosition().y + 30 &&
+                30 + data.getLonk().getPosition().y >=  o.getPosition().y)
+        );*/
 	}
 
 	private boolean collisionEnemies(Enemies e){
@@ -506,5 +517,7 @@ public class Engine implements RequireDataService, EngineService {
 	public void setPushSpace(boolean pushSpace) {
 		this.pushSpace = pushSpace;
 	}
+
+
 
 }
