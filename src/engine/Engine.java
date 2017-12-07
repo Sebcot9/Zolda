@@ -13,9 +13,11 @@ import java.awt.Rectangle;
 import specifications.DataService;
 import specifications.EngineService;
 import specifications.RequireDataService;
+import specifications.ViewerService;
 import tools.Direction;
 import tools.HardCodedParameters;
 import tools.User;
+import ui.Viewer;
 
 public class Engine implements RequireDataService, EngineService {
 
@@ -24,6 +26,7 @@ public class Engine implements RequireDataService, EngineService {
 
 	public Engine(){}
 	private DataService data;
+	private ViewerService viewer;
 	private Timer timer;
 	private User.COMMAND oldDirection;
 	private boolean moveLeft, moveRight, moveUp, moveDown, collision;
@@ -55,7 +58,7 @@ public class Engine implements RequireDataService, EngineService {
 		i = 0;
 
 
-		for(int i=0; i<5;i++)
+		for(int i=0; i<1;i++)
 		{
 			spawnEnemies();
 			fillSet();
@@ -85,6 +88,8 @@ public class Engine implements RequireDataService, EngineService {
 				ArrayList <Enemies> enemies = data.getEnemies();
 				Enemies e;
 				ArrayList <Holes> holes = data.getMap().getHoles();
+				ArrayList <Stairs> stairs = data.getMap().getStairs();
+				Stairs st;
 
 				for(int i =0;i<obstacles.size();i++)
 				{
@@ -181,24 +186,38 @@ public class Engine implements RequireDataService, EngineService {
 				}
 
 				if(enemies.size() == 0){
+
 					for(int i = 0; i < data.getMap().getHoles().size(); i++){
 						Holes hl = data.getMap().getHoles().get(i);
 						holes.remove(hl);
 					}
 
+					data.getMap().getStairs().add(new Stairs(new Position(763, 400)));
+
 					for(int i = 0; i < data.getMap().getObstacles().size(); i++){
 						Obstacle ob = data.getMap().getObstacles().get(i);
 						obstacles.remove(ob);
+						System.out.print("ko");
 					}
 
-					for(int i=0; i< 3;i++)
+					for(int i =0;i<stairs.size();i++){
+						st = stairs.get(i);
+
+						if (collisionStairs(st)) {
+							data.getLonk().setPosition(new Position(750,
+									350));
+							init();
+							start();
+						}
+					}
+					/*for(int i=0; i< 3;i++)
 					{
 						int x = (int) ((gen.nextInt((int) ((HardCodedParameters.maxX-HardCodedParameters.minX))))+HardCodedParameters.minX);
 						int y = (int) ((gen.nextInt((int) ((HardCodedParameters.maxY-HardCodedParameters.minY))))+HardCodedParameters.minY);
 
 						data.getMap().getStairs().add(new Stairs(new Position(x, y)));
 						fillSet();
-					}
+					}*/
 				}
 
 
@@ -539,6 +558,17 @@ public class Engine implements RequireDataService, EngineService {
 	@Override
 	public void setPushSpace(boolean pushSpace) {
 		this.pushSpace = pushSpace;
+	}
+
+
+	private boolean collisionStairs(Stairs st){
+
+		return((data.getLonk().getPosition().x <= st.getPosition().x + HardCodedParameters.obsWidth &&
+				data.getLonk().getPosition().x + HardCodedParameters.obsWidth >= st.getPosition().x &&
+				data.getLonk().getPosition().y <= st.getPosition().y + HardCodedParameters.obsHeight &&
+				data.getLonk().getPosition().y >=  st.getPosition().y )
+
+		);
 	}
 
 

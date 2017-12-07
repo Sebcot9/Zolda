@@ -376,7 +376,7 @@ public class Viewer implements ViewerService, RequireReadService {
             escalier.setVisible(true);
 
              /* Cr�ation des obstacles */
-            ArrayList<Stairs> stairs = data.getMap().getStairs();
+           /* ArrayList<Stairs> stairs = data.getMap().getStairs();
             Stairs st;
             System.out.print(stairs.size());
             for(int i=0; i<3;i++){
@@ -389,7 +389,7 @@ public class Viewer implements ViewerService, RequireReadService {
                 sts.setTranslateY(shrink*st.getPosition().y+shrink*yModifier-radius);
                 //System.out.println("Ennemi en x :"+e.getPosition().x+", y"+e.getPosition().y);
                 panel.getChildren().add(sts);
-            }
+            }*/
 
 
         }
