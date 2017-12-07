@@ -8,7 +8,8 @@ public interface ViewerService {
 	void init();
 
 	Parent getPanel();
-
+	Parent getGameOverPanel();
+	
 	void setMainWindowWidth(double w);
 
 	void setMainWindowHeight(double h);
@@ -19,3 +20,4 @@ public interface ViewerService {
 	void setButton(Button button);
 
 }
+

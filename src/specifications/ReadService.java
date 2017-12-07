@@ -20,6 +20,7 @@ public interface ReadService {
 	int getLinkWidth();
 	int getStepNumber();
 	Position getWeaponPosition();
+	int getStepAttack();
 
 
 

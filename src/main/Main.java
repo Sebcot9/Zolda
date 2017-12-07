@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -44,6 +45,7 @@ public class Main extends Application{
 	private static ViewerService viewer;
 	private static ViewerService dataViewer;
 	private static AnimationTimer timer;
+	  private static boolean onStop;
 
 	//Valeurs Tests
 	private BorderPane panel1 = new BorderPane();
@@ -104,35 +106,39 @@ public class Main extends Application{
 		Group root = new Group();
 		Scene scene = new Scene(panel1, 500, 500, Color.WHITE);
 		
-		retour.setOnKeyPressed(e->{
-			if(e.getCode() == KeyCode.SPACE){
-				e.consume();
+		/*retour.setOnKeyPressed(e->{
+				if (e.getCode()==KeyCode.SPACE) engine.setHeroesCommand(User.COMMAND.SPACE);
+					e.consume();
 			}
-		});
+		);*/
 		
 		viewer.setButton(retour);
-		viewer.getButton().setOnAction(new EventHandler<ActionEvent>(){
+		viewer.getButton().setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 			@Override
-			public void handle(ActionEvent event) {
+			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				timer.stop();
 				engine.stop();
-				//engine.init();
-				//engine.stop();
-				//engine.start();
 				System.out.println("Nani ?");
 				scene.setRoot(panel1);
 			}
-
+			
+		});
+		
+		viewer.getButton().addEventFilter(KeyEvent.KEY_PRESSED, k -> {
+			if(k.getCode() == KeyCode.SPACE){
+				engine.setHeroesCommand(User.COMMAND.SPACE);
+			k.consume();
+			}
 		});
 		
 		//root.getChildren().add(viewer.getPanel());
 		root.getChildren().add(viewer.getPanel());
 		//root.getChildren().add(retour);
-		boutonJouer.setOnAction(new EventHandler<ActionEvent>() {
+		boutonJouer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
+			public void handle(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				
 				
@@ -150,11 +156,6 @@ public class Main extends Application{
 			}
 
 		});
-		 
-		
-
-	
-		//viewer.getButton();
 
 		scene.setFill(Color.ANTIQUEWHITE);
 
@@ -212,4 +213,6 @@ public class Main extends Application{
 
 
 	}
+	
+	
 }

@@ -19,5 +19,8 @@ public interface EngineService {
 	boolean getmoveDown();
 
 	boolean isPushSpace();
+	void isGameOver();
 	void setPushSpace(boolean bool);
+
+//	void resume();
 }
