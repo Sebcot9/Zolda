@@ -64,5 +64,4 @@ public class Map {
 	public void setStairs(ArrayList<Stairs> stairs) {
 		this.stairs = stairs;
 	}
-
 }
